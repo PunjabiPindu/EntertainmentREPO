@@ -1,0 +1,3 @@
+[B]Version 1.0.2[/B]
+
+- Full release ofonline hd movies plugin
