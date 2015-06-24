@@ -102,6 +102,24 @@
     </extension>
 </addon>
 
+<addon id="plugin.video.oneclickwatch" version="0.7.5" name="One Click Watch" provider-name="@TheYid009 & Mr Entertainment">
+    <requires>
+        <import addon="xbmc.python" version="2.1.0"/>
+        <import addon="script.module.TheYid.common" version="0.1.1"/>
+        <import addon="script.module.urlresolver"  version="2.0.9"/>
+        <import addon="script.module.simplejson" version="3.3.0"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary>One Click Watch [COLOR blue][B]THE ORIGINAL[/B][/COLOR] for all scene releases lovers free on demand streaming</summary>
+        <description>Play a wide selection of scene release movies Tv shows + sport from One Click Watch always first with new + old releases</description>
+        <platform>all</platform>
+        <disclaimer lang="en">[COLOR red][B][I]from @TheYid009 [/B][/I][/COLOR]</disclaimer>
+    </extension>
+</addon>
+
 <addon id="plugin.video.onlinehdmovies" version="1.0.2" name="Online HD Movies" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
@@ -117,6 +135,24 @@
         <description>A wide selection of movies from Online HD Movies...</description>
         <platform>all</platform>
         <disclaimer lang="en"></disclaimer>
+    </extension>
+</addon>
+
+<addon id="plugin.video.releaseBB" version="0.4.7" name="Release[COLOR orange][B]BB[/B][/COLOR]" provider-name="Mr Entertainment">
+    <requires>
+        <import addon="xbmc.python" version="2.1.0"/>
+        <import addon="script.module.t0mm0.common" version="2.1.1"/>
+        <import addon="script.module.urlresolver"  version="2.0.9"/>
+        <import addon="script.module.simplejson" version="3.3.0"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary>Browse Release[COLOR orange][B]BB[/B][/COLOR]</summary>
+        <description>Stream a wide selection of scene release movies and Tv shows from releaseBB.... [COLOR red][B][I]YOU will need a real-debrid or a alldebrid account[/B][/I][/COLOR]</description>
+        <platform>all</platform>
+        <disclaimer lang="en">[COLOR red][B][I]Mr Entertainment[/B][/I][/COLOR]</disclaimer>
     </extension>
 </addon>
 
@@ -138,16 +174,16 @@
     </extension>
 </addon>
 
-<addon id="repository.entertainmentrepo" name="The Entertainment Repository" version="1.0" provider-name="Mr Entertainment">
+<addon id="repository.entertainmentrepo" name="The Entertainment Repository" version="1.1" provider-name="Mr Entertainment">
 	<extension point="xbmc.addon.repository" name="Entertainment Addons Repository">
         <dir>
-	      <info compressed="false">https://raw.github.com/TheYid/My-Repo/master/addons.xml</info>
-	      <checksum>https://raw.github.com/TheYid/My-Repo/master/addons.xml.md5</checksum>
-	      <datadir zip="true">https://raw.github.com/TheYid/My-Repo/master/zips</datadir>
+	      <info compressed="false">https://raw.github.com/MrEntertainment/EntertainmentREPO/master/addons.xml</info>
+	      <checksum>https://raw.github.com/MrEntertainment/EntertainmentREPO/master/addons.xml.md5</checksum>
+	      <datadir zip="true">https://raw.github.com/MrEntertainment/EntertainmentREPO/master/zips</datadir>
         </dir>
-        <info compressed="false"></info>
-        <checksum></checksum>
-        <datadir zip="true"></datadir>
+        <info compressed="false">https://raw.github.com/TheYid/My-Repo/master/addons.xml</info>
+        <checksum>https://raw.github.com/TheYid/My-Repo/master/addons.xml.md5</checksum>
+        <datadir zip="true">https://raw.github.com/TheYid/My-Repo/master/zips</datadir>
 	</extension>
 	<extension point="xbmc.addon.metadata">
 		<summary></summary>
