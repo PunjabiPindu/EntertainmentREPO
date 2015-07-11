@@ -54,7 +54,7 @@ def GetLinks(section, url):
         match3 = re.compile('<p>(.+?)<A HREF=".+?">.+?</A></p>').findall(content)
         listitem = GetMediaInfo(content)
         for name in match3:
-                addon.add_directory({'mode': 'GetLinks1', 'url':  url, 'listitem': listitem}, {'title':  name}, img= 'http://onlinehdmovies.org/wp-content/uploads/2015/01/logo.png', fanart= 'http://imgprix.com/web/wallpapers/private-cinema-room/2560x1600.jpg')
+                addon.add_directory({'mode': 'GetLinks1', 'url':  url, 'listitem': listitem}, {'title': '[COLOR lawngreen][B]' + name  + '[/B][/COLOR]'}, img= 'http://onlinehdmovies.org/wp-content/uploads/2015/01/logo.png', fanart= 'http://imgprix.com/web/wallpapers/private-cinema-room/2560x1600.jpg')
         for url in match + match1:
                 host = GetDomain(url)
                 if urlresolver.HostedMediaFile(url= url):
@@ -69,7 +69,7 @@ def GetLinks1(url):
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
-        match1 = re.compile('<span style="display:none;" id="realdownload"><a href="(.+?)" class=".+?"><strong>.+?</strong>.+?</a>').findall(content)
+        match1 = re.compile('<span style="display:none;" id=".+?"><a href="(.+?)"').findall(content)
         listitem = GetMediaInfo(content)
         for url in match1:
                 addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title':  'Load Stream'}, img=IconPath + 'watch.png', fanart= 'http://www.htbackdrops.org/v2/albums/userpics/10097/orig_oefg_kino_im_kesselhaus.jpg')

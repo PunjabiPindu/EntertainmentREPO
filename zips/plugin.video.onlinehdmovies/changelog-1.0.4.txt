@@ -1,0 +1,7 @@
+[B]Version 1.0.4[/B]
+
+- Fixed openload links
+
+[B]Version 1.0.2[/B]
+
+- Full release ofonline hd movies plugin
