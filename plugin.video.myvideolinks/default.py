@@ -68,11 +68,14 @@ def GetLinks(section, url):
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
+        match2 = re.compile('<p><a href=".+?" rel=".+?">.+?</a></p>\s*?<p>.+?</p>\s*?<p>(.+?)</p>').findall(content)
         match = re.compile('<li><a href="(.+?)">.+?</a></li>').findall(content)
-        match1 = re.compile('<li><a href="(.+?)">V-VIDS</a></li>').findall(content)
+        #match1 = re.compile('<li><a href="(.+?)">V-VIDS</a></li>').findall(content)
         listitem = GetMediaInfo(content)
-        for url in match1:
-                addon.add_directory({'mode': 'GetLinks1', 'url': url, 'listitem': listitem}, {'title':  'V-Vids'}, img=IconPath + 'vids.png', fanart=FanartPath + 'fanart.png')
+        for name in match2:
+                addon.add_directory({'mode': 'GetLinks1', 'url': url, 'listitem': listitem}, {'title':  '[B][COLOR lawngreen]' + name + '[/B][/COLOR]'}, img= 'http://www.64ouncegames.com/blog/wp-content/uploads/2013/09/PlotTwist.png', fanart=FanartPath + 'fanart.png')
+        #for url in match1:
+                #addon.add_directory({'mode': 'GetLinks1', 'url': url, 'listitem': listitem}, {'title':  'V-Vids'}, img=IconPath + 'vids.png', fanart=FanartPath + 'fanart.png')
         for url in match:
                 host = GetDomain(url)
                 if 'Unknown' in host:
@@ -183,7 +186,7 @@ def GenreMenu():
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lime]Family >>[/COLOR]'}, img=IconPath + 'fam1.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles1', 'section': 'ALL', 'url': BASE_URL + '/tag/animation-movies',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lime]Animation >>[/COLOR]'}, img=IconPath + 'an1.png', fanart=FanartPath + 'fanart.png')
-        addon.add_directory({'mode': 'GetTitles1', 'section': 'ALL', 'url': BASE_URL + '/tag/action-movies',
+        addon.add_directory({'mode': 'GetTitles1', 'section': 'ALL', 'url': BASE_URL + '/tag/actionmovies/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lime]Action >>[/COLOR]'}, img=IconPath + 'ac1.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles1', 'section': 'ALL', 'url': BASE_URL + '/tag/adventure-movies',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lime]Adventure >>[/COLOR]'}, img=IconPath + 'ad1.png', fanart=FanartPath + 'fanart.png')
@@ -223,7 +226,7 @@ def GetSearchQuery9():
 	else:
                 return
 def Search9(query):
-        url = 'http://download.myvideolinks.xyz' + query
+        url = 'http://download.myvideolinks.xyz/?s=' + query
         url = url.replace(' ', '+')
         print url
         html = net.http_GET(url).content

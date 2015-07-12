@@ -1,0 +1,10 @@
+[B]Version 5.0.4[/B]
+
+- fixed search 
+- fixed action movies
+
+[B]Version 5.0.1[/B]
+
+- now site prime links release
+
+
