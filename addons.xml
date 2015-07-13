@@ -3,7 +3,7 @@
 	<addon
         id="plugin.audio.beats1radio"
         name="Beats 1 Raido"
-        version="0.0.1"
+        version="0.0.2"
         provider-name="Mr Entertainment">
 		<requires>
 			<import addon="xbmc.python"             	version="2.1.0"/>
