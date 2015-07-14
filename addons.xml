@@ -93,6 +93,24 @@
     </extension>
 </addon>
 
+<addon id="plugin.video.film-streamingx" version="0.0.1" name="film-streamingx" provider-name="Mr Entertainment">
+    <requires>
+        <import addon="xbmc.python" version="2.1.0"/>
+        <import addon="script.module.TheYid.common" version="0.1.1"/>
+        <import addon="script.module.urlresolver"  version="2.0.9"/>
+        <import addon="script.module.simplejson" version="3.3.0"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary>Movies site</summary>
+        <description>A wide selection of movies from film-streamingx...</description>
+        <platform>all</platform>
+        <disclaimer lang="en"></disclaimer>
+    </extension>
+</addon>
+
 <addon id="plugin.video.moviesxl" version="1.0.1" name="Movies XL" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
@@ -146,7 +164,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.onlinehdmovies" version="1.0.4" name="Online HD Movies" provider-name="Mr Entertainment">
+<addon id="plugin.video.onlinehdmovies" version="1.0.5" name="Online HD Movies" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
@@ -180,6 +198,28 @@
         <platform>all</platform>
         <disclaimer lang="en">[COLOR red][B][I]Mr Entertainment[/B][/I][/COLOR]</disclaimer>
     </extension>
+</addon>
+
+<addon id="plugin.video.sportsmania"
+       name="SportsMania"
+       version="2.2.11"
+       provider-name="SportsMania">
+    <requires>
+        <import addon="xbmc.python" version="2.1.0"/>
+		<import addon="script.module.simplejson" version="3.3.0"/>
+		<import addon="script.module.t0mm0.common" version="1.1.0"/>
+		<import addon="script.module.beautifulsoup"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource"
+               library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+    <summary lang="en">Premium sports streaming service</summary>
+    <description lang="en">This is a premium streaming service you will need an account from http://sportsmania.eu/ @SportsMania005 www.facebook.com/sportsnationhdtv</description>
+    <disclaimer lang="en">For support please go to http://sportsmania.eu/ or @SportsMania005 and www.facebook.com/sportsnationhdtv</disclaimer>
+    <platform>all</platform>
+  </extension>
 </addon>
 
 <addon id="plugin.video.theyidrh" version="1.8.0" name="Release [COLOR firebrick][B]HUB[/B][/COLOR]" provider-name="Mr Entertainment">
