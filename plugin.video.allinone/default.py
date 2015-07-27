@@ -42,7 +42,7 @@ BASE_URL48 = 'http://stream.myvideolinks.xyz/'
 BASE_URL49 = 'http://www.moviefone.com/'
 BASE_URL50 = 'http://movie900.com/'
 BASE_URL51 = 'http://futbik.com/'
-BASE_URL10a = 'http://download.myvideolinks.xyz/'
+BASE_URL10a = 'http://movies.myvideolinks.xyz/'
 BASE_URL52 = 'http://releasefree.eu/'
 BASE_URL53 = 'http://watchseries-online.ch/'
 BASE_URL54 = 'http://free-download.link/'
@@ -3174,7 +3174,7 @@ def Search12(query):
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry awesomedl is search down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
     try:
-        url = 'http://download.myvideolinks.xyz/?s=' + query
+        url = BASE_URL10a + '?s=' + query
         url = url.replace(' ', '+')
         print url
         html = net.http_GET(url).content

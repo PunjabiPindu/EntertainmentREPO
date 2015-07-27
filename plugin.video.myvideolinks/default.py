@@ -10,7 +10,7 @@ plugin = xbmcaddon.Addon(id=addon_id)
 DB = os.path.join(xbmc.translatePath("special://database"), 'myvideolinks.db')
 net = Net()
 addon = Addon('plugin.video.myvideolinks', sys.argv)
-BASE_URL = 'http://download.myvideolinks.xyz/'
+BASE_URL = 'http://movies.myvideolinks.xyz/'
 AddonPath = addon.get_path()
 IconPath = AddonPath + "/icons/"
 FanartPath = AddonPath + "/icons/"
@@ -226,7 +226,7 @@ def GetSearchQuery9():
 	else:
                 return
 def Search9(query):
-        url = 'http://download.myvideolinks.xyz/?s=' + query
+        url = 'http://movies.myvideolinks.xyz/?s=' + query
         url = url.replace(' ', '+')
         print url
         html = net.http_GET(url).content

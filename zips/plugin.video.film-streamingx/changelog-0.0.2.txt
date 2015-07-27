@@ -1,0 +1,7 @@
+[B]Version - 0.0.2[/B]
+
+- fixed link not showing
+
+[B]Version - 0.0.1[/B]
+
+- Full release of film-streamingx plugin
