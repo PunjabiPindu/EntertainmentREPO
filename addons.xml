@@ -54,7 +54,7 @@
 		</extension>
 	</addon>
 
-<addon id="plugin.video.allinone" version="8.1.2" name="Entertainment [COLOR firebrick][B]HUB[/B][/COLOR]" provider-name="Mr Entertainment">
+<addon id="plugin.video.allinone" version="8.1.4" name="Entertainment [COLOR firebrick][B]HUB[/B][/COLOR]" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
@@ -147,7 +147,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.oneclickwatch" version="0.7.6" name="One Click Watch" provider-name="Mr Entertainment">
+<addon id="plugin.video.oneclickwatch" version="0.7.7" name="One Click Watch" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
@@ -219,34 +219,13 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.sportsmania"
-       name="SportsMania"
-       version="2.2.11"
-       provider-name="SportsMania">
-    <requires>
-        <import addon="xbmc.python" version="2.1.0"/>
-		<import addon="script.module.simplejson" version="3.3.0"/>
-		<import addon="script.module.t0mm0.common" version="1.1.0"/>
-		<import addon="script.module.beautifulsoup"/>
-    </requires>
-    <extension point="xbmc.python.pluginsource"
-               library="default.py">
-        <provides>video</provides>
-    </extension>
-    <extension point="xbmc.addon.metadata">
-    <summary lang="en">Premium sports streaming service</summary>
-    <description lang="en">This is a premium streaming service you will need an account from http://sportsmania.eu/ @SportsMania005 www.facebook.com/sportsnationhdtv</description>
-    <disclaimer lang="en">For support please go to http://sportsmania.eu/ or @SportsMania005 and www.facebook.com/sportsnationhdtv</disclaimer>
-    <platform>all</platform>
-  </extension>
-</addon>
-
-<addon id="plugin.video.theyidrh" version="1.8.0" name="Release [COLOR firebrick][B]HUB[/B][/COLOR]" provider-name="Mr Entertainment">
+<addon id="plugin.video.theyidrh" version="1.8.2" name="Release [COLOR firebrick][B]HUB[/B][/COLOR]" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
         <import addon="script.module.urlresolver"  version="2.0.9"/>
         <import addon="script.module.simplejson" version="3.3.0"/>
+        <import addon="repository.entertainmentrepo" version="1.0"/>
     </requires>
     <extension point="xbmc.python.pluginsource" library="default.py">
         <provides>video</provides>

@@ -162,7 +162,7 @@ def GetSearchQuery1():
                 return
 def Search1(query):
     try:
-        url = 'http://oneclickwatch.ws/?s=' + query
+        url = 'http://oneclickwatch.ws/?s=' + query + '&ocw_once_search=0d1d7d6cf8&_wp_http_referer=%2F'
         url = url.replace(' ', '+')
         print url
         html = net.http_GET(url).content

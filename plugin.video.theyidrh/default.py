@@ -612,7 +612,7 @@ def GetTitles22(section, url, startPage= '1', numOfPages= '1'):
                 if ( page != start):
                         pageUrl = url + 'page/' + str(page) + '/'
                         html = net.http_GET(pageUrl).content                    
-                match = re.compile('<div class="post-head">\s*?<h1 class="post-title entry-title"><a href="(.+?)" rel="bookmark" title=".+?">(.+?)</a> </h1>.+?src="(.+?)"', re.DOTALL).findall(html)
+                match = re.compile('<h2 class="title">.+?href="(.+?)".+?>(.+?)<.+?src="(.+?)"', re.DOTALL).findall(html)
                 for movieUrl, name, img in match:
                         cm  = []
                         runstring = 'XBMC.Container.Update(plugin://plugin.video.theyidrh/?mode=Search10&query=%s)' %(name.strip())
@@ -1450,7 +1450,7 @@ def Search10(query):
         url = url.replace(' ', '+')
         print url
         html = net.http_GET(url).content
-        match = re.compile('<h1 class="post-title entry-title"><a href="(.+?)" rel="bookmark" title=".+?">(.+?)</a> </h1>\s*?<p class="post-meta"><span class=".+?"><span class=".+?">.+?</span></span>.+?<span><span class=".+?"></span><a href=".+?" >.+?</a></span><span class=".+?">.+?</span>.+?<a href=".+?" class=".+?"  title=".+?"><span class=".+?"></span>.+?</a></p>\s*?</div>\s*?<div class=".+?" itemprop=".+?">\s*?<p>.+?<br />\s*?<strong>.+?</strong>.+?<a href=".+?"></a>.+?<br />\s*?<img title=".+?" src="(.+?)"').findall(html)
+        match = re.compile('<h2 class="title">.+?href="(.+?)".+?>(.+?)<.+?src="(.+?)"').findall(html)
         for url, title, img in match:
                 addon.add_directory({'mode': 'GetLinks', 'url': url}, {'title':  title + ' [COLOR orangered]...(rlsblog)[/COLOR]'}, img= img, fanart=FanartPath + 'fanart.png')
     except:
@@ -1583,7 +1583,7 @@ def Search12(query):
         url = url.replace(' ', '+')
         print url
         html = net.http_GET(url).content
-        match = re.compile('<h1 class="post-title entry-title"><a href="(.+?)" rel="bookmark" title=".+?">(.+?)</a> </h1>\s*?<p class="post-meta"><span class=".+?"><span class=".+?">.+?</span></span>.+?<span><span class=".+?"></span><a href=".+?" >.+?</a></span><span class=".+?">.+?</span>.+?<a href=".+?" class=".+?"  title=".+?"><span class=".+?"></span>.+?</a></p>\s*?</div>\s*?<div class=".+?" itemprop=".+?">\s*?<p>.+?<br />\s*?<strong>.+?</strong>.+?<a href=".+?"></a>.+?<br />\s*?<img title=".+?" src="(.+?)"').findall(html)
+        match = re.compile('<h2 class="title">.+?href="(.+?)".+?>(.+?)<.+?src="(.+?)"').findall(html)
         for url, title, img in match:
                 addon.add_directory({'mode': 'GetLinks', 'url': url}, {'title':  title + ' [COLOR orangered]...(rlsblog)[/COLOR]'}, img= img, fanart=FanartPath + 'fanart.png')
     except:

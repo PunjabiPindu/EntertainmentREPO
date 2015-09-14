@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="plugin.video.theyidrh" version="1.8.0" name="Release [COLOR firebrick][B]HUB[/B][/COLOR]" provider-name="Mr Entertainment">
+<addon id="plugin.video.theyidrh" version="1.8.2" name="Release [COLOR firebrick][B]HUB[/B][/COLOR]" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
         <import addon="script.module.urlresolver"  version="2.0.9"/>
         <import addon="script.module.simplejson" version="3.3.0"/>
+        <import addon="repository.entertainmentrepo" version="1.0"/>
     </requires>
     <extension point="xbmc.python.pluginsource" library="default.py">
         <provides>video</provides>
