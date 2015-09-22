@@ -1,5 +1,0 @@
-[B]Version 0.0.2[/B]
-- more streams added 
-
-[B]Version 0.0.1[/B]
-- Initial version of beats 1 radio

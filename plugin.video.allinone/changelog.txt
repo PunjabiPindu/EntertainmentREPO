@@ -1,3 +1,12 @@
+[B]Version 8.1.5[/B] 
+- fixed OCW search
+- fixed watch wrestling
+- clickNWatchOnline is now rlsseries
+- fixed releaseFree tv shows
+- fixed watchseries-online.ch
+- fixed perfecthdmovies in HD
+* still loads more to be fixed 
+
 [B]Version 8.1.4[/B] 
 - fixed OCW search
 
