@@ -1,3 +1,8 @@
+[B]Version 8.1.6[/B] 
+- fixed all of kids space
+- added maxim 
+* still loads more to be fixed 
+
 [B]Version 8.1.5[/B] 
 - fixed OCW search
 - fixed watch wrestling
