@@ -25,6 +25,7 @@ BASE_URL9 = 'http://anyporn.com/'
 BASE_URL10 = 'http://www.rabbittube.xxx/'
 BASE_URL11 = 'http://www.discovery360.net/'
 BASE_URL12 = 'http://pornve.com/'
+BASE_URL14 = 'http://extbb.com/'
 
 ######PATHS########
 AddonPath = addon.get_path()
@@ -165,7 +166,7 @@ def GetTitles5(section, url, startPage= '1', numOfPages= '1'): #scenelog
                 if ( page != start):
                         pageUrl = url + 'page/' + str(page) + '/'
                         html = net.http_GET(pageUrl).content
-                match = re.compile('<h1>.+?href="(.+?)".+?>(.+?)<.+?', re.DOTALL).findall(html)
+                match = re.compile('title="" /><a href="(.+?)" rel="bookmark" title="(.+?)">.+?</a></h1>', re.DOTALL).findall(html)
                 for movieUrl, name in match:
                         cm  = []
                         runstring = 'XBMC.Container.Update(plugin://plugin.video.aob/?mode=Search3&query=%s)' %(name.strip())
@@ -318,7 +319,7 @@ def GetTitles10(section, url, startPage= '1', numOfPages= '1'): #rabbittube
 
 ###############################################################################################################################################################################
 
-def GetTitles11(section, url, startPage= '1', numOfPages= '1'):  #discovery360
+def GetTitles14(section, url, startPage= '1', numOfPages= '1'):  #extbb.com
     try:
         pageUrl = url
         if int(startPage)> 1:
@@ -331,13 +332,13 @@ def GetTitles11(section, url, startPage= '1', numOfPages= '1'):  #discovery360
                 if ( page != start):
                         pageUrl = url + 'page/' + str(page) + '/'
                         html = net.http_GET(pageUrl).content
-                match = re.compile('<h3 class="btl"><img style=".+?" alt=".+?" src=".+?" title="(.+?)"><a href="(.+?)">.+?</a></h3>', re.DOTALL).findall(html)
-                for name, movieUrl in match:
+                match = re.compile('<h2 class="postTitle"><span></span><a href="(.+?)" title=".+?">(.+?)</a></h2>', re.DOTALL).findall(html)
+                for movieUrl, name in match:
                         cm  = []
                         runstring = 'XBMC.Container.Update(plugin://plugin.video.aob/?mode=Search3&query=%s)' %(name.strip())
         		cm.append(('[COLOR hotpink][B]A[/B][/COLOR]dult [COLOR hotpink][B]HUB[/B][/COLOR] [COLOR green]Search[/COLOR]', runstring))
                         addon.add_directory({'mode': 'GetLinks', 'section': section, 'url': movieUrl}, {'title':  name.strip().replace('.', ' ')}, contextmenu_items= cm, img=IconPath + 'sl2.png', fanart=FanartPath + 'fanart.png')
-                addon.add_directory({'mode': 'GetTitles11', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage1.png', fanart=FanartPath + 'fanart.png')        
+                addon.add_directory({'mode': 'GetTitles14', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage1.png', fanart=FanartPath + 'fanart.png')        
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site is down [/B][/COLOR],[COLOR blue][B]Please try a different site[/B][/COLOR],7000,"")")
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -425,8 +426,9 @@ def GetLinks(section, url): # Get Links
         listitem = GetMediaInfo(html)
         content = html
         match = re.compile('href="(.+?)"').findall(content)
+        match1 = re.compile("href='(.+?)'").findall(content)
         listitem = GetMediaInfo(content)
-        for url in match:
+        for url in match + match1:
                 host = GetDomain(url)
                 if 'Unknown' in host:
                                 continue
@@ -686,6 +688,9 @@ def Menu4():    #PornoRips
 def Menu5():    #SceneLog
         addon.add_directory({'mode': 'GetTitles5', 'section': 'ALL', 'url': BASE_URL5 + '/xxx/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR pink]<<XXX Movies HD 1080p 720p SceneLog >>[/COLOR] [COLOR red]<<OVER 18s ONLY...>>[/COLOR]'}, img=IconPath + 'sl2.png', fanart=FanartPath + 'fanart.png')
+
+        addon.add_directory({'mode': 'GetTitles14', 'section': 'ALL', 'url': BASE_URL14 + '/nsfw/',
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR pink]<<XXX Movies ExtBB.com Porn Content >>[/COLOR] [COLOR red]<<OVER 18s ONLY...>>[/COLOR]'}, img=IconPath + 'sl2.png', fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 ###########################################################################################################
@@ -920,7 +925,7 @@ def Search3(query):
         url = url.replace(' ', '+')
         print url
         html = net.http_GET(url).content
-        match = re.compile('<h1>.+?href="(.+?)".+?>(.+?)<.+?', re.DOTALL).findall(html)
+        match = re.compile('title="" /><a href="(.+?)" rel="bookmark" title="(.+?)">.+?</a></h1>', re.DOTALL).findall(html)
         for url, title in match:
                 addon.add_directory({'mode': 'GetLinks', 'url': url}, {'title':  title + ' - ' + '[COLOR pink]scnlog[/COLOR]'}, img= 'https://raw.githubusercontent.com/TheYid/yidpics/8333f2912d71cc7ddd71a7cee9714dfe263ee543/icons/nopic.png', fanart=FanartPath + 'fanart.png')
     except:
@@ -945,6 +950,16 @@ def Search3(query):
                 addon.add_directory({'mode': 'GetLinks', 'url': url}, {'title':  title + ' - ' + '[COLOR pink]webwarez[/COLOR]'}, img= img, fanart=FanartPath + 'fanart.png')
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry webwarez search is down [/B][/COLOR],[COLOR olive][B]Please try later[/B][/COLOR],7000,"")")
+    try:
+        url = 'http://extbb.com/nsfw/?s=' + query
+        url = url.replace(' ', '+')
+        print url
+        html = net.http_GET(url).content
+        match = re.compile('<h2 class="postTitle"><span></span><a href="(.+?)" title=".+?">(.+?)</a></h2>', re.DOTALL).findall(html)
+        for url, title in match:
+                addon.add_directory({'mode': 'GetLinks', 'url': url}, {'title':  title + ' - ' + '[COLOR pink]extbb[/COLOR]'}, img= 'https://raw.githubusercontent.com/TheYid/yidpics/8333f2912d71cc7ddd71a7cee9714dfe263ee543/icons/nopic.png', fanart=FanartPath + 'fanart.png')
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry extbb search is down [/B][/COLOR],[COLOR olive][B]Please try later[/B][/COLOR],7000,"")")
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
@@ -987,6 +1002,8 @@ elif mode == 'GetTitles12a':
 	GetTitles12a(url)
 elif mode == 'GetTitles12b': 
 	GetTitles12b(url)
+elif mode == 'GetTitles14': 
+	GetTitles14(section, url, startPage, numOfPages)
 elif mode == 'GetTitles35': 
 	GetTitles35(url)
 elif mode == 'GetTitles37': 

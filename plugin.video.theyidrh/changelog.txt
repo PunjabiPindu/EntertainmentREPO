@@ -1,6 +1,8 @@
+[B]Version 1.8.4[/B]
+- fixes
+
 [B]Version 1.8.2[/B]
 - fixed Rlsblog
-
 
 [B]Version 1.8.0[/B]
 - some fixes 

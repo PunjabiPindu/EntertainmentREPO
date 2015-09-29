@@ -1,3 +1,6 @@
+[B]Version 2.2.7[/B]
+- fixes
+
 [B]Version 2.2.5[/B]
 - changes to scenelog changed to Discovery360 for now
 - fixed anyporn

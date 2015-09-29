@@ -1,3 +1,7 @@
+[B]Version 8.1.7[/B] 
+- added mnhmovies needs the new openload resolver
+* still loads more to be fixed 
+
 [B]Version 8.1.6[/B] 
 - fixed all of kids space
 - added maxim 
