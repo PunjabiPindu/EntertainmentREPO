@@ -1,3 +1,8 @@
+[B]Version 8.2.0[/B] 
+- fixed searches and index searches
+- fixed all sites not linking
+* still loads more to be fixed ie. radio and music
+
 [B]Version 8.1.7[/B] 
 - added mnhmovies needs the new openload resolver
 * still loads more to be fixed 
