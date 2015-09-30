@@ -1,3 +1,7 @@
+[B]Version 1.9.0[/B]
+- new index search
+- fixes to code
+
 [B]Version 1.8.4[/B]
 - fixes
 
