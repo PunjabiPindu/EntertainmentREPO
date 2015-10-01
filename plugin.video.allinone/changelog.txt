@@ -1,3 +1,10 @@
+[B]Version 8.2.2[/B] 
+- fixes to searches
+- Added OMG aka onlinemoviesgold coded by @PunjabiPindu
+- Added wrestlefeeds as a backup site
+- removed streams for now
+- test live streams in sport
+
 [B]Version 8.2.1[/B] 
 - fixes to searches
 - new index movie search
