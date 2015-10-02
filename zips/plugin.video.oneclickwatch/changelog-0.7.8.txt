@@ -1,0 +1,80 @@
+[B]Version 0.7.8[/B]
+- testing new search
+
+[B]Version 0.7.7[/B]
+- fixed search
+
+[B]Version 0.7.6[/B]
+- new fanart
+
+[B]Version 0.7.5[/B]
+- new fanart
+
+[B]Version 0.7.4[/B]
+- fix update
+
+[B]Version 0.7.2[/B]
+- now with back up search
+
+[B]Version 0.7.1[/B]
+- fixed tv shows and movies
+
+[B]Version 0.7.0[/B]
+- oneclickwatch back for now 
+
+[B]Version 0.6.9[/B]
+- changes to the site
+
+[B]Version 0.6.8[/B]
+- fixed changes to the site
+
+[B]Version 0.6.7[/B]
+- fixed img no showing up
+
+[B]Version 0.6.6[/B]
+- fixed img no showing up
+
+[B]Version 0.6.5[/B]
+- fixed img no showing up
+
+[B]Version 0.6.4[/B]
+- Kodi Helix 14 ready all thanks go out to Poegloom for the fix
+
+[B]Version 0.6.2[/B]
+- test fix
+
+[B]Version 0.6.1[/B]
+- test fix
+
+[B]Version 0.6.0[/B]
+- fix
+
+[B]Version 0.5.9[/B]
+- clean up
+
+[B]Version 0.5.8[/B]
+- clean up
+
+[B]Version 0.5.7[/B]
+- fixed the addon
+
+[B]Version 0.5.6[/B]
+- code clean up
+
+[B]Version 0.5.5[/B]
+- code clean up
+
+[B]Version 0.5.4[/B]
+- code clean up
+
+[B]Version 0.5.3[/B]
+- clean up
+
+[B]Version 0.5.2[/B]
+- addon clean up
+
+[B]Version 0.5.1[/B]
+- addon clean up
+
+[B]Version 0.5.0[/B]
+- Initial version of oneclickwatch plugin v5
