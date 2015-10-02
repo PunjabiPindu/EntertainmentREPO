@@ -1,3 +1,6 @@
+[B]Version 8.2.5[/B] 
+- fixes to searches
+
 [B]Version 8.2.4[/B] 
 - Live Streams are back
 
