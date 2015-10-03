@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="plugin.video.oneclickwatch" version="0.7.8" name="One Click Watch" provider-name="Mr Entertainment">
+<addon id="plugin.video.oneclickwatch" version="1.0.0" name="[B]OCW[/B] [COLOR lemonchiffon]Reborn[/COLOR]" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
@@ -11,7 +11,7 @@
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary>One Click Watch [COLOR blue][B]THE ORIGINAL[/B][/COLOR] for all scene releases lovers free on demand streaming</summary>
-        <description>Play a wide selection of scene release movies Tv shows + sport from One Click Watch always first with new + old releases</description>
+        <description>Stream a wide selection of scene release Movies Tv shows Sport from One Click Watch always first with new + old releases</description>
         <platform>all</platform>
         <disclaimer lang="en"></disclaimer>
     </extension>
