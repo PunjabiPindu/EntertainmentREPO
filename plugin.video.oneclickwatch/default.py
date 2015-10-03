@@ -13,6 +13,7 @@ DB = os.path.join(xbmc.translatePath("special://database"), 'oneclickwatch.db')
 BASE_URL = 'http://oneclickwatch.ws/'
 BASE_URL1 = 'http://rlsseries.com/'
 BASE_URL2 = 'http://www.rls-dl.com/'
+BASE_URL4 = 'http://www.tvguide.com/'
 net = Net()
 addon = Addon('plugin.video.oneclickwatch', sys.argv)
 
@@ -32,9 +33,9 @@ listitem = addon.queries.get('listitem', None)
 urlList = addon.queries.get('urlList', None)
 section = addon.queries.get('section', None)
 
-################################################################################# Titles #################################################################################
+################################################################################# Titles OCW #################################################################################
 
-def GetTitles(section, url, startPage= '1', numOfPages= '1'): # Get Movie & tv show Titles
+def GetTitles(section, url, startPage= '1', numOfPages= '1'):
     try:
         pageUrl = url
         if int(startPage)> 1:
@@ -55,7 +56,21 @@ def GetTitles(section, url, startPage= '1', numOfPages= '1'): # Get Movie & tv s
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site mite be down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
-#---------------------------------------------------------------------------- rls-dl search ----------------------------------------------------------------------------------------------------#
+#---------------------------------------------------------------------------- tvguide movie index ----------------------------------------------------------------------------------------------------#
+
+def GetTitles4(query):
+    try:
+        pageUrl = url
+        html = net.http_GET(pageUrl).content                     
+        match = re.compile('<span class="show-card show-card-small">\s*?<img src="(.+?)" class=".+?" alt=".+?" title="(.+?)" srcset=".+?" width=".+?" height=".+?" />',re.DOTALL).findall(html)
+        for img, query in match:
+                addon.add_directory({'mode': 'Search2', 'query': query}, {'title':  query}, img= img.replace('100x133.png', '1000x339.png').replace('100x133.jpg', '1000x339.jpg'), fanart=FanartPath + 'fanart.png')
+        setView('tvshows', 'tvshows-view')
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site is down [/B][/COLOR],[COLOR blue][B]Please try a different site[/B][/COLOR],7000,"")")
+       	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+#---------------------------------------------------------------------------- rls-dl tv index ----------------------------------------------------------------------------------------------------#
 
 def GetTitles3(query, startPage= '1', numOfPages= '1'): 
     try:
@@ -73,12 +88,13 @@ def GetTitles3(query, startPage= '1', numOfPages= '1'):
                 match = re.compile('<div class="thumbn"><img src="(.+?)" alt="(.+?)" /></div>', re.DOTALL).findall(html)
                 for img, query in match:
                         addon.add_directory({'mode': 'Search1', 'section': section, 'query': query}, {'title':  query}, img= img, fanart= 'http://www.blazevideo.com/blog/wp-content/uploads/tv-shows-montage.jpg')
-                addon.add_directory({'mode': 'GetTitles1', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage.png', fanart= 'http://www.blazevideo.com/blog/wp-content/uploads/tv-shows-montage.jpg')    
+                addon.add_directory({'mode': 'GetTitles1', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage.png', fanart= 'http://www.blazevideo.com/blog/wp-content/uploads/tv-shows-montage.jpg') 
+        setView('tvshows', 'tvshows-view')   
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site mite be down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
-#---------------------------------------------------------------------------- rlsseries search ----------------------------------------------------------------------------------------------------#
+#---------------------------------------------------------------------------- rlsseries tv index ----------------------------------------------------------------------------------------------------#
 
 def GetTitles2(section, url, startPage= '1', numOfPages= '1'):
     try:
@@ -108,7 +124,7 @@ def GetTitles1(query, section):
                 addon.add_directory({'mode': 'Search1', 'section': section, 'query': query}, {'title':  query}, img= img, fanart= 'http://www.blazevideo.com/blog/wp-content/uploads/tv-shows-montage.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
-#---------------------------------------------------------------------------- index search ----------------------------------------------------------------------------------------------------#
+#---------------------------------------------------------------------------- index search tv ----------------------------------------------------------------------------------------------------#
 
 def Search1(query):
     try:
@@ -133,7 +149,7 @@ def Search1(query):
                 if urlresolver.HostedMediaFile(url= url):
                         addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host.replace('oneclickwatch.ws', 'Streamimg links below') }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.jpg')
     except:
-        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links [/B][/COLOR],[COLOR blue][B]Trying rlsseries search [/B][/COLOR],7000,"")")
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in OCW [/B][/COLOR],[COLOR blue][B]Trying rlsseries[/B][/COLOR],7000,"")")
     try:
         url = 'http://rlsseries.com/' + query + '/'
         url = url.replace(' ', '-')
@@ -145,9 +161,71 @@ def Search1(query):
         for url in match:
                 host = GetDomain(url)
                 if urlresolver.HostedMediaFile(url= url):
-                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host}, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.jpg')
+                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host + ' - ' + ' rlsseries'}, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.jpg')
     except:
-        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No More Links [/B][/COLOR],[COLOR blue][B]Try OCW Google search [/B][/COLOR],7000,"")")
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in rlsseries [/B][/COLOR],[COLOR blue][B]Trying watchseries-onlines[/B][/COLOR],7000,"")")
+    try:
+        url = 'http://watchseries-onlines.ch/' + query + '/'
+        url = url.replace(' ', '-')
+        print url
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        match = re.compile('<div class="play-btn text-center"><a href="(.+?)" target="_blank" rel="nofollow">.+?</a></div>', re.DOTALL).findall(html)
+        for url in match:
+                host = GetDomain(url)
+                if urlresolver.HostedMediaFile(url= url):
+                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host + ' - ' + ' WSO'}, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.jpg')
+    except:
+       	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+
+#---------------------------------------------------------------------------- index search movies ----------------------------------------------------------------------------------------------------#
+
+def Search2(query):
+    try:
+        url = 'http://oneclickwatch.ws/' + query + '/'
+        url = url.replace(' ', '-')
+        print url
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        match1 = re.compile('<h2 class="title">(.+?)</h2>.+?.+?src="(.+?)"', re.DOTALL).findall(html)
+        match = re.compile('<a href="(.+?)" rel="nofollow"', re.DOTALL).findall(html)
+        match2 = re.compile('href="(http://uptobox.com/.+?)"').findall(content)
+        match3 = re.compile('<meta name="description" itemprop="description" content="(.+?)" />').findall(content)
+        for name, img in match1:
+                addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title': '[COLOR pink][B](' + name + ')[/B][/COLOR]' }, img= img, fanart=FanartPath + 'fanart.jpg')
+        for name in match3:
+                addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title': '[COLOR blue][B]' + '(OCW) ' + name.replace('http://www.tvguide.com/', '').replace('http://www.tvrage.com/', '').replace('/', ' ').replace(';', ' ').replace('-', ' ').replace('tvshows', ' ').replace('_', ' ') + '[/B][/COLOR]' }, img= 'https://briantudor.files.wordpress.com/2010/12/tv-icon1.png', fanart=FanartPath + 'fanart.jpg')
+        for url in match2:
+                addon.add_directory({'mode': 'GetLinks1', 'url':  url, 'listitem': listitem}, {'title':  'UpToStream : direct link'}, img= 'https://uptostream.com/images/logo.png', fanart=FanartPath + 'fanart.jpg')
+        for url in match:
+                host = GetDomain(url)
+                if urlresolver.HostedMediaFile(url= url):
+                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host.replace('oneclickwatch.ws', 'Streamimg links below') }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.jpg')
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in OCW [/B][/COLOR],[COLOR blue][B]Trying rlsseries[/B][/COLOR],7000,"")")
+    try:
+        url = 'http://300mbmovies4u.com/hollywood-movie/' + query + '/'
+        url = url.replace(' ', '-')
+        print url
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        match3 = re.compile('content="width=device-width, initial-scale=1.0"/><title>(.+?)</title>', re.DOTALL).findall(html)
+        match2 = re.compile('href="(http://uptobox.com/.+?)"').findall(content)
+        match = re.compile('href="(.+?)"').findall(content)
+        for name in match3:
+                addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title': '[COLOR blue][B]' + name.replace('300mbmovies4u.com', '(300mbmovies4u.com)  ') + '[/B][/COLOR]' }, img= 'https://briantudor.files.wordpress.com/2010/12/tv-icon1.png', fanart=FanartPath + 'fanart.jpg')
+        for url in match2:
+                addon.add_directory({'mode': 'GetLinks1', 'url':  url, 'listitem': listitem}, {'title':  'UpToStream : direct link'}, img= 'https://uptostream.com/images/logo.png', fanart=FanartPath + 'fanart.jpg')
+        for url in match:
+                host = GetDomain(url)
+                if urlresolver.HostedMediaFile(url= url):
+                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.jpg')
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in 300mbmovies4u [/B][/COLOR],[COLOR blue][B]Trying rlsseries[/B][/COLOR],7000,"")")
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 ##.replace('/', ' ')## \s*? ##
@@ -228,11 +306,12 @@ def MainMenu():    #homescreen
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/movies/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR blue][B]OCW Latest Added Movies[/B] [/COLOR]>>'}, img=IconPath + 'movies1.png', fanart=FanartPath + 'fanart.jpg')
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/tv-shows/',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR blue][B]OCW Latest Added episodes[/B] [/COLOR]>>'}, img=IconPath + 'tv2.png', fanart=FanartPath + 'fanart.jpg')
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR blue][B]OCW Latest Added Episodes[/B] [/COLOR]>>'}, img=IconPath + 'tv2.png', fanart=FanartPath + 'fanart.jpg')
         addon.add_directory({'mode': 'GetTitles2', 'section': 'ALL', 'url': BASE_URL1 + '/',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR green][B]TV Index Search[/B] (A-Z)[/COLOR]'}, img=IconPath + 'indexs.png', fanart=FanartPath + 'fanart.jpg')
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR greenyellow][B]TV Index Search[/B] (A-Z)[/COLOR]'}, img=IconPath + 'indexs.png', fanart=FanartPath + 'fanart.jpg')
         addon.add_directory({'mode': 'GetTitles3', 'section': 'ALL', 'url': BASE_URL2 + '/category/tv-shows/',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR green][B]TV Index Search[/B] (Episodes)[/COLOR]'}, img=IconPath + 'indexs.png', fanart=FanartPath + 'fanart.jpg')
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR greenyellow][B]TV Index Search[/B] (Episodes)[/COLOR]'}, img=IconPath + 'indexs.png', fanart=FanartPath + 'fanart.jpg')
+        addon.add_directory({'mode': 'GetTitles4', 'url': BASE_URL4 + '/movies/'}, {'title':  '[COLOR greenyellow][B]Movies Index Search[/B] (Top)[/COLOR]'}, img=IconPath + 'indexs.png', fanart=FanartPath + 'fanart.jpg')
         addon.add_directory({'mode': 'GetSearchQuery'},  {'title':  '[COLOR green][B]OCW[/B] Search (google)[/COLOR]'}, img=IconPath + 'searchs1.png', fanart=FanartPath + 'fanart.jpg')
         addon.add_directory({'mode': 'ResolverSettings'}, {'title':  '[COLOR red]Resolver Settings[/COLOR]'}, img=IconPath + 'resolver1.png', fanart=FanartPath + 'fanart.jpg') 
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -263,6 +342,21 @@ def Search(query):
                 addon.add_directory({'mode': 'GetLinks', 'url': url}, {'title':  title})
 	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
+########################################################################################################################################################################
+
+def setView(content, viewType):
+	if content:
+		xbmcplugin.setContent(int(sys.argv[1]), content)
+	if addon.get_setting('auto-view') == 'true':
+		xbmc.executebuiltin("Container.SetViewMode(%s)" % addon.get_setting(viewType) )
+	xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_UNSORTED )
+	xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_LABEL )
+	xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_VIDEO_RATING )
+	xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_DATE )
+	xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_PROGRAM_COUNT )
+	xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_VIDEO_RUNTIME )
+	xbmcplugin.addSortMethod( handle=int( sys.argv[ 1 ] ), sortMethod=xbmcplugin.SORT_METHOD_GENRE )
+
 
 
 #################################################################################################################################################################################
@@ -279,6 +373,8 @@ elif mode == 'GetTitles2':
 	GetTitles2(section, url, startPage, numOfPages)
 elif mode == 'GetTitles3': 
 	GetTitles3(query, startPage, numOfPages)
+elif mode == 'GetTitles4': 
+	GetTitles4(query)
 elif mode == 'GetLinks':
 	GetLinks(section, url)
 elif mode == 'GetLinks1':
@@ -291,6 +387,8 @@ elif mode == 'Search':
 	Search(query)
 elif mode == 'Search1':
 	Search1(query)
+elif mode == 'Search2':
+	Search2(query)
 elif mode == 'PlayVideo':
 	PlayVideo(url, listitem)
 elif mode == 'PlayVideo1':
