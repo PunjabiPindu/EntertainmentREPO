@@ -56,6 +56,7 @@ BASE_URL61 = 'http://www.mnhmovies.com/'
 BASE_URL62 = 'http://www.tvguide.com/'
 BASE_URL63 = 'http://wrestlefeeds.com/'
 BASE_URL64 = 'http://m.liveonlinetv247.info/'
+BASE_URL65 = 'http://rlseries.com/'
 
 #### PATHS ##########
 AddonPath = addon.get_path()
@@ -74,6 +75,40 @@ urlList = addon.queries.get('urlList', None)
 section = addon.queries.get('section', None)
 
 ##################################### GetTitles ################################ GetTitles ############################################### GetTitles ######################################
+#------------------------------------------------------------------------------- rlseries. ------------------------------------------------------------------------------#
+
+def GetTitles65(section, url, startPage= '1', numOfPages= '1'):
+    try:
+        pageUrl = url
+        if int(startPage)> 1:
+                pageUrl = url + 'page/' + startPage + '/'
+        print pageUrl
+        html = net.http_GET(pageUrl).content
+        start = int(startPage)
+        end = start + int(numOfPages)
+        for page in range( start, end):
+                if ( page != start):
+                        pageUrl = url + 'page/' + str(page) + '/'
+                        html = net.http_GET(pageUrl).content                       
+                match = re.compile('<div class="img_wrp">\s*?<a href="(.+?)" title="(.+?)" class="anm_det_pop">\s*?<img width=".+?" height=".+?" src="(.+?)" class="attachment-poster wp-post-image" alt=".+?" />.+?.+?<div class="vws"><a class=".+?" href=".+?" title="(.+?)"><font color=".+?">.+?</font></a>', re.DOTALL).findall(html)
+                for movieUrl, name, img, name1 in match:
+                        cm  = []
+                        runstring = 'XBMC.Container.Update(plugin://plugin.video.allinone/?mode=Search12&query=%s)' %(name.strip())
+        		cm.append(('[COLOR blue][B]E[/B][/COLOR]ntertainment [COLOR green]Search[/COLOR]', runstring))
+                        addon.add_directory({'mode': 'GetTitles65b', 'section': section, 'url': movieUrl}, {'title':  name.strip() + ' - ' + name1}, contextmenu_items= cm, img= img, fanart=FanartPath + 'fanart.png')    
+                addon.add_directory({'mode': 'GetTitles65', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage1.png', fanart=FanartPath + 'fanart.png')
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site is down [/B][/COLOR],[COLOR blue][B]Please try a different site[/B][/COLOR],7000,"")")
+       	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+def GetTitles65b(url):
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        match = re.compile('<a class="lst" href="(.+?)" title="(.+?)">\s*?<b class="val"><font color=".+?" size=".+?" style=".+?">.+?</font>.+?</b>\s*?<b class="dte">(.+?)</b>').findall(content)
+        for url, name, date in match:
+                addon.add_directory({'mode': 'GetLinks', 'url': url, 'listitem': listitem}, {'title':  name.strip() + ' - ' + date}, img=IconPath + 'rls66.png', fanart=FanartPath + 'fanart.png')
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 #------------------------------------------------------------------------------- oneclickwatch ------------------------------------------------------------------------------#
 
@@ -2425,6 +2460,8 @@ def TvMenu():       #tv
         addon.add_directory({'mode': 'GetTitles62', 'url': BASE_URL62 + '/tvshows/'}, {'title':  '[COLOR darkorange][B]Top Shows[/B] [/COLOR]: [COLOR green]Index Search[/COLOR]'}, img=IconPath + 'rt.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/tv-shows/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR darkorange][B]Latest Episodes[/B][/COLOR] [COLOR blue](OCW) [/COLOR]>>'}, img=IconPath + 'ocw.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles65', 'section': 'ALL', 'url': BASE_URL65 + '/',
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR darkorange][B]Latest Episodes & Full Seasons[/B][/COLOR] [COLOR aqua](rlseries) [/COLOR]>>'}, img=IconPath + 'rls66.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles10', 'section': 'ALL', 'url': BASE_URL10a + '/category/tv-shows/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR darkorange][B]Latest Episodes[/B][/COLOR] [COLOR orangered](Links) [/COLOR]>>'}, img=IconPath + 'links1.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles23', 'section': 'ALL', 'url': BASE_URL23 + '/category/tv-shows/',
@@ -3287,6 +3324,16 @@ def Search12(query):
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry maxim is search down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
     try:
+        url = 'http://rlseries.com/?s=' + query 
+        url = url.replace(' ', '+')
+        print url
+        html = net.http_GET(url).content
+        match = re.compile('<div class="img_wrp">\s*?<a href="(.+?)" title="(.+?)" class=".+?">\s*?<img width=".+?" height=".+?" src="(.+?)" class="attachment-poster wp-post-image" alt=".+?" />').findall(html)
+        for url, title, img in match:
+                addon.add_directory({'mode': 'GetLinks', 'url': url}, {'title':  title + ' [COLOR palegreen]...(rlseries)[/COLOR]'}, img= img, fanart=FanartPath + 'fanart.png')
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry rlseries is search down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
+    try:
         url = BASE_URL10a + '?s=' + query
         url = url.replace(' ', '+')
         print url
@@ -3557,6 +3604,10 @@ elif mode == 'GetTitles64a':
 	GetTitles64a(section, url, startPage, numOfPages)
 elif mode == 'GetTitles64b': 
 	GetTitles64b(section, url, startPage, numOfPages)
+elif mode == 'GetTitles65': 
+	GetTitles65(section, url, startPage, numOfPages)
+elif mode == 'GetTitles65b': 
+	GetTitles65b(url)
 elif mode == 'Categorieswco':
         Categorieswco(url)
 elif mode == 'Categorieswoc':
