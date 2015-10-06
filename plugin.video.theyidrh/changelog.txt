@@ -1,3 +1,7 @@
+[B]Version 1.9.4[/B]
+- code clean up
+- added TV Calendar index search but still in beta
+
 [B]Version 1.9.2[/B]
 - added TV Calendar index search but still in beta
 - added TV show a/z index search but still in beta
