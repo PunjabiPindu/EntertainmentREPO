@@ -16,6 +16,7 @@ BASE_URL2 = 'http://www.rls-dl.com/'
 BASE_URL4 = 'http://www.tvguide.com/'
 BASE_URL5 = 'http://www.moviefone.com/'
 BASE_URL6 = 'http://www.pogdesign.co.uk/'
+BASE_URL7 = 'http://www.sportinglife.com/'
 net = Net()
 addon = Addon('plugin.video.oneclickwatch', sys.argv)
 
@@ -59,6 +60,19 @@ def GetTitles(section, url, startPage= '1', numOfPages= '1'):
                 addon.add_directory({'mode': 'GetTitles', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage.png', fanart=FanartPath + 'fanart.jpg')
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site mite be down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
+       	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+#---------------------------------------------------------------------------- footy index ---------------------------------------------------------------------------------#
+
+def GetTitles7(query):
+    try:
+        pageUrl = url
+        html = net.http_GET(pageUrl).content                     
+        match = re.compile('<li><a class="ixxa" href="/football/live/match-commentary/.+?/(.+?)">Match Centre</a></li>',re.DOTALL).findall(html)
+        for query in match:
+                addon.add_directory({'mode': 'Search', 'query': query.replace('-v-', ' vs ').replace('-', ' ') }, {'title': query.replace('-v-', ' vs ').replace('-', ' ') }, img= 'http://simpleicon.com/wp-content/uploads/football.png', fanart= 'https://bubblefootballzone.co.uk/wp-content/uploads/2014/02/football-wallpaper-for-iphone-4-77.jpg')
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site is down [/B][/COLOR],[COLOR blue][B]Please try a different site[/B][/COLOR],7000,"")")
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 #---------------------------------------------------------------------------- TV Calendar index ----------------------------------------------------------------------------------------------------#
@@ -107,7 +121,7 @@ def GetTitles5(query):
         html = net.http_GET(pageUrl).content                     
         match = re.compile('<img name="replace-image" rel=".+?" id=".+?" class=".+?" src=".+?" data-src="(.+?)" alt="(.+?)"/>',re.DOTALL).findall(html)
         for img, query in match:
-                addon.add_directory({'mode': 'Search2', 'query': query}, {'title':  query}, img= img, fanart=FanartPath + 'fanart.png')
+                addon.add_directory({'mode': 'Search2', 'query': query}, {'title':  query}, img= img, fanart=FanartPath + 'fanart.jpg')
         setView('tvshows', 'tvshows-view')
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site is down [/B][/COLOR],[COLOR blue][B]Please try a different site[/B][/COLOR],7000,"")")
@@ -121,7 +135,7 @@ def GetTitles4(query):
         html = net.http_GET(pageUrl).content                     
         match = re.compile('<span class="show-card show-card-small">\s*?<img src="(.+?)" class=".+?" alt=".+?" title="(.+?)" srcset=".+?" width=".+?" height=".+?" />',re.DOTALL).findall(html)
         for img, query in match:
-                addon.add_directory({'mode': 'Search2', 'query': query}, {'title':  query}, img= img.replace('100x133.png', '1000x339.png').replace('100x133.jpg', '1000x339.jpg'), fanart=FanartPath + 'fanart.png')
+                addon.add_directory({'mode': 'Search2', 'query': query}, {'title':  query}, img= img.replace('100x133.png', '1000x339.png').replace('100x133.jpg', '1000x339.jpg'), fanart=FanartPath + 'fanart.jpg')
         setView('tvshows', 'tvshows-view')
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site is down [/B][/COLOR],[COLOR blue][B]Please try a different site[/B][/COLOR],7000,"")")
@@ -133,19 +147,19 @@ def GetTitles3(query, startPage= '1', numOfPages= '1'):
     try:
         pageUrl = url
         if int(startPage)> 1:
-                pageUrl = url + '/page/' + startPage + '/'
+                pageUrl = url + 'page/' + startPage + '/'
         print pageUrl
         html = net.http_GET(pageUrl).content
         start = int(startPage)
         end = start + int(numOfPages)
         for page in range( start, end):
                 if ( page != start):
-                        pageUrl = url + '/page/' + str(page) + '/'
-                        html = net.http_GET(pageUrl).content                     
-                match = re.compile('<div class="thumbn"><img src="(.+?)" alt="(.+?)" /></div>', re.DOTALL).findall(html)
+                        pageUrl = url + 'page/' + str(page) + '/'
+                        html = net.http_GET(pageUrl).content                    
+                match = re.compile('<div class="thumbn"><img src="(.+?)" alt="(.+?)" /></div>\s*?<div class="filmkutu-bilgi-hover">\s*?<ul class="filmkutu-bilgi-hover-liste">\s*?<li class="izlenme">\s*?<a href=".+?">', re.DOTALL).findall(html)
                 for img, query in match:
                         addon.add_directory({'mode': 'Search1', 'section': section, 'query': query}, {'title':  query}, img= img, fanart= 'http://www.blazevideo.com/blog/wp-content/uploads/tv-shows-montage.jpg')
-                addon.add_directory({'mode': 'GetTitles1', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage.png', fanart= 'http://www.blazevideo.com/blog/wp-content/uploads/tv-shows-montage.jpg') 
+                addon.add_directory({'mode': 'GetTitles3', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage.png', fanart= 'http://www.blazevideo.com/blog/wp-content/uploads/tv-shows-montage.jpg') 
         setView('tvshows', 'tvshows-view')   
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site mite be down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
@@ -155,6 +169,7 @@ def GetTitles3(query, startPage= '1', numOfPages= '1'):
 
 def GetTitles2(section, url, startPage= '1', numOfPages= '1'):
     try:
+        addon.add_directory({'mode': 'GetTitles7', 'url': BASE_URL7 + '/football/premier-league/results/'}, {'title':  '[COLOR greenyellow][B]English Premier League Search[/B][/COLOR] >>'}, img= 'http://simpleicon.com/wp-content/uploads/football.png', fanart= 'http://www.blazevideo.com/blog/wp-content/uploads/tv-shows-montage.jpg')
         pageUrl = url
         if int(startPage)> 1:
                 pageUrl = url + 'page/' + startPage + '/'
@@ -256,26 +271,46 @@ def Search2(query):
                         addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host.replace('oneclickwatch.ws', 'Streamimg links below') }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.jpg')
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in OCW [/B][/COLOR],[COLOR blue][B]Trying rlsseries[/B][/COLOR],7000,"")")
+    #try:
+    ##    url = 'http://300mbmovies4u.com/hollywood-movie/' + query + '/'
+    #    url = url.replace(' ', '-')
+    #    print url
+     #   html = net.http_GET(url).content
+    #    listitem = GetMediaInfo(html)
+    #    content = html
+    #    match3 = re.compile('content="width=device-width, initial-scale=1.0"/><title>(.+?)</title>', re.DOTALL).findall(html)
+    #    match2 = re.compile('href="(http://uptobox.com/.+?)"').findall(content)
+    #    match = re.compile('href="(.+?)"').findall(content)
+    #    for name in match3:
+    #            addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title': '[COLOR blue][B]' + name.replace('300mbmovies4u.com', '(300mbmovies4u.com)  ') + '[/B][/COLOR]' }, img= 'https://briantudor.files.wordpress.com/2010/12/tv-icon1.png', fanart=FanartPath + 'fanart.jpg')
+    #    for url in match2:
+    #            addon.add_directory({'mode': 'GetLinks1', 'url':  url, 'listitem': listitem}, {'title':  'UpToStream : direct link'}, img= 'https://uptostream.com/images/logo.png', fanart=FanartPath + 'fanart.jpg')
+    #    for url in match:
+    #            host = GetDomain(url)
+    #            if urlresolver.HostedMediaFile(url= url):
+    #                    addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.jpg')
+    #except:
+    #    xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in 300mbmovies4u [/B][/COLOR],[COLOR blue][B]Trying rlsseries[/B][/COLOR],7000,"")")
     try:
-        url = 'http://300mbmovies4u.com/hollywood-movie/' + query + '/'
-        url = url.replace(' ', '-')
+        url = 'http://www.movies360.info/?s=' + query
+        url = url.replace(' ', '+')
         print url
         html = net.http_GET(url).content
-        listitem = GetMediaInfo(html)
-        content = html
-        match3 = re.compile('content="width=device-width, initial-scale=1.0"/><title>(.+?)</title>', re.DOTALL).findall(html)
-        match2 = re.compile('href="(http://uptobox.com/.+?)"').findall(content)
-        match = re.compile('href="(.+?)"').findall(content)
-        for name in match3:
-                addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title': '[COLOR blue][B]' + name.replace('300mbmovies4u.com', '(300mbmovies4u.com)  ') + '[/B][/COLOR]' }, img= 'https://briantudor.files.wordpress.com/2010/12/tv-icon1.png', fanart=FanartPath + 'fanart.jpg')
-        for url in match2:
-                addon.add_directory({'mode': 'GetLinks1', 'url':  url, 'listitem': listitem}, {'title':  'UpToStream : direct link'}, img= 'https://uptostream.com/images/logo.png', fanart=FanartPath + 'fanart.jpg')
-        for url in match:
-                host = GetDomain(url)
-                if urlresolver.HostedMediaFile(url= url):
-                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.jpg')
+        match = re.compile('<div class="featured-post clearfix">\s*?<a href="(.+?)" title="(.+?)" rel="nofollow" id="featured-thumbnail">\s*?<div class="featured-thumbnail"><img width=".+?" height=".+?" src="(.+?)"', re.DOTALL).findall(html)
+        for url, title, img in match:
+                addon.add_directory({'mode': 'GetLinks', 'url': url}, {'title':  title + ' [COLOR green]...(movies360)[/COLOR]'}, img= img, fanart=FanartPath + 'fanart.png')
     except:
-        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in 300mbmovies4u [/B][/COLOR],[COLOR blue][B]Trying rlsseries[/B][/COLOR],7000,"")")
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry movies360 search is down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
+    try:
+        url = 'http://nowmovies.info/?s=' + query
+        url = url.replace(' ', '+')
+        print url
+        html = net.http_GET(url).content
+        match = re.compile('<div class="featured-post clearfix">\s*?<a href="(.+?)" title="(.+?)" rel=".+?" id=".+?">\s*?<div class=".+?"><img width=".+?" height=".+?" src="(.+?)"', re.DOTALL).findall(html)
+        for url, title, img in match:
+                addon.add_directory({'mode': 'GetLinks', 'url': url}, {'title':  title + ' [COLOR powderblue]...(nowmovies)[/COLOR]'}, img=img, fanart=FanartPath + 'fanart.png')
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry nowmovies search is down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 ##.replace('/', ' ')## \s*? ##
@@ -285,7 +320,7 @@ def GetLinks(section, url):
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
-        match = re.compile('<a href="(.+?)" rel="nofollow" target="_blank">.+?</a><br />').findall(content)
+        match = re.compile('<a href="(.+?)"').findall(content)
         match1 = re.compile('href="(http://uptobox.com/.+?)"').findall(content)
         listitem = GetMediaInfo(content)
         for url in match1:
@@ -434,6 +469,8 @@ elif mode == 'GetTitles6':
 	GetTitles6(section, url, startPage, numOfPages)
 elif mode == 'GetTitles6a': 
 	GetTitles6a(query, section)
+elif mode == 'GetTitles7': 
+	GetTitles7(query)
 elif mode == 'GetLinks':
 	GetLinks(section, url)
 elif mode == 'GetLinks1':
