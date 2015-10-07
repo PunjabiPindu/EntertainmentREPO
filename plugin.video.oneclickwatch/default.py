@@ -16,7 +16,6 @@ BASE_URL2 = 'http://www.rls-dl.com/'
 BASE_URL4 = 'http://www.tvguide.com/'
 BASE_URL5 = 'http://www.moviefone.com/'
 BASE_URL6 = 'http://www.pogdesign.co.uk/'
-BASE_URL7 = 'http://www.sportinglife.com/'
 net = Net()
 addon = Addon('plugin.video.oneclickwatch', sys.argv)
 
@@ -155,37 +154,15 @@ def GetTitles3(query, startPage= '1', numOfPages= '1'):
 
 #---------------------------------------------------------------------------- watchseries-onlines a/z index ----------------------------------------------------------------------------------------------------#
 
-def GetTitles2(section, url):
+def GetTitles2(section, query):
     try:
-        addon.add_directory({'mode': 'GetTitles7', 'url': BASE_URL7 + '/football/premier-league/results/'}, {'title':  '[COLOR greenyellow][B]English Premier League Search[/B][/COLOR] >>'}, img= 'http://simpleicon.com/wp-content/uploads/football.png', fanart= 'http://www.blazevideo.com/blog/wp-content/uploads/tv-shows-montage.jpg')
         pageUrl = url
         html = net.http_GET(pageUrl).content
         match = re.compile('<option class="level-0" value=".+?">(.+?)</option>', re.DOTALL).findall(html)
         for movieUrl in match:
-                addon.add_directory({'mode': 'GetTitles1', 'section': section, 'url': 'http://watchseries-onlines.ch/category/a/' + movieUrl.replace(' ', '-') + '/'}, {'title': movieUrl}, img= 'https://briantudor.files.wordpress.com/2010/12/tv-icon1.png', fanart= 'http://www.blazevideo.com/blog/wp-content/uploads/tv-shows-montage.jpg') 
+                addon.add_directory({'mode': 'Search3', 'section': section, 'query': movieUrl.replace('English Premiere League', 'EPL')}, {'title': movieUrl}, img= 'https://briantudor.files.wordpress.com/2010/12/tv-icon1.png', fanart= 'http://www.blazevideo.com/blog/wp-content/uploads/tv-shows-montage.jpg') 
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site mite be down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
-       	xbmcplugin.endOfDirectory(int(sys.argv[1]))
-
-def GetTitles1(query, section): 
-        pageUrl = url
-        html = net.http_GET(pageUrl).content                     
-        match = re.compile('<figure class="post-thumbnail">\s*?<a href="http://watchseries-onlines.ch/(.+?)/">\s*?<img width=".+?" height=".+?" src="(.+?)"',re.DOTALL).findall(html)
-        for query, img in match:
-                addon.add_directory({'mode': 'Search1', 'section': section, 'query': query}, {'title':  '[B]' + query.replace('-', ' ') + '[/B]'}, img= img, fanart= 'http://www.blazevideo.com/blog/wp-content/uploads/tv-shows-montage.jpg')
-        xbmcplugin.endOfDirectory(int(sys.argv[1]))
-
-#---------------------------------------------------------------------------- footy index ---------------------------------------------------------------------------------#
-
-def GetTitles7(query):
-    try:
-        pageUrl = url
-        html = net.http_GET(pageUrl).content                     
-        match = re.compile('<li><a class="ixxa" href="/football/live/match-commentary/.+?/(.+?)">Match Centre</a></li>',re.DOTALL).findall(html)
-        for query in match:
-                addon.add_directory({'mode': 'Search', 'query': query.replace('-v-', ' vs ').replace('-', ' ') }, {'title': query.replace('-v-', ' vs ').replace('-', ' ') }, img= 'http://simpleicon.com/wp-content/uploads/football.png', fanart= 'https://bubblefootballzone.co.uk/wp-content/uploads/2014/02/football-wallpaper-for-iphone-4-77.jpg')
-    except:
-        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site is down [/B][/COLOR],[COLOR blue][B]Please try a different site[/B][/COLOR],7000,"")")
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 #---------------------------------------------------------------------------- index search tv 1 ----------------------------------------------------------------------------------------------------#
@@ -456,10 +433,8 @@ elif mode == 'HelpMenu':
         HelpMenu()
 elif mode == 'GetTitles': 
 	GetTitles(section, url, startPage, numOfPages)
-elif mode == 'GetTitles1': 
-	GetTitles1(query, section)
 elif mode == 'GetTitles2': 
-	GetTitles2(section, url)
+	GetTitles2(section, query)
 elif mode == 'GetTitles3': 
 	GetTitles3(query, startPage, numOfPages)
 elif mode == 'GetTitles4': 
@@ -470,8 +445,6 @@ elif mode == 'GetTitles6':
 	GetTitles6(section, url)
 elif mode == 'GetTitles6a': 
 	GetTitles6a(query, section)
-elif mode == 'GetTitles7': 
-	GetTitles7(query)
 elif mode == 'GetLinks':
 	GetLinks(section, url)
 elif mode == 'GetLinks1':

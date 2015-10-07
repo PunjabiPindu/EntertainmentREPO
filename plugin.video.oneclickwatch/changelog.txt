@@ -1,9 +1,15 @@
+[B]Version 1.1.4[/B]
+*OCW Reborn its a new beginning* (TV Calendar and index searches are still in beta)
+- code clean up
+- changed a/z search works better now
+
 [B]Version 1.1.2[/B]
 *OCW Reborn its a new beginning* (TV Calendar and index searches are still in beta)
 - code clean up
 - added a better search
 - tv chat shows not working via TV Calendar
 - fixed more tv shows in TV Calendar 
+- changed a/z search
 
 [B]Version 1.1.1[/B]
 *OCW Reborn its a new beginning* (TV Calendar and index searches are still in beta)
