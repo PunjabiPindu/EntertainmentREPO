@@ -100,6 +100,7 @@ def GetTitles6a(query, section):
                 query = query.replace('Empire ', 'empire-2015-')
                 query = query.replace('&', 'and')
                 query = query.replace("You're the Worst ", 'youre-the-worst-')
+                query = query.replace('The Player ', 'the-player-2015-')
                 addon.add_directory({'mode': 'Search1', 'section': section, 'query': query}, {'title': title}, img= img,  fanart=FanartPath + 'fanart.jpg')
         setView('tvshows', 'calendar-view')
     except:
@@ -415,7 +416,18 @@ def Search3(query):
                 addon.add_directory({'mode': 'GetLinks', 'url': url.replace('http://areaddl.com/', 'http://oneclickwatch.ws/000000/')}, {'title':  title }, img= 'https://briantudor.files.wordpress.com/2010/12/tv-icon1.png', fanart=FanartPath + 'fanart.jpg')
         setView('tvshows', 'calendar-view')
     except:
-        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry search is down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry search 1 is down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
+    #try:
+    #   url = 'http://rlsbb.com/?s=' + query
+    #    url = url.replace(' ', '+')
+    #    print url
+    #    html = net.http_GET(url).content
+    #    match = re.compile('postHeader.+?href="(.+?)".+?>(.+?)<.+?src=.+? src="(.+?)"', re.DOTALL).findall(html)
+    #    for url, title, img in match:
+    #            addon.add_directory({'mode': 'GetLinks', 'url': url.replace('http://rlsbb.com/', 'http://oneclickwatch.ws/000000/')}, {'title':  title }, img= img, fanart=FanartPath + 'fanart.jpg')
+    #    setView('tvshows', 'calendar-view')
+    #except:
+    #    xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry search 2 is down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
 	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 ########################################################################################################################################################################
