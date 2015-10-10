@@ -113,7 +113,7 @@ def GetTitles5(text, img, query):
         html = net.http_GET(pageUrl).content                     
         match = re.compile('<img name="replace-image" rel=".+?" id=".+?" class=".+?" src=".+?" data-src="(.+?)" alt="(.+?)"/>',re.DOTALL).findall(html)
         for img, query in match:
-                addon.add_directory({'mode': 'Search2', 'query': query, 'img' : img, 'text' : query}, {'title':  query}, img= img, fanart=FanartPath + 'fanart.jpg')
+                addon.add_directory({'mode': 'Search2', 'query': query, 'img' : img, 'text' : query}, {'title':  query}, img= img, fanart= 'https://irenehyleung.files.wordpress.com/2012/12/2012-movie-collage31.jpg')
         setView('tvshows', 'tvshows-view')
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site is down [/B][/COLOR],[COLOR blue][B]Please try a different site[/B][/COLOR],7000,"")")
@@ -128,7 +128,7 @@ def GetTitles4(text, img, query):
         match = re.compile('<span class="show-card show-card-small">\s*?<img src="(.+?)" class=".+?" alt=".+?" title="(.+?)" srcset=".+?" width=".+?" height=".+?" />',re.DOTALL).findall(html)
         for img, query in match:
                 img = img.replace('100x133.png', '1000x339.png').replace('100x133.jpg', '1000x339.jpg')
-                addon.add_directory({'mode': 'Search2', 'query': query, 'img' : img, 'text' : query}, {'title':  query}, img= img, fanart=FanartPath + 'fanart.jpg')
+                addon.add_directory({'mode': 'Search2', 'query': query, 'img' : img, 'text' : query}, {'title':  query}, img= img, fanart= 'https://irenehyleung.files.wordpress.com/2012/12/2012-movie-collage31.jpg')
         setView('tvshows', 'tvshows-view')
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site is down [/B][/COLOR],[COLOR blue][B]Please try a different site[/B][/COLOR],7000,"")")
@@ -151,8 +151,9 @@ def GetTitles3(text, img, query, startPage= '1', numOfPages= '1'):
                         html = net.http_GET(pageUrl).content                    
                 match = re.compile('<div class="thumbn"><img src="(.+?)" alt="(.+?)" /></div>\s*?<div class="filmkutu-bilgi-hover">\s*?<ul class="filmkutu-bilgi-hover-liste">\s*?<li class="izlenme">\s*?<a href=".+?">', re.DOTALL).findall(html)
                 for img, query in match:
-                        addon.add_directory({'mode': 'Search1', 'section': section, 'query': query, 'img' : img, 'text' : query}, {'title':  query}, img= img, fanart= 'http://www.blazevideo.com/blog/wp-content/uploads/tv-shows-montage.jpg')
-                addon.add_directory({'mode': 'GetTitles3', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage.png', fanart= 'http://www.blazevideo.com/blog/wp-content/uploads/tv-shows-montage.jpg') 
+                        query = query.replace('The Player ', 'The Player 2015 ')
+                        addon.add_directory({'mode': 'Search1', 'section': section, 'query': query, 'img' : img, 'text' : query}, {'title':  query}, img= img, fanart= 'http://www.parka-show.com/wp-content/uploads/2014/05/TV-Shows.jpg')
+                addon.add_directory({'mode': 'GetTitles3', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage.png', fanart= 'http://www.parka-show.com/wp-content/uploads/2014/05/TV-Shows.jpg') 
         setView('tvshows', 'tvshows-view')   
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site mite be down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
@@ -171,7 +172,7 @@ def GetTitles2(section, query):
                 movieUrl = movieUrl.replace('AFL Game Day', 'AFL')
                 movieUrl = movieUrl.replace('(', '').replace(')', '')
                 movieUrl = movieUrl.replace('Tyler Perry&#8217;s The Haves and the Have Nots', 'UEFA Euro 2016')
-                addon.add_directory({'mode': 'Search3', 'section': section, 'query': movieUrl}, {'title': movieUrl.replace('EPL', 'English Premiere League')}, img= 'https://briantudor.files.wordpress.com/2010/12/tv-icon1.png', fanart= 'http://www.blazevideo.com/blog/wp-content/uploads/tv-shows-montage.jpg') 
+                addon.add_directory({'mode': 'Search3', 'section': section, 'query': movieUrl}, {'title': movieUrl.replace('EPL', 'English Premiere League')}, img= 'https://briantudor.files.wordpress.com/2010/12/tv-icon1.png', fanart= 'http://www.parka-show.com/wp-content/uploads/2014/05/TV-Shows.jpg') 
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site mite be down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
