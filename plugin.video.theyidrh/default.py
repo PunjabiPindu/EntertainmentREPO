@@ -107,7 +107,7 @@ def GetTitles2a(section, url, startPage= '1', numOfPages= '1'):
                         cm  = []
                         runstring = 'XBMC.Container.Update(plugin://plugin.video.theyidrh/?mode=Search10&query=%s)' %(name.strip().replace('.', ' '))
         		cm.append(('[COLOR blue]R[/COLOR]elease Search', runstring))
-                        addon.add_directory({'mode': 'GetLinks', 'section': section, 'url': movieUrl}, {'title':  name.strip().replace('.', ' ')}, contextmenu_items= cm, img= 'https://pbs.twimg.com/profile_images/378800000657168025/6408df8fd1766c7621c717fa521a206d.png', fanart=FanartPath + 'fanart.png')
+                        addon.add_directory({'mode': 'GetLinksb', 'section': section, 'url': movieUrl}, {'title':  name.strip().replace('.', ' ')}, contextmenu_items= cm, img= 'https://pbs.twimg.com/profile_images/378800000657168025/6408df8fd1766c7621c717fa521a206d.png', fanart=FanartPath + 'fanart.png')
                 addon.add_directory({'mode': 'GetTitles2a', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage1.png', fanart=FanartPath + 'fanart.png')        
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site is down [/B][/COLOR],[COLOR blue][B]Please try a different site[/B][/COLOR],7000,"")")
@@ -587,7 +587,7 @@ def GetTitles22(section, url, startPage= '1', numOfPages= '1'):
                 if ( page != start):
                         pageUrl = url + 'page/' + str(page) + '/'
                         html = net.http_GET(pageUrl).content                    
-                match = re.compile('<h2 class="title">.+?href="(.+?)".+?>(.+?)<.+?src="(.+?)"', re.DOTALL).findall(html)
+                match = re.compile('<h2 class="postTitle"><span></span><a href="(.+?)".+?>(.+?)<.+?src="(.+?)"', re.DOTALL).findall(html)
                 for movieUrl, name, img in match:
                         cm  = []
                         runstring = 'XBMC.Container.Update(plugin://plugin.video.theyidrh/?mode=Search10&query=%s)' %(name.strip().replace('.', ' '))
@@ -828,6 +828,7 @@ def GetTitles42b(query):
 
 
 ##.replace('/', ' ')## \s*? ## 
+
 #################################################################################getlinks###############################################################################################
 
 def GetLinks(section, url): # Get Links
@@ -890,6 +891,94 @@ def GetLinks(section, url): # Get Links
                 print 'in comments if'
                 html = html[find.end():]
                 match = re.compile('<a href="(.+?)" rel="nofollow"', re.DOTALL).findall(html)
+                print len(match)
+                for url in match:
+                        host = GetDomain(url)
+                        if 'Unknown' in host:
+                                continue
+                        
+                        # ignore .rar files
+                        r = re.search('\.rar[(?:\.html|\.htm)]*', url, re.IGNORECASE)
+                        if r:
+                                continue
+                        try:
+                                if urlresolver.HostedMediaFile(url= url):
+                                        print 'in GetLinks if loop'
+                                        title = url.rpartition('/')
+                                        title = title[2].replace('.html', '')
+                                        title = title.replace('.htm', '')
+                                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host + ' : ' + title}, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.png')
+
+                        except:
+
+                                continue
+
+
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+#################################################################################getlinksB###############################################################################################
+
+def GetLinksb(section, url): # Get Links
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        r = re.search('<strong>Links.*</strong>', html)
+        if r:
+                content = html[r.end():]
+
+        r = re.search('commentblock', content)
+        if r:
+                content = content[:r.start()]
+                
+        match = re.compile('rel="nofollow">(.+?)</a></p><p><a').findall(content)
+        match1 = re.compile('class="external">(.+?)</a>', re.DOTALL).findall(html)
+        listitem = GetMediaInfo(content)
+        for url in match + match1:
+                host = GetDomain(url)
+
+                if 'Unknown' in host:
+                                continue
+                        
+                # ignore .rar files
+                r = re.search('\.rar[(?:\.html|\.htm)]*', url, re.IGNORECASE)
+                if r:
+                        continue
+
+                if urlresolver.HostedMediaFile(url= url):
+                        print 'in GetLinks if loop'
+                        title = url.rpartition('/')
+                        title = title[2].replace('.html', '')
+                        title = title.replace('.htm', '')
+                        title = title.replace('.rar', '[COLOR red][B][I]RAR no streaming[/B][/I][/COLOR]')
+                        title = title.replace('rar', '[COLOR red][B][I]RAR no streaming[/B][/I][/COLOR]')
+                        title = title.replace('sample', '[COLOR lime]Movie Trailer[/COLOR]')
+                        title = title.replace('www.', '')
+                        title = title.replace ('-',' ')
+                        title = title.replace('_',' ')
+                        title = title.replace('.',' ')
+                        title = title.replace('gaz','')
+                        title = title.replace('NTb','')
+                        title = title.replace('1st','[COLOR coral][B]1st HALF[/B][/COLOR]')
+                        title = title.replace('2nd','[COLOR coral][B]2nd HALF[/B][/COLOR]')
+                        title = title.replace('fullmatches net','')
+                        title = title.replace('.',' ')
+                        title = title.replace('480p','[COLOR coral][B][I]480p[/B][/I][/COLOR]')
+                        title = title.replace('720p','[COLOR gold][B][I]720p[/B][/I][/COLOR]')
+                        title = title.replace('1080p','[COLOR orange][B][I]1080p[/B][/I][/COLOR]')
+                        title = title.replace('mkv','[COLOR gold][B][I]MKV[/B][/I][/COLOR] ')
+                        title = title.replace('avi','[COLOR pink][B][I]AVI[/B][/I][/COLOR] ')
+                        title = title.replace('mp4','[COLOR purple][B][I]MP4[/B][/I][/COLOR] ')
+                        title = title.replace('%20',' ')
+                        host = host.replace('youtube.com','[COLOR lime]Movie Trailer[/COLOR]')
+                        host = host.replace('k2s.cc','[COLOR red]Unsupported Link[/COLOR]')
+                        host = host.replace('ryushare.com','[COLOR red]Unsupported Link[/COLOR]')
+                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host + ' [COLOR gold]:[/COLOR] ' + title }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.png')
+
+        find = re.search('commentblock', html)
+        if find:
+                print 'in comments if'
+                html = html[find.end():]
+                match = re.compile('class="external">(.+?)</a>', re.DOTALL).findall(html)
                 print len(match)
                 for url in match:
                         host = GetDomain(url)
@@ -1016,13 +1105,9 @@ def GetLinks5(section, url):
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
-        match = re.compile('<span style="color: #008000;"><strong>(.+?)<').findall(content)
-        match1 = re.compile('(http://u.+?)<').findall(content)
-        match2 = re.compile('(http://rapidgator.net/file/.+?)<').findall(content)
-        match3 = re.compile('(https://www.secureupload.eu/.+?)<').findall(content)
-        match4 = re.compile('<p><iframe src="(.+?)"').findall(content)
+        match = re.compile('<p><iframe src="(.+?)"').findall(content)
         listitem = GetMediaInfo(content)
-        for url in match + match1 + match2 + match3 + match4:
+        for url in match:
                 host = GetDomain(url)
 
                 if 'Unknown' in host:
@@ -1065,12 +1150,6 @@ def GetLinks6(section, url):
                         title = url.rpartition('/')
                         title = title[2].replace('.html', '')
                         title = title.replace('.htm', '')
-                        title = title.replace('480p','[COLOR coral][B][I]480p[/B][/I][/COLOR]')
-                        title = title.replace('720p','[COLOR gold][B][I]720p[/B][/I][/COLOR]')
-                        title = title.replace('1080p','[COLOR orange][B][I]1080p[/B][/I][/COLOR]')
-                        title = title.replace('mkv','[COLOR gold][B][I]MKV[/B][/I][/COLOR] ')
-                        title = title.replace('avi','[COLOR pink][B][I]AVI[/B][/I][/COLOR] ')
-                        title = title.replace('mp4','[COLOR purple][B][I]MP4[/B][/I][/COLOR] ')
                         addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host + ' [COLOR gold]:[/COLOR] ' + title }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -1181,8 +1260,8 @@ def Menu2():
                              'startPage': '1', 'numOfPages': '2'}, {'title':  '[COLOR blue][B]Latest Movies[/B] [/COLOR] [COLOR gold](ReleaseBB)[/COLOR] >>'}, img=IconPath + 'moviebb.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles11', 'section': 'ALL', 'url': BASE_URL10 + '/category/movies/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR blue][B]Latest Movies[/B] [/COLOR] [COLOR powderblue](DDLvalley)[/COLOR] >>'}, img=IconPath + 'ddlmo.png', fanart=FanartPath + 'fanart.png')
-        addon.add_directory({'mode': 'GetTitles1', 'section': 'ALL', 'url': BASE_URL1 + '/films/',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR blue][B]Latest Movies[/B] [/COLOR] [COLOR orangered](Scene Source)[/COLOR] >>'}, img=IconPath + 'ssmovies.png', fanart=FanartPath + 'fanart.png')
+        #addon.add_directory({'mode': 'GetTitles1', 'section': 'ALL', 'url': BASE_URL1 + '/films/',
+                             #'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR blue][B]Latest Movies[/B] [/COLOR] [COLOR orangered](Scene Source)[/COLOR] >>'}, img=IconPath + 'ssmovies.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles7', 'section': 'ALL', 'url': BASE_URL8 + '/category/movies',
                              'startPage': '1', 'numOfPages': '2'}, {'title':  '[COLOR blue][B]Latest Movies[/B] [/COLOR] [COLOR mediumspringgreen](Sceper)[/COLOR] >>'}, img=IconPath + 'scmovie.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles1', 'section': 'ALL', 'url': BASE_URL20 + '/category/movies/',
@@ -1195,7 +1274,7 @@ def Menu2():
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR blue][B]Latest Movies[/B] [/COLOR] [COLOR whitesmoke](The Extopia)[/COLOR] >>'}, img=IconPath + 'exmo.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles22', 'section': 'ALL', 'url': BASE_URL22 + '/category/movies/',
                              'startPage': '1', 'numOfPages': '2'}, {'title':  '[COLOR blue][B]Latest Movies[/B] [/COLOR] [COLOR orangered](rlsblog)[/COLOR] >>'}, img=IconPath + 'rbm.png', fanart=FanartPath + 'fanart.png')
-        addon.add_directory({'mode': 'menu9'}, {'title': '[COLOR blue][B]Latest Movies[/B] [/COLOR] [COLOR crimson](300mb movies4u)[/COLOR] >>'}, img=IconPath + 'm4u1.png', fanart=FanartPath + 'fanart.png') 
+        #addon.add_directory({'mode': 'menu9'}, {'title': '[COLOR blue][B]Latest Movies[/B] [/COLOR] [COLOR crimson](300mb movies4u)[/COLOR] >>'}, img=IconPath + 'm4u1.png', fanart=FanartPath + 'fanart.png') 
         addon.add_directory({'mode': 'menu3'}, {'title': '[COLOR blue][B]Latest Movies[/B] [/COLOR] [COLOR powderblue](1080p Zone)[/COLOR] >>'}, img=IconPath + '10z.png', fanart=FanartPath + 'fanart.png') 
         addon.add_directory({'mode': 'GetSearchQuery10'},  {'title':  '[COLOR khaki][B]M[/COLOR][COLOR blue]E[/COLOR][COLOR salmon]G[/COLOR][COLOR darkseagreen]A[/COLOR][/B] [COLOR blue][B]R[/B][/COLOR]elease [COLOR blue][B]HUB[/B][/COLOR] (Movies) : [COLOR green]Search[/COLOR]'}, img=IconPath + 'rhs.png', fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -1218,8 +1297,10 @@ def Menu9():   #300mbmovies4u
 #--------------------------------------------------------------------------------- HD Zone movies ----------------------------------------------------------------------------------------------------------#
 
 def Menu3():
-        addon.add_directory({'mode': 'GetTitles5', 'section': 'ALL', 'url': BASE_URL12 + '/category/hollywood-movie/english-3d-movie/',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR steelblue][B]Latest 3D[/B][/COLOR] [COLOR crimson](300mb movies4u) [/COLOR] >>'}, img=IconPath + 'm4u1.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles12', 'section': 'ALL', 'url': BASE_URL11 + '/category/movies/yify-rips/',
+                             'startPage': '1', 'numOfPages': '2'}, {'title':  '[COLOR blue][B]Latest YIFY Movies[/B] [/COLOR] [COLOR gold](ReleaseBB)[/COLOR] >>'}, img=IconPath + 'moviebb.png', fanart=FanartPath + 'fanart.png')
+        #addon.add_directory({'mode': 'GetTitles5', 'section': 'ALL', 'url': BASE_URL12 + '/category/hollywood-movie/english-3d-movie/',
+                             #'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR steelblue][B]Latest 3D[/B][/COLOR] [COLOR crimson](300mb movies4u) [/COLOR] >>'}, img=IconPath + 'm4u1.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles11', 'section': 'ALL', 'url': BASE_URL10 + '/category/movies/yify-rips/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR steelblue][B]Latest YIFY[/B] [/COLOR] [COLOR powderblue](DDLvalley)[/COLOR] >>'}, img=IconPath + 'ddlmo.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles4', 'section': 'ALL', 'url': BASE_URL6 + '/movie/',
@@ -1248,8 +1329,8 @@ def Menu4():
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR darkorange][B]Latest Tv Shows[/B] [/COLOR] [COLOR powderblue](DDLvalley)[/COLOR] >>'}, img=IconPath + 'ddltv.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles7', 'section': 'ALL', 'url': BASE_URL8 + '/category/tv-shows',
                              'startPage': '1', 'numOfPages': '2'}, {'title':  '[COLOR darkorange][B]Latest Tv Shows[/B] [/COLOR] [COLOR mediumspringgreen](Sceper)[/COLOR] >>'}, img=IconPath + 'setv.png', fanart=FanartPath + 'fanart.png')
-        addon.add_directory({'mode': 'GetTitles10', 'section': 'ALL', 'url': BASE_URL1 + '/category/tv/',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR darkorange][B]Latest Tv Shows[/B] [/COLOR] [COLOR orangered](Scene Source)[/COLOR] >>'}, img=IconPath + 'sstv.png', fanart=FanartPath + 'fanart.png')
+        #addon.add_directory({'mode': 'GetTitles10', 'section': 'ALL', 'url': BASE_URL1 + '/category/tv/',
+                             #'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR darkorange][B]Latest Tv Shows[/B] [/COLOR] [COLOR orangered](Scene Source)[/COLOR] >>'}, img=IconPath + 'sstv.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles6', 'section': 'ALL', 'url': BASE_URL9 + '/category/tv-shows/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR darkorange][B]Latest Tv Shows[/B] [/COLOR] [COLOR plum](Scene down)[/COLOR] >>'}, img=IconPath + 'sdtv.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles2a', 'section': 'ALL', 'url': BASE_URL30 + '/tv-shows/',
@@ -1258,8 +1339,8 @@ def Menu4():
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR darkorange][B]Latest Tv shows[/B] [/COLOR] [COLOR azure](rls-dl) [/COLOR]>>'}, img=IconPath + 'rls10.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles14', 'section': 'ALL', 'url': BASE_URL5 + '/category/tvshow/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR darkorange][B]Latest Releases[/B] [/COLOR] [COLOR whitesmoke](The Extopia)[/COLOR] >>'}, img=IconPath + 'extv1.png', fanart=FanartPath + 'fanart.png')
-        addon.add_directory({'mode': 'GetTitles5', 'section': 'ALL', 'url': BASE_URL12 + '/category/tv-shows/',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR darkorange][B]Latest Tv Shows[/B][/COLOR] [COLOR crimson](300mb movies4u)[/COLOR] >>'}, img=IconPath + '3mb4.png', fanart=FanartPath + 'fanart.png')
+        #addon.add_directory({'mode': 'GetTitles5', 'section': 'ALL', 'url': BASE_URL12 + '/category/tv-shows/',
+                             #'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR darkorange][B]Latest Tv Shows[/B][/COLOR] [COLOR crimson](300mb movies4u)[/COLOR] >>'}, img=IconPath + '3mb4.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'menu11'}, {'title': '[COLOR darkorange][B]Latest Added[/B] [/COLOR] [COLOR blue](1080p zone)[/COLOR] >>'}, img=IconPath + '1080.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetSearchQuery12'},  {'title':  '[COLOR khaki][B]M[/COLOR][COLOR blue]E[/COLOR][COLOR salmon]G[/COLOR][COLOR darkseagreen]A[/COLOR][/B] [COLOR blue][B]R[/B][/COLOR]elease [COLOR blue][B]HUB[/B][/COLOR] (Tv Episodes) : [COLOR green]Search[/COLOR]'}, img=IconPath + 'rhs.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles25b', 'url': BASE_URL25b + '/tv-shows'}, {'title':  '[COLOR darkorange][B]TV Shows[/B] [/COLOR]: [COLOR green]Index Search[/COLOR] (TVHQ)'}, img=IconPath + 'intvs.png', fanart=FanartPath + 'fanart.png')
@@ -1611,9 +1692,9 @@ def Search12(query):
         url = url.replace(' ', '+')
         print url
         html = net.http_GET(url).content
-        match = re.compile('<a href="(.+?)" rel="bookmark" title="(.+?)">.+?</a></h1>').findall(html)
+        match = re.compile('title="" /><a href="(.+?)" rel="bookmark" title=".+?">(.+?)</a></h1>').findall(html)
         for url, title in match:
-                addon.add_directory({'mode': 'GetLinks', 'url': url}, {'title':  title + ' [COLOR navy]...(scnlog.eu)[/COLOR]'}, img= 'https://raw.githubusercontent.com/TheYid/yidpics/8333f2912d71cc7ddd71a7cee9714dfe263ee543/icons/nopic.png', fanart=FanartPath + 'fanart.png')
+                addon.add_directory({'mode': 'GetLinksb', 'url': url}, {'title':  title + ' [COLOR navy]...(scnlog.eu)[/COLOR]'}, img= 'https://raw.githubusercontent.com/TheYid/yidpics/8333f2912d71cc7ddd71a7cee9714dfe263ee543/icons/nopic.png', fanart=FanartPath + 'fanart.png')
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry scnlog.eu is down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
     try:
@@ -1850,6 +1931,8 @@ elif mode == 'GetTitles42b':
 	GetTitles42b(query)
 elif mode == 'GetLinks':
 	GetLinks(section, url)
+elif mode == 'GetLinksb':
+	GetLinksb(section, url)
 elif mode == 'GetLinks1':
 	GetLinks1(section, url)
 elif mode == 'GetLinks3':
