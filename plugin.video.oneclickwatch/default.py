@@ -16,6 +16,7 @@ BASE_URL2 = 'http://www.rls-dl.com/'
 BASE_URL4 = 'http://www.tvguide.com/'
 BASE_URL5 = 'http://www.moviefone.com/'
 BASE_URL6 = 'http://www.pogdesign.co.uk/'
+BASE_URL8 = 'http://www.ovguide.com/'
 net = Net()
 addon = Addon('plugin.video.oneclickwatch', sys.argv)
 
@@ -58,6 +59,65 @@ def GetTitles(text, img, section, url, startPage= '1', numOfPages= '1'):
                 addon.add_directory({'mode': 'GetTitles', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage.png', fanart=FanartPath + 'fanart.jpg')
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site mite be down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
+       	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+#---------------------------------------------------------------------------- ovg tv index ---------------------------------------------------------------------------------#
+
+def GetTitles8(url):
+    try:
+        pageUrl = url
+        html = net.http_GET(pageUrl).content                     
+        match = re.compile('<a class="l aj" href="(.+?)" data-type="g" data-value=".+?">(.+?)</a>',re.DOTALL).findall(html)
+        for url, name in match:
+                name = name.replace("Korean Drama", 'Horror')
+                url = url.replace("korean+drama", 'horror')
+                name = name.replace("Game Show", 'History')
+                url = url.replace("game+show", 'history')
+                name = name.replace("Talk Show", 'Thriller')
+                url = url.replace("talk+show", 'thriller')
+                name = name.replace("Fantasy", 'Crime')
+                url = url.replace("fantasy", 'crime')
+                addon.add_directory({'mode': 'GetTitles8a', 'url': 'http://www.ovguide.com/' + url}, {'title':  name}, img= 'http://oi57.tinypic.com/zn7zp2.jpg', fanart= 'http://www.parka-show.com/wp-content/uploads/2014/05/TV-Shows.jpg')
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site is down [/B][/COLOR],[COLOR blue][B]Please try a different site[/B][/COLOR],7000,"")")
+       	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+def GetTitles8a(url, img, text):
+    try:
+        pageUrl = url
+        html = net.http_GET(pageUrl).content                     
+        match = re.compile('<a id=".+?" data-topic-id="(.+?)" data-entity-type=".+?" href="(.+?)-9.+?" class="thumb tt"  name=".+?"><img src="(.+?)" alt=".+?"/>',re.DOTALL).findall(html)
+        match1 = re.compile('<noscript><p><a href="http://www.ovguide.com/(.+?)">.+? (page .+?)</a>',re.DOTALL).findall(html)
+        for url1, url, img in match:
+                img = 'http:' + img
+                img = img.replace("=150", '=350') 
+                addon.add_directory({'mode': 'GetTitles8b', 'url': 'http://www.ovguide.com' + url + '-' + url1, 'img' : img, 'text' : url.replace('/', '').replace('-', ' ').replace('!', '')}, {'title': '[B]' + url.replace('/', '').replace('-', ' ') + '[/B]'}, img= img, fanart= 'http://www.parka-show.com/wp-content/uploads/2014/05/TV-Shows.jpg')
+        for url, name in match1:
+                addon.add_directory({'mode': 'GetTitles8a', 'url': 'http://www.ovguide.com/' + url}, {'title':  '[COLOR blue]' + name + '...' + '[/COLOR]'}, img=IconPath + 'nextpage.png', fanart= 'http://www.parka-show.com/wp-content/uploads/2014/05/TV-Shows.jpg')
+    except:
+       	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+def GetTitles8b(url, img, text):
+    try:
+        pageUrl = url
+        html = net.http_GET(pageUrl).content                     
+        match = re.compile('<div class="lbl lc"><a href=".+?" title=".+?">Watch (.+?)<span itemprop="name">(.+?)</span>',re.DOTALL).findall(html)
+        for name, name1 in match: 
+                addon.add_directory({'mode': 'GetTitles8c', 'url': 'http://rlseries.com/' + text.replace(' ', '-') + '-' + name1.replace(' ', '-') + '/' , 'img' : img}, {'title': '[B]' + name1.replace('Season 0', '') + '[/B]' + ' ' + text }, img= img, fanart= 'http://www.parka-show.com/wp-content/uploads/2014/05/TV-Shows.jpg')
+        setView('tvshows', 'tvshows-view')
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry No Seasons Available[/B][/COLOR],[COLOR blue][B]Check A/Z index search[/B][/COLOR],7000,"")")
+       	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+def GetTitles8c(url):
+    try:
+        pageUrl = url
+        html = net.http_GET(pageUrl).content                    
+        match = re.compile('<a class="lst" href="(.+?)" title="(.+?)">\s*?<b class="val"><font color=".+?" size=".+?" style=".+?">.+?</font>.+?</b>\s*?<b class="dte">(.+?)</b>',re.DOTALL).findall(html)
+        for url, name, date in match:
+                addon.add_directory({'mode': 'GetLinks2', 'url':  url}, {'title':  name  + ' - ' + date }, img= img, fanart= 'http://www.parka-show.com/wp-content/uploads/2014/05/TV-Shows.jpg')
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry No Episodes Available [/B][/COLOR],[COLOR blue][B]Check A/Z index search[/B][/COLOR],7000,"")")
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 #---------------------------------------------------------------------------- TV Calendar index ----------------------------------------------------------------------------------------------------#
@@ -171,6 +231,8 @@ def GetTitles2(section, query):
                 movieUrl = movieUrl.replace('TNA Bound For Glory', 'TNA iMPACT Wrestling')
                 movieUrl = movieUrl.replace('AFL Game Day', 'AFL')
                 movieUrl = movieUrl.replace('(', '').replace(')', '')
+                movieUrl = movieUrl.replace('Next Step Realty NYC', 'NHL')
+                movieUrl = movieUrl.replace('Come Dine With Me', 'College Football')
                 movieUrl = movieUrl.replace('Tyler Perry&#8217;s The Haves and the Have Nots', 'UEFA Euro 2016')
                 addon.add_directory({'mode': 'Search3', 'section': section, 'query': movieUrl}, {'title': movieUrl.replace('EPL', 'English Premiere League')}, img= 'https://briantudor.files.wordpress.com/2010/12/tv-icon1.png', fanart= 'http://www.parka-show.com/wp-content/uploads/2014/05/TV-Shows.jpg') 
     except:
@@ -412,6 +474,7 @@ def MainMenu():    #homescreen
         addon.add_directory({'mode': 'GetTitles2', 'section': 'ALL', 'url': BASE_URL1 + '/'}, {'title':  '[COLOR greenyellow][B]TV Index Search[/B] (TV & Sport A-Z)[/COLOR]'}, img=IconPath + 'indexs.png', fanart=FanartPath + 'fanart.jpg')
         addon.add_directory({'mode': 'GetTitles3', 'section': 'ALL', 'url': BASE_URL2 + '/category/tv-shows/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR greenyellow][B]TV Index Search[/B] (Episodes)[/COLOR]'}, img=IconPath + 'indexs.png', fanart=FanartPath + 'fanart.jpg')
+        addon.add_directory({'mode': 'GetTitles8', 'section': 'ALL', 'url': BASE_URL8 + '/browse_tv'}, {'title':  '[COLOR olivedrab][B]TV Genres[/B] (Full Seasons)[/COLOR]'}, img=IconPath + 'gen.png', fanart=FanartPath + 'fanart.jpg')
         addon.add_directory({'mode': 'GetTitles4', 'url': BASE_URL4 + '/movies/'}, {'title':  '[COLOR springgreen][B]Movies Index Search[/B] (Top Movies)[/COLOR]'}, img=IconPath + 'indexs.png', fanart=FanartPath + 'fanart.jpg')
         addon.add_directory({'mode': 'GetTitles5', 'url': BASE_URL5 + '/new-movie-releases'}, {'title':  '[COLOR springgreen][B]Movies Index Search[/B] (Box Office)[/COLOR]'}, img=IconPath + 'indexs.png', fanart=FanartPath + 'fanart.jpg')
         addon.add_directory({'mode': 'GetSearchQuery4'},  {'title':  '[COLOR green][B]OCW Site Search[/B][/COLOR]'}, img=IconPath + 'searchs1.png', fanart=FanartPath + 'fanart.jpg')
@@ -557,6 +620,14 @@ elif mode == 'GetTitles6a':
 	GetTitles6a(text, img, query, section)
 elif mode == 'GetTitles7': 
 	GetTitles7(text, img, section, url)
+elif mode == 'GetTitles8': 
+	GetTitles8(url)
+elif mode == 'GetTitles8a': 
+	GetTitles8a(url, img, text)
+elif mode == 'GetTitles8b': 
+	GetTitles8b(url, img, text)
+elif mode == 'GetTitles8c': 
+	GetTitles8c(url)
 elif mode == 'GetLinks':
 	GetLinks(text, img, section, url)
 elif mode == 'GetLinks1':
