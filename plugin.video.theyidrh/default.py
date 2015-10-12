@@ -781,7 +781,7 @@ def GetTitles41(query, startPage= '1', numOfPages= '1'):
                         html = net.http_GET(pageUrl).content                     
                 match = re.compile('<div class="movieposter" title="Watch Video (.+?)" >\s*?<a href=".+?"><img class="bannersIMG" src="(.+?)" alt=".+?" title=".+?" /></a>', re.DOTALL).findall(html)
                 for query, img in match:
-                        addon.add_directory({'mode': 'Search12', 'section': section, 'query': query}, {'title':  query}, img= img, fanart=FanartPath + 'fanart4.png')
+                        addon.add_directory({'mode': 'Search12', 'section': section, 'query': query}, {'title':  query}, img= 'http://www.episodes-tv.com/' + img, fanart=FanartPath + 'fanart4.png')
                 addon.add_directory({'mode': 'GetTitles41', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage1.png', fanart=FanartPath + 'fanart4.png') 
         setView('tvshows', 'tvshows-view')       
     except:

@@ -1,5 +1,8 @@
+[B]Version 1.9.9[/B]
+- fixed episodes-tv search index
+
 [B]Version 1.9.8[/B]
-- fixed rlslog
+- fixed rlslog 
 
 [B]Version 1.9.7[/B]
 - fixed scnlog hot showing any links in search
