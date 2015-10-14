@@ -1,3 +1,6 @@
+[B]Version 1.2.0[/B]
+- fixes
+
 [B]Version 1.9.9[/B]
 - fixed episodes-tv search index
 

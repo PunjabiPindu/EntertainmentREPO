@@ -1,7 +1,12 @@
+[B]Version 1.2.6[/B]
+*OCW Reborn its a new beginning* (TV Calendar and index searches are still in beta)
+- 
+
 [B]Version 1.2.5[/B]
 *OCW Reborn its a new beginning* (TV Calendar and index searches are still in beta)
 - change tv genres site
 - more links in TV Calendar
+
 
 [B]Version 1.2.4[/B]
 *OCW Reborn its a new beginning* (TV Calendar and index searches are still in beta)

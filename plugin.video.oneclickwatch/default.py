@@ -145,13 +145,14 @@ def GetTitles6a(text, img, query, section):
                 query = query.replace('Doctor Who ', '/000000/doctor-who-2005-')
                 query = query.replace('The Late Late Show Corden ', '/564491/james-corden-')
                 query = query.replace('Blood and Oil ', 'blood-and-oil-2015-')
-                query = query.replace('Public Morals ', 'public-morals-2015-')
+                query = query.replace('Public Morals ', 'public morals 2015 ')
                 query = query.replace('The Voice (US) ', '/000000/the-voice-')
                 query = query.replace('Empire ', 'empire-2015-')
                 query = query.replace('&', 'and')
                 query = query.replace("You're the Worst ", 'youre-the-worst-')
                 query = query.replace('The Player ', 'the-player-2015-')
-                addon.add_directory({'mode': 'Search1', 'section': section, 'query': query, 'img': img, 'text': title }, {'title': title}, img= img,  fanart=FanartPath + 'fanart.jpg')
+                query = query.replace('The Moaning of Life ', 'karl pilkington the moaning of life ')
+                addon.add_directory({'mode': 'Search1', 'section': section, 'query': query, 'img': img, 'text': name1 + query1 }, {'title': title}, img= img,  fanart=FanartPath + 'fanart.jpg')
         setView('tvshows', 'calendar-view')
     except:
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -288,7 +289,7 @@ def Search1(text, img, section, query):
                         title = title.replace('.htm', '')
                         addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title}, img=img, fanart=FanartPath + 'fanart.jpg')
     except:
-        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in MW Checking Backup site 1[/B][/COLOR],[COLOR blue][B]Check in TV Index Search A-Z[/B][/COLOR],7000,"")")
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in WM[/B][/COLOR],[COLOR blue][B][/B][/COLOR],7000,"")")
     try:
         url = 'http://watchseries-onlines.ch/' + query + '/'
         url = url.replace(' ', '-')
@@ -471,9 +472,12 @@ def GetLinks1(text, img, section, url):
         listitem = GetMediaInfo(html)
         content = html
         match = re.compile('<a href="http://uptostream.com/(.+?)" class="blue_link">http://uptostream.com/.+?</a>').findall(content)
+        match1 = re.compile('<a href="http://uptobox.com/(.+?)" class="blue_link">http://uptobox.com/.+?</a>').findall(content)
         listitem = GetMediaInfo(content)
         for url in match:
                 addon.add_directory({'mode': 'GetLinks1a', 'url': 'http://uptostream.com/' + url, 'listitem': listitem, 'img': img, 'text': text }, {'title':  '[COLOR blue][B]load stream (stream)[/B][/COLOR]' + ' : ' + text}, img=img, fanart=FanartPath + 'fanart.jpg')
+        for url in match1:
+                addon.add_directory({'mode': 'GetLinks1a', 'url': 'http://uptobox.com/' + url, 'listitem': listitem, 'img': img, 'text': text }, {'title':  'If no link above please try later'}, img=img, fanart=FanartPath + 'fanart.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 def GetLinks1a(text, img, section, url):
