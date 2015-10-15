@@ -264,32 +264,23 @@ def Search1(text, img, section, query):
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in OCW Checking Backup sites[/B][/COLOR],[COLOR blue][B]Check in TV Index Search A-Z[/B][/COLOR],7000,"")")
     try:
-        url = 'http://www.warezmovies.info/' + query + '/'
+        url = 'http://movies.myvideolinks.xyz/' + query + '/'
         url = url.replace(' ', '-')
         print url
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
-        match2 = re.compile('href="(http://uptobox.com/.+?)"').findall(content)
-        match = re.compile('<a href="(.+?)" rel="nofollow"', re.DOTALL).findall(html)
+        match = re.compile('<li><a href="(.+?)">.+?</a></li>', re.DOTALL).findall(html)
         listitem = GetMediaInfo(content)
-        for url in match2:
-                addon.add_directory({'mode': 'GetLinks1', 'url':  url, 'listitem': listitem , 'img': img, 'text': text }, {'title':  '[COLOR powderblue][B]UpToStream : direct link to[/B][/COLOR]' + ' - ' + text},img=img,  fanart=FanartPath + 'fanart.jpg')
         for url in match:
                 host = GetDomain(url)
-
-                if 'Unknown' in host:
-                                continue
-                r = re.search('\.rar[(?:\.html|\.htm)]*', url, re.IGNORECASE)
-                if r:
-                        continue
                 if urlresolver.HostedMediaFile(url= url):
                         title = url.rpartition('/')
                         title = title[2].replace('.html', '')
                         title = title.replace('.htm', '')
                         addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title}, img=img, fanart=FanartPath + 'fanart.jpg')
     except:
-        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in WM[/B][/COLOR],[COLOR blue][B][/B][/COLOR],7000,"")")
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in MVL Checking WSO[/B][/COLOR],[COLOR blue][B][/B][/COLOR],4000,"")")
     try:
         url = 'http://watchseries-onlines.ch/' + query + '/'
         url = url.replace(' ', '-')
@@ -305,7 +296,7 @@ def Search1(text, img, section, query):
                         title = url.rpartition('/')
                         title = title[2].replace('.html', '')
                         title = title.replace('.htm', '')
-                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title}, img=img, fanart=FanartPath + 'fanart.jpg')
+                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title + '  ...(MQ-LQ)'}, img=img, fanart=FanartPath + 'fanart.jpg')
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in WSO Checking Backup search[/B][/COLOR],[COLOR blue][B]Check in TV Index Search A-Z[/B][/COLOR],7000,"")")
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -339,7 +330,7 @@ def Search2(img, text, query):
         for name, img in match1:
                 addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title': '[COLOR pink][B](' + name + ')[/B][/COLOR]' }, img= img, fanart=FanartPath + 'fanart.jpg')
         for name in match3:
-                addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title': '[COLOR blue][B]' + '(OCW) ' + name.replace('http://www.tvguide.com/', '').replace('http://www.tvrage.com/', '').replace('/', ' ').replace(';', ' ').replace('-', ' ').replace('tvshows', ' ').replace('_', ' ') + '[/B][/COLOR]' }, img= 'https://briantudor.files.wordpress.com/2010/12/tv-icon1.png', fanart=FanartPath + 'fanart.jpg')
+                addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title': '[COLOR blue][B]' + '(OCW) ' + name.replace('http://www.tvguide.com/', '').replace('http://www.tvrage.com/', '').replace('/', ' ').replace(';', ' ').replace('-', ' ').replace('tvshows', ' ').replace('_', ' ') + '[/B][/COLOR]' }, img= img, fanart=FanartPath + 'fanart.jpg')
         for url in match2:
                 addon.add_directory({'mode': 'GetLinks1', 'url':  url, 'listitem': listitem , 'img': img, 'text': text }, {'title':  '[COLOR powderblue][B]UpToStream : direct link to[/B][/COLOR]' + ' - ' + text},img=img,  fanart=FanartPath + 'fanart.jpg')
         for url in match:
@@ -352,25 +343,22 @@ def Search2(img, text, query):
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in OCW [/B][/COLOR],[COLOR blue][B]Trying Backup sites[/B][/COLOR],7000,"")")
     try:
-        url = 'http://www.warezmovies.info/' + query + '/'
+        url = 'http://300mbmovies4u.com/hollywood-movie/' + query + '/'
         url = url.replace(' ', '-')
         print url
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
+        match = re.compile('<a href="(.+?)" target="_blank">.+?</a>', re.DOTALL).findall(html)
+        match1 = re.compile('<title>300mbmovies4u.com(.+?)</title>', re.DOTALL).findall(html)
         match2 = re.compile('href="(http://uptobox.com/.+?)"').findall(content)
-        match = re.compile('<a href="(.+?)" rel="nofollow"', re.DOTALL).findall(html)
         listitem = GetMediaInfo(content)
+        for name in match1:
+                addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title': '[COLOR pink][B](' + name + ')[/B][/COLOR]' }, img= img, fanart=FanartPath + 'fanart.jpg')
         for url in match2:
                 addon.add_directory({'mode': 'GetLinks1', 'url':  url, 'listitem': listitem , 'img': img, 'text': text }, {'title':  '[COLOR powderblue][B]UpToStream : direct link to[/B][/COLOR]' + ' - ' + text},img=img,  fanart=FanartPath + 'fanart.jpg')
         for url in match:
                 host = GetDomain(url)
-
-                if 'Unknown' in host:
-                                continue
-                r = re.search('\.rar[(?:\.html|\.htm)]*', url, re.IGNORECASE)
-                if r:
-                        continue
                 if urlresolver.HostedMediaFile(url= url):
                         title = url.rpartition('/')
                         title = title[2].replace('.html', '')
