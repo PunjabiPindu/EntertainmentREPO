@@ -1,0 +1,2 @@
+[B]Version 9.4.5[/B]
+- Big update to Kool London addon
