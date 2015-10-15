@@ -2,7 +2,7 @@
 	<addon
         id="plugin.audio.koollondon" 
         name="koollondon" 
-        version="9.4.5" 
+        version="9.4.6" 
         provider-name="@TheYid009">
 		<requires>
 			<import addon="xbmc.python"             	version="2.1.0"/>
