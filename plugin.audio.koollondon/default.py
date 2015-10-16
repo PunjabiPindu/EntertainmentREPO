@@ -90,8 +90,8 @@ def MainMenu():
 	addon.add_directory({'mode': 'GetLinks', 'url': BASE_URL + '/'}, {'title':  '[COLOR powderblue][B]Kool London Archives[/B][/COLOR]  [COLOR yellow][B] >>[/B][/COLOR] >>'}, img = 'http://s30.postimg.org/5r870dash/icon.png', fanart = 'http://s0.hulkshare.com/song_images/original/1/b/a/1ba96478934405ef5a9a2528947804ec.jpg?dd=1388552400')
 
 	xbmcplugin.setContent(addon_handle, 'audio')
-	url = 'https://archive.org/download/repoman008_gmail_Pink/koollondon.m3u'
-	li = xbmcgui.ListItem('[COLOR green][B]Kool FM 94.5 Archives[/COLOR][/B]  [COLOR yellow][B] >>[/B][/COLOR] >>', iconImage='http://s30.postimg.org/5r870dash/icon.png', thumbnailImage='http://s30.postimg.org/5r870dash/icon.png')
+	url = 'https://archive.org/download/koollondon/koollondon.m3u'
+	li = xbmcgui.ListItem('[COLOR mediumturquoise][B]Kool FM 94.5 Archives[/COLOR][/B]  [COLOR yellow][B] >>[/B][/COLOR] >>', iconImage='http://s30.postimg.org/5r870dash/icon.png', thumbnailImage='http://s30.postimg.org/5r870dash/icon.png')
 	li.setProperty('fanart_image', 'http://s0.hulkshare.com/song_images/original/1/b/a/1ba96478934405ef5a9a2528947804ec.jpg?dd=1388552400')
 	xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li)
 
