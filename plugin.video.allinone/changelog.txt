@@ -1,3 +1,6 @@
+[B]Version 8.2.9[/B] 
+- clean up
+
 [B]Version 8.2.8[/B] 
 - added watchitvideos
 - fixed episodes-tv
