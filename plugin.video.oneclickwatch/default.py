@@ -153,6 +153,8 @@ def GetTitles6a(text, img, query, section, name):
                 query = query.replace("You're the Worst ", 'youre-the-worst-')
                 query = query.replace('The Player ', 'the-player-2015-')
                 query = query.replace('The Moaning of Life ', 'karl pilkington the moaning of life ')
+                query = query.replace('Undateable ', 'Undateable 2014 ')
+                query = query.replace('Scandal ', 'scandal US ')
                 addon.add_directory({'mode': 'Search1', 'section': section, 'query': query, 'img': img, 'name': name, 'text': name1 + query1 }, {'title': title}, img= img,  fanart=FanartPath + 'fanart.jpg')
         setView('tvshows', 'calendar-view')
     except:
@@ -209,6 +211,7 @@ def GetTitles3(text, img, query, startPage= '1', numOfPages= '1'):
                         query = query.replace('Blood and Oil ', 'Blood and Oil 2015 ')
                         query = query.replace('Public Morals ', 'public morals 2015 ')
                         query = query.replace('The Flash ', 'the flash 2014 ')
+                        query = query.replace('scandal ', 'scandal US ')
                         addon.add_directory({'mode': 'Search1', 'section': section, 'query': query, 'img' : img, 'text' : query}, {'title':  query}, img= img, fanart= 'http://www.parka-show.com/wp-content/uploads/2014/05/TV-Shows.jpg')
                 addon.add_directory({'mode': 'GetTitles3', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage.png', fanart= 'http://www.parka-show.com/wp-content/uploads/2014/05/TV-Shows.jpg') 
         setView('tvshows', 'tvshows-view')   
@@ -254,7 +257,7 @@ def Search1(text, img, section, query, name):
         for name, img in match1:
                 addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title': '[COLOR pink][B](' + name + ')[/B][/COLOR]' }, img= img, fanart=FanartPath + 'fanart.jpg')
         for name in match3:
-                addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title': '[COLOR blue][B]' + name.replace('http://www.tvguide.com/', '').replace('http://www.tvrage.com/', '').replace('/', ' ').replace(';', ' ').replace('-', ' ').replace('tvshows', ' ').replace('_', ' ') + '[/B][/COLOR]' }, img= 'https://briantudor.files.wordpress.com/2010/12/tv-icon1.png', fanart=FanartPath + 'fanart.jpg')
+                addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title': '[COLOR blue][B]' + name.replace('http://www.tvguide.com/', '').replace('http://www.tvrage.com/', '').replace('/', ' ').replace(';', ' ').replace('-', ' ').replace('tvshows', ' ').replace('_', ' ') + '[/B][/COLOR]' }, img= img, fanart=FanartPath + 'fanart.jpg')
         for url in match2:
                 addon.add_directory({'mode': 'GetLinks1', 'url':  url, 'listitem': listitem , 'img': img, 'text': text }, {'title':  '[COLOR powderblue][B]UpToStream : direct link to[/B][/COLOR]' + ' - ' + text},img=img,  fanart=FanartPath + 'fanart.jpg')
         for url in match:
@@ -264,9 +267,7 @@ def Search1(text, img, section, query, name):
                         title = title[2].replace('.html', '')
                         title = title.replace('.htm', '')
                         addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title}, img=img, fanart=FanartPath + 'fanart.jpg')
-    except:
-        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in OCW Checking Backup sites[/B][/COLOR],[COLOR blue][B]Check in TV Index Search A-Z[/B][/COLOR],7000,"")")
-    try:
+
         url = 'http://movies.myvideolinks.xyz/' + query + '/'
         url = url.replace(' ', '-')
         print url
@@ -274,17 +275,16 @@ def Search1(text, img, section, query, name):
         listitem = GetMediaInfo(html)
         content = html
         match = re.compile('<li><a href="(.+?)">.+?</a></li>', re.DOTALL).findall(html)
+        match5 = re.compile("onClick=.+?'(.+?)'", re.DOTALL).findall(html)
         listitem = GetMediaInfo(content)
-        for url in match:
+        for url in match + match5:
                 host = GetDomain(url)
                 if urlresolver.HostedMediaFile(url= url):
                         title = url.rpartition('/')
                         title = title[2].replace('.html', '')
                         title = title.replace('.htm', '')
-                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title}, img=img, fanart=FanartPath + 'fanart.jpg')
-    except:
-        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in MVL Checking WSO[/B][/COLOR],[COLOR blue][B][/B][/COLOR],4000,"")")
-    try:
+                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title + '  (MVL)'}, img=img, fanart=FanartPath + 'fanart.jpg')
+
         url = 'http://rlsbb.download/' + query + '/'
         url = url.replace(' ', '-')
         print url
@@ -303,9 +303,7 @@ def Search1(text, img, section, query, name):
                         title = title[2].replace('.html', '')
                         title = title.replace('.htm', '')
                         addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title}, img=img, fanart=FanartPath + 'fanart.jpg')
-    except:
-        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in WSO Checking Backup search[/B][/COLOR],[COLOR blue][B]Check in TV Index Search A-Z[/B][/COLOR],7000,"")")
-    try:
+
         url = 'http://wanderingsouls.me/wp/index.php/' + query + '/'
         url = url.replace(' ', '-')
         print url
@@ -321,9 +319,7 @@ def Search1(text, img, section, query, name):
                         title = title[2].replace('.html', '')
                         title = title.replace('.htm', '')
                         addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title + '  ...(HQ-MQ)'}, img=img, fanart=FanartPath + 'fanart.jpg')
-    except:
-        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in WSO Checking Backup search[/B][/COLOR],[COLOR blue][B]Check in TV Index Search A-Z[/B][/COLOR],7000,"")")
-    try:
+
         url = 'http://watchseries-onlines.ch/' + query + '/'
         url = url.replace(' ', '-')
         print url
@@ -339,10 +335,7 @@ def Search1(text, img, section, query, name):
                         title = title[2].replace('.html', '')
                         title = title.replace('.htm', '')
                         addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title + '  ...(MQ-LQ)'}, img=img, fanart=FanartPath + 'fanart.jpg')
-    except:
-        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in WSO Checking Backup search[/B][/COLOR],[COLOR blue][B]Check in TV Index Search A-Z[/B][/COLOR],7000,"")")
-       	xbmcplugin.endOfDirectory(int(sys.argv[1]))
-    try:
+
         url = 'http://areaddl.com/?s=' + query
         url = url.replace(' ', '+').replace('-', '+')
         print url
@@ -351,7 +344,6 @@ def Search1(text, img, section, query, name):
         for url, title in match:
                 addon.add_directory({'mode': 'GetLinks', 'url': url, 'img': img, 'text': text }, {'title':  title + ' [COLOR aqua]...(areaddl)[/COLOR]'}, img= 'https://briantudor.files.wordpress.com/2010/12/tv-icon1.png', fanart=FanartPath + 'fanart.jpg')
     except:
-        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry areaddl search is down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
