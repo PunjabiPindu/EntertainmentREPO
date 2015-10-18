@@ -155,6 +155,8 @@ def GetTitles6a(text, img, query, section, name):
                 query = query.replace('The Moaning of Life ', 'karl pilkington the moaning of life ')
                 query = query.replace('Undateable ', 'Undateable 2014 ')
                 query = query.replace('Scandal ', 'scandal US ')
+                query = query.replace('Satisfaction ', 'satisfaction US ')
+                query = query.replace('Jessie ', 'jessie 2011 ')
                 addon.add_directory({'mode': 'Search1', 'section': section, 'query': query, 'img': img, 'name': name, 'text': name1 + query1 }, {'title': title}, img= img,  fanart=FanartPath + 'fanart.jpg')
         setView('tvshows', 'calendar-view')
     except:
@@ -267,7 +269,9 @@ def Search1(text, img, section, query, name):
                         title = title[2].replace('.html', '')
                         title = title.replace('.htm', '')
                         addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title}, img=img, fanart=FanartPath + 'fanart.jpg')
-
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in OCW [/B][/COLOR],[COLOR blue][B]Checking next site[/B][/COLOR],"")")
+    try:
         url = 'http://movies.myvideolinks.xyz/' + query + '/'
         url = url.replace(' ', '-')
         print url
@@ -284,7 +288,9 @@ def Search1(text, img, section, query, name):
                         title = title[2].replace('.html', '')
                         title = title.replace('.htm', '')
                         addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title + '  (MVL)'}, img=img, fanart=FanartPath + 'fanart.jpg')
-
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in myvideolinks [/B][/COLOR],"")")
+    try:
         url = 'http://rlsbb.download/' + query + '/'
         url = url.replace(' ', '-')
         print url
@@ -302,8 +308,10 @@ def Search1(text, img, section, query, name):
                         title = url.rpartition('/')
                         title = title[2].replace('.html', '')
                         title = title.replace('.htm', '')
-                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title}, img=img, fanart=FanartPath + 'fanart.jpg')
-
+                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title + '     [rlsbb]'}, img=img, fanart=FanartPath + 'fanart.jpg')
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in rlsbb.download [/B][/COLOR],"")")
+    try:
         url = 'http://wanderingsouls.me/wp/index.php/' + query + '/'
         url = url.replace(' ', '-')
         print url
@@ -318,8 +326,10 @@ def Search1(text, img, section, query, name):
                         title = url.rpartition('/')
                         title = title[2].replace('.html', '')
                         title = title.replace('.htm', '')
-                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title + '  ...(HQ-MQ)'}, img=img, fanart=FanartPath + 'fanart.jpg')
-
+                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title + '  ...(HQ-MQ) [WS]'}, img=img, fanart=FanartPath + 'fanart.jpg')
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in WS [/B][/COLOR],"")")
+    try:
         url = 'http://watchseries-onlines.ch/' + query + '/'
         url = url.replace(' ', '-')
         print url
@@ -334,8 +344,28 @@ def Search1(text, img, section, query, name):
                         title = url.rpartition('/')
                         title = title[2].replace('.html', '')
                         title = title.replace('.htm', '')
-                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title + '  ...(MQ-LQ)'}, img=img, fanart=FanartPath + 'fanart.jpg')
-
+                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title + '  ...(MQ-LQ) [WSO]'}, img=img, fanart=FanartPath + 'fanart.jpg')
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in WSO [/B][/COLOR],"")")
+    try:
+        url = 'http://watchfree.eu/' + query + '/'
+        url = url.replace(' ', '-')
+        print url
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        match = re.compile('<p><a href="(.+?)" target="_blank">.+?</a></p>', re.DOTALL).findall(html)
+        listitem = GetMediaInfo(content)
+        for url in match:
+                host = GetDomain(url)
+                if urlresolver.HostedMediaFile(url= url):
+                        title = url.rpartition('/')
+                        title = title[2].replace('.html', '')
+                        title = title.replace('.htm', '')
+                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'img': img}, {'title':  '[COLOR lightcyan][B]' + host + '[/B][/COLOR]' + ' : ' + title + '  ...(MQ-LQ) [watchfree]'}, img=img, fanart=FanartPath + 'fanart.jpg')
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in WSO [/B][/COLOR],[COLOR blue][B]Trying Backup site[/B][/COLOR],2000,"")")
+    try:
         url = 'http://areaddl.com/?s=' + query
         url = url.replace(' ', '+').replace('-', '+')
         print url

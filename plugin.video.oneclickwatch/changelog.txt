@@ -1,3 +1,7 @@
+[B]Version 1.4.0[/B]
+*OCW Reborn its a new beginning* (TV Calendar and index searches are still in beta)
+- clean up
+
 [B]Version 1.2.9[/B]
 *OCW Reborn its a new beginning* (TV Calendar and index searches are still in beta)
 - clean up
