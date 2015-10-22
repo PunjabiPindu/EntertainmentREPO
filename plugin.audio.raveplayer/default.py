@@ -68,9 +68,38 @@ BASE_URL38 = 'http://www.oldskoolanthemz.com/'
 BASE_URL39 = 'http://artmeetsscience.co.uk/'
 BASE_URL40 = 'http://www.twiceasnice.co.uk/'
 BASE_URL41 = 'http://www.radionecks.co.uk/'
+BASE_URL42 = 'http://jungletapes.com/'
 
 ############################################################################### Get links #############################################################################################
 
+#---------------------------------------------------------------------------- jungletapes ----------------------------------------------------------------------------#
+
+def GetLinks42(url, text, img):                                            
+        print 'GETLINKS FROM URL: '+url
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        match = re.compile('<a href="/show/(.+?)">(.+?)</a>').findall(content)
+        for url, name in match:
+                url = 'http://www.jungletapes.com/show/' + url
+                addon.add_directory({'mode': 'GetLinks42a', 'url': url, 'listitem': listitem, 'text':  name, 'img' : img}, {'title': name.strip()}, img = 'http://jungletapes.com/sites/default/files/jungle_tapes_large_logo.png', fanart = 'http://i.imgur.com/yXimypO.jpg?1')
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+def GetLinks42a(url, text, img):                                            
+        print 'GETLINKS FROM URL: '+url
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        match = re.compile('href="http://www.jungletapes.com/sites/default/files/Tapes/(.+?)" title="(.+?)">').findall(content)
+        match1 = re.compile('href="http://www.jungletapes.com/sites/default/files/Tapes/(.+?)"').findall(content)
+        for url, name in match:
+                addon.add_directory({'mode': 'PlayVideo', 'url': 'http://www.jungletapes.com/sites/default/files/Tapes/' + url, 'listitem': listitem, 'text':  url.replace('-', ' '), 'img' : img}, {'title': name + ' - ' + url.replace('-', ' ')}, img = 'http://jungletapes.com/sites/default/files/jungle_tapes_large_logo.png', fanart = 'http://i.imgur.com/yXimypO.jpg?1')
+        for url in match1:
+                addon.add_directory({'mode': 'PlayVideo', 'url': 'http://www.jungletapes.com/sites/default/files/Tapes/' + url, 'listitem': listitem, 'text':  url, 'img' : img}, {'title': url}, img = 'http://jungletapes.com/sites/default/files/jungle_tapes_large_logo.png', fanart = 'http://i.imgur.com/yXimypO.jpg?1')
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+
+##.replace(' ', ' ')# \s*? ##url = url.replace(' ', ' ')##
 #---------------------------------------------------------------------------- oneinthejungle ----------------------------------------------------------------------------#
 
 def GetLinks(url, text, img):                                             
@@ -764,7 +793,7 @@ def GetLinks41(url, text, img):
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
-##.replace(' ', ' ')#\s*?##movieUrl = movieUrl.replace(' ', ' ')##
+##.replace(' ', ' ')# \s*? ##url = url.replace(' ', ' ')##
 ######################################################################### clean ###########################################################################################
 
 def CLEAN(string):
@@ -830,6 +859,7 @@ def RaMenu():
         addon.add_directory({'mode': 'ArMenu'}, {'title':  '[COLOR green][B]The Pirate Archive [/COLOR](All Genres, 1988 to present day)[/B]'}, img = 'http://www.thepiratearchive.net/wordpress/wp-content/uploads/2013/01/logo4e300w.png', fanart = 'http://oi60.tinypic.com/30a8c3n.jpg')
         addon.add_directory({'mode': 'GetLinks', 'url': BASE_URL + '/'}, {'title':  '[COLOR green][B]One In The Jungle [/COLOR](BBC Radio 1)[/B]'}, img = 'http://images-mix.netdna-ssl.com/w/318/h/318/q/90/upload/images/extaudio/6d90c82e-aa53-4d69-85a7-bf3504baa5ae.png', fanart = 'http://4.bp.blogspot.com/-ByJompomPtM/Tzb9-SOCseI/AAAAAAAAAMU/-Zc6FiSMM18/s1600/photo.jpg')
         addon.add_directory({'mode': 'GetLinks9a', 'url': BASE_URL9 + '/'}, {'title':  '[COLOR green][B]mikus Musik [/COLOR](All Genres)[/B]'}, img = 'http://3.bp.blogspot.com/-iDTTgsZBiBA/TwHRQBfrEKI/AAAAAAAAATs/8lTy5Va4_is/s1600/MIKUS.gif', fanart = 'http://s23.postimg.org/4sn8qcp8b/fanart.jpg')
+        addon.add_directory({'mode': 'GetLinks42', 'url': BASE_URL42 + '/tapes'}, {'title':  '[COLOR green][B]Jungle Tapes [/COLOR](Toronto jungle radio shows )[/B]'}, img = 'http://jungletapes.com/sites/default/files/jungle_tapes_large_logo.png', fanart = 'http://neworleans.media.indypgh.org/uploads/2005/11/tbfa_transmitter_9-12-05.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 def ArMenu(): 
@@ -1248,6 +1278,10 @@ elif mode == 'GetLinks40a':
 	GetLinks40a(url, text, img)
 elif mode == 'GetLinks41':
 	GetLinks41(url, text, img)
+elif mode == 'GetLinks42':
+	GetLinks42(url, text, img)
+elif mode == 'GetLinks42a':
+	GetLinks42a(url, text, img)
 elif mode == 'GetLinksvids':
 	GetLinksvids(url)
 elif mode == 'PlayVideo':
