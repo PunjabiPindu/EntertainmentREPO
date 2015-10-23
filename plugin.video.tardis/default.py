@@ -63,11 +63,12 @@ def GetLinks(section, url):
         listitem = GetMediaInfo(html)
         content = html
         match = re.compile('<a href="(.+?)" target="filmPlayer"').findall(content)
-        match1 = re.compile('href="(http://uptobox.com/.+?)"').findall(content)
+        match1 = re.compile('<a href="https://uptostream.com/iframe/(.+?)" target="filmPlayer"').findall(content)
         listitem = GetMediaInfo(content)
         for url in match1:
-                addon.add_directory({'mode': 'GetLinks1', 'url':  url, 'listitem': listitem}, {'title':  'UpToStream : direct link'}, img= 'https://uptostream.com/images/logo.png', fanart=FanartPath + 'fanart.jpg')
+                addon.add_directory({'mode': 'GetLinks1', 'url': 'http://uptobox.com/' + url, 'listitem': listitem}, {'title':  'UpToStream : direct link'}, img= 'https://uptostream.com/images/logo.png', fanart=FanartPath + 'fanart.jpg')
         for url in match:
+                url = url.replace('iframe/', '') 
                 host = GetDomain(url)
                 if urlresolver.HostedMediaFile(url= url):
                         addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
