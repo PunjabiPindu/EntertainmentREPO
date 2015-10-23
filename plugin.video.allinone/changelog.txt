@@ -1,3 +1,11 @@
+[B]Version 8.4.2[/B] 
+- added 1 link show
+- fixed world4ufree
+- 
+
+[B]Version 8.4.1[/B] 
+- clean up
+
 [B]Version 8.4.0[/B] 
 - clean up
 
