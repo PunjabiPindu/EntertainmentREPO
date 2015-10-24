@@ -53,12 +53,12 @@ def GetTitles1(url, text, img):
         content = html
         match = re.compile('''class="description132"><a class=".+?" title="(.+?)" href="(.+?)">.+?</a>''').findall(content)
         for name, url in match:
-                addon.add_directory({'mode': 'GetLinks', 'url': 'http://www.voirfilms.org/' + url, 'listitem': listitem, 'text': name.strip().replace('saison', 'Season').replace('VOSTFR', '').replace(',', '').replace('VF', '')}, {'title': name.strip().replace('saison', 'Season').replace('VOSTFR', '').replace(',', '').replace('VF', '')}, img=IconPath + 'icon.png',  fanart= 'https://ladygeekgirl.files.wordpress.com/2015/01/all13doctors.png')
+                addon.add_directory({'mode': 'GetLinks', 'url': 'http://www.voirfilms.org/' + url, 'listitem': listitem, 'text': name.strip().replace('saison', 'Season').replace('VOSTFR', '').replace(',', '').replace('VF', '')}, {'title': name.strip().replace('saison', 'Season').replace('VOSTFR', '').replace(',', '').replace('VF', '')}, img=IconPath + 'icon.png',  fanart= 'http://orig10.deviantart.net/15a3/f/2015/194/c/0/all_13_doctors_by_simmonberesford-d915bw0.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
     except:
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
-def GetLinks(section, url):
+def GetLinks(section, url, text):
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
@@ -66,7 +66,7 @@ def GetLinks(section, url):
         match1 = re.compile('<a href="https://uptostream.com/iframe/(.+?)" target="filmPlayer"').findall(content)
         listitem = GetMediaInfo(content)
         for url in match1:
-                addon.add_directory({'mode': 'GetLinks1', 'url': 'http://uptobox.com/' + url, 'listitem': listitem}, {'title':  'UpToStream : direct link'}, img= 'https://uptostream.com/images/logo.png', fanart=FanartPath + 'fanart.jpg')
+                addon.add_directory({'mode': 'GetLinks1', 'url': 'http://uptobox.com/' + url, 'listitem': listitem, 'text': text}, {'title':  'Direct link : ' + text}, img= 'http://tvcultura.cmais.com.br/doctorwho/setimoano/img/main/content/monsters/the-daleks.png', fanart=FanartPath + 'fanart.jpg')
         for url in match:
                 url = url.replace('iframe/', '') 
                 host = GetDomain(url)
@@ -74,30 +74,30 @@ def GetLinks(section, url):
                         addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
-def GetLinks1(section, url):
+def GetLinks1(section, url, text):
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
         match = re.compile('Streaming link: <a href="(.+?)" class="blue_link">.+?</a>').findall(content)
         listitem = GetMediaInfo(content)
         for url in match:
-                addon.add_directory({'mode': 'GetLinks2', 'url': url, 'listitem': listitem}, {'title':  'load stream' + ' : ' + url}, img= 'https://uptostream.com/images/logo.png', fanart=FanartPath + 'fanart.jpg')
+                addon.add_directory({'mode': 'GetLinks2', 'url': url, 'listitem': listitem, 'text': text}, {'title':  'load stream' + ' : ' + text}, img= 'http://cdn.playbuzz.com/cdn/02dfd7f5-657c-457b-8064-57ad827e70ef/fbfe8bb7-a69d-4a78-b146-2bcc233a61de.png', fanart= 'http://media.moddb.com/images/groups/1/9/8215/hd-wallpapers-doctor-who-wallpaper-13-2560x1440-wallpaper.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
-def GetLinks2(section, url):
+def GetLinks2(section, url, text):
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
         match = re.compile("<source src='(.+?)' type='.+?' data-res='(.+?)'").findall(content)
         listitem = GetMediaInfo(content)
         for url, name in match:
-                addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title': name }, img= 'https://uptostream.com/images/logo.png', fanart=FanartPath + 'fanart.jpg')
+                addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem, 'text': text}, {'title': name + ' : ' + text }, img= 'http://www.cliparthut.com/clip-arts/158/doctor-who-logo-158191.png', fanart= 'http://img00.deviantart.net/c443/i/2013/328/a/a/13_wallpaper_by_oakanshield-d6viec6.jpg')
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
-def PlayVideo(url, listitem):
+def PlayVideo(url, listitem, text):
         addon_handle = int(sys.argv[1])
         xbmcplugin.setContent(addon_handle, 'video')
-        li = xbmcgui.ListItem('[COLOR dodgerblue][B]PLAY STREAM[/B][/COLOR]  >> ', iconImage='http://orig14.deviantart.net/240f/f/2012/178/a/d/satin_alloy_tardis_icon___jaku_style_by_chaoticbuddhist-d550pp0.png', thumbnailImage= 'http://orig14.deviantart.net/240f/f/2012/178/a/d/satin_alloy_tardis_icon___jaku_style_by_chaoticbuddhist-d550pp0.png')
+        li = xbmcgui.ListItem('[COLOR dodgerblue][B]PLAY : [/B][/COLOR]' + text, iconImage='https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Doctor_Who_logo_2005_(1).svg/2000px-Doctor_Who_logo_2005_(1).svg.png', thumbnailImage= 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Doctor_Who_logo_2005_(1).svg/2000px-Doctor_Who_logo_2005_(1).svg.png')
         li.setProperty('fanart_image', 'http://orig10.deviantart.net/266a/f/2010/107/7/b/daleks_from_the_darkness_by_gift_of_the_goddess.jpg')
         xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li)
         xbmcplugin.endOfDirectory(addon_handle)
@@ -129,8 +129,8 @@ def GetMediaInfo(html):
 ###################################################################### menus ####################################################################################################
 
 def MainMenu():    #homescreenserie
-        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/serie/doctor-who-1963.htm'}, {'title':  '[COLOR blue][B]Doctor Who 1963[/B] [/COLOR]>>'}, img= 'http://cdn.marketplaceimages.windowsphone.com/v8/images/4ae46d2f-2c2c-4686-8122-573f4b7a9973?imageType=ws_icon_large', fanart= 'http://i.imgur.com/VaMfWZw.jpg')
-        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/serie/doctor-who-2005.htm'}, {'title':  '[COLOR blue][B]Doctor Who 2005[/B] [/COLOR]>>'}, img= 'http://cdn.marketplaceimages.windowsphone.com/v8/images/4ae46d2f-2c2c-4686-8122-573f4b7a9973?imageType=ws_icon_large', fanart= 'http://i.imgur.com/VaMfWZw.jpg')
+        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/serie/doctor-who-1963.htm'}, {'title':  '[COLOR blue][B]Doctor Who 1963[/B] [/COLOR]>>'}, img= 'http://1.bp.blogspot.com/-5WMWaTN3PhI/UCq1fVONUPI/AAAAAAAAAeI/LObWh0iknb0/s1600/Dalek.png', fanart= 'http://i.imgur.com/VaMfWZw.jpg')
+        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/serie/doctor-who-2005.htm'}, {'title':  '[COLOR blue][B]Doctor Who 2005[/B] [/COLOR]>>'}, img= 'http://1.bp.blogspot.com/-5WMWaTN3PhI/UCq1fVONUPI/AAAAAAAAAeI/LObWh0iknb0/s1600/Dalek.png', fanart= 'http://i.imgur.com/VaMfWZw.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
@@ -145,11 +145,11 @@ elif mode == 'GetTitles1':
 elif mode == 'GetTitles2': 
 	GetTitles2(url, text)
 elif mode == 'GetLinks':
-	GetLinks(section, url)
+	GetLinks(section, url, text)
 elif mode == 'GetLinks1':
-	GetLinks1(section, url)
+	GetLinks1(section, url, text)
 elif mode == 'GetLinks2':
-	GetLinks2(section, url)
+	GetLinks2(section, url, text)
 elif mode == 'PlayVideo':
 	PlayVideo(url, listitem, text)
 elif mode == 'PlayVideo1':
