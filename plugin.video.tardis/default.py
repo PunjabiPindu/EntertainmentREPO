@@ -11,6 +11,8 @@ addon_id = 'plugin.video.tardis'
 plugin = xbmcaddon.Addon(id=addon_id)
 DB = os.path.join(xbmc.translatePath("special://database"), 'tardis.db')
 BASE_URL = 'http://www.voirfilms.org/'
+BASE_URL1 = 'http://oneclickwatch.ws/'
+BASE_URL2 = 'http://www.merdb.es/'
 net = Net()
 addon = Addon('plugin.video.tardis', sys.argv)
 
@@ -62,12 +64,14 @@ def GetLinks(section, url, text):
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
+        match3 = re.compile('<frame scrolling="auto" frameborder="0" id="play_bottom" name="bottom" src="(.+?)"/>').findall(content)
+        match2 = re.compile('<a href="(.+?)" target="_blank">.+?</a><br />').findall(content)
         match = re.compile('<a href="(.+?)" target="filmPlayer"').findall(content)
         match1 = re.compile('<a href="https://uptostream.com/iframe/(.+?)" target="filmPlayer"').findall(content)
         listitem = GetMediaInfo(content)
         for url in match1:
                 addon.add_directory({'mode': 'GetLinks1', 'url': 'http://uptobox.com/' + url, 'listitem': listitem, 'text': text}, {'title':  'Direct link : ' + text}, img= 'http://tvcultura.cmais.com.br/doctorwho/setimoano/img/main/content/monsters/the-daleks.png', fanart=FanartPath + 'fanart.jpg')
-        for url in match:
+        for url in match + match2 + match3:
                 url = url.replace('iframe/', '') 
                 host = GetDomain(url)
                 if urlresolver.HostedMediaFile(url= url):
@@ -128,16 +132,20 @@ def GetMediaInfo(html):
 
 ###################################################################### menus ####################################################################################################
 
-def MainMenu():    #homescreenserie
-        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/serie/doctor-who-1963.htm'}, {'title':  '[COLOR blue][B]Doctor Who 1963[/B] [/COLOR]>>'}, img= 'http://1.bp.blogspot.com/-5WMWaTN3PhI/UCq1fVONUPI/AAAAAAAAAeI/LObWh0iknb0/s1600/Dalek.png', fanart= 'http://i.imgur.com/VaMfWZw.jpg')
-        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/serie/doctor-who-2005.htm'}, {'title':  '[COLOR blue][B]Doctor Who 2005[/B] [/COLOR]>>'}, img= 'http://1.bp.blogspot.com/-5WMWaTN3PhI/UCq1fVONUPI/AAAAAAAAAeI/LObWh0iknb0/s1600/Dalek.png', fanart= 'http://i.imgur.com/VaMfWZw.jpg')
+def MainMenu(url, img, text):    #homescreenserie
+        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/serie/doctor-who-1963.htm'}, {'title':  '[COLOR blue][B]Doctor Who 1963 full seasons[/B] [/COLOR]>>'}, img= 'http://1.bp.blogspot.com/-5WMWaTN3PhI/UCq1fVONUPI/AAAAAAAAAeI/LObWh0iknb0/s1600/Dalek.png', fanart= 'http://i.imgur.com/VaMfWZw.jpg')
+        #addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/serie/doctor-who-2005.htm'}, {'title':  '[COLOR blue][B]Doctor Who 2005[/B] [/COLOR]>>'}, img= 'http://1.bp.blogspot.com/-5WMWaTN3PhI/UCq1fVONUPI/AAAAAAAAAeI/LObWh0iknb0/s1600/Dalek.png', fanart= 'http://i.imgur.com/VaMfWZw.jpg')
+
+        addon.add_directory({'mode': 'GetLinks', 'section': 'ALL', 'url': BASE_URL1 + '/35130/dr-who-and-the-daleks-1965-720p-brrip-x264-playnow/','img': 'img','text': 'title'}, {'title':  'Dr Who and the Daleks 1965'}, img= 'http://oneclickwatch.ws/wp-content/uploads/2013/05/Dr.-Who-and-the-Daleks-1965-poster.jpg', fanart= 'http://i.imgur.com/VaMfWZw.jpg')
+        addon.add_directory({'mode': 'GetLinks', 'section': 'ALL', 'url': BASE_URL1 + '/35191/daleks-invasion-earth-2150-a-d-1966-720p-brrip-x264-playnow/','img': 'img','text': 'title'}, {'title':  'Daleks Invasion Earth 2150 A.D 1966'}, img= 'http://images2.static-bluray.com/movies/covers/67061_front.jpg', fanart= 'http://i.imgur.com/VaMfWZw.jpg')
+        addon.add_directory({'mode': 'GetLinks', 'section': 'ALL', 'url': BASE_URL2 + '/external.php?title=Doctor+Who&url=aHR0cDovL3ZpZHppLnR2L3l1MnJmbjFzdTd1ZS5odG1s&domain=dmlkemkudHY=&loggedin=0','img': 'img','text': 'title'}, {'title':  'Doctor Who The Movie 1996'}, img= 'http://i43.tower.com/images/mm117103744/doctor-who-movie-paul-mcgann-dvd-cover-art.jpg', fanart= 'http://i.imgur.com/VaMfWZw.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
 #################################################################################################################################################################################
 
 if mode == 'main': 
-	MainMenu()
+	MainMenu(url, img, text)
 elif mode == 'GetTitles': 
 	GetTitles(url, text, img)
 elif mode == 'GetTitles1': 
