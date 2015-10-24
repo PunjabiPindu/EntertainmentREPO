@@ -157,6 +157,7 @@ def GetTitles6a(text, img, query, section, name):
                 query = query.replace('Scandal ', 'scandal US ')
                 query = query.replace('Satisfaction ', 'satisfaction US ')
                 query = query.replace('Jessie ', 'jessie 2011 ')
+                query = query.replace('Legends ', 'legends 2014 ')
                 addon.add_directory({'mode': 'Search1', 'section': section, 'query': query, 'img': img, 'name': name, 'text': name1 + query1 }, {'title': title}, img= img,  fanart=FanartPath + 'fanart.jpg')
         setView('tvshows', 'calendar-view')
     except:
@@ -214,6 +215,7 @@ def GetTitles3(text, img, query, startPage= '1', numOfPages= '1'):
                         query = query.replace('Public Morals ', 'public morals 2015 ')
                         query = query.replace('The Flash ', 'the flash 2014 ')
                         query = query.replace('scandal ', 'scandal US ')
+                        query = query.replace('Legends ', 'legends 2014 ')
                         addon.add_directory({'mode': 'Search1', 'section': section, 'query': query, 'img' : img, 'text' : query}, {'title':  query}, img= img, fanart= 'http://www.parka-show.com/wp-content/uploads/2014/05/TV-Shows.jpg')
                 addon.add_directory({'mode': 'GetTitles3', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage.png', fanart= 'http://www.parka-show.com/wp-content/uploads/2014/05/TV-Shows.jpg') 
         setView('tvshows', 'tvshows-view')   

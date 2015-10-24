@@ -203,7 +203,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.oneclickwatch" version="1.4.1" name="[B]OCW[/B] [COLOR lemonchiffon]Reborn[/COLOR]" provider-name="Mr Entertainment">
+<addon id="plugin.video.oneclickwatch" version="1.4.2" name="[B]OCW[/B] [COLOR lemonchiffon]Reborn[/COLOR]" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
