@@ -111,7 +111,7 @@
 		</extension>
 	</addon>
 
-<addon id="plugin.video.allinone" version="8.4.2" name="Entertainment [COLOR firebrick][B]HUB[/B][/COLOR]" provider-name="Mr Entertainment">
+<addon id="plugin.video.allinone" version="8.4.4" name="Entertainment [COLOR firebrick][B]HUB[/B][/COLOR]" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
@@ -275,7 +275,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.tardis" version="0.0.6a" name="TARDIS" provider-name="Mr Entertainment">
+<addon id="plugin.video.tardis" version="0.0.7" name="TARDIS" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>

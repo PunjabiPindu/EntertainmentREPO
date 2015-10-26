@@ -26,14 +26,12 @@ mode = addon.queries['mode']
 url = addon.queries.get('url', None)
 content = addon.queries.get('content', None)
 query = addon.queries.get('query', None)
-startPage = addon.queries.get('startPage', None)
-numOfPages = addon.queries.get('numOfPages', None)
 listitem = addon.queries.get('listitem', None)
 urlList = addon.queries.get('urlList', None)
 section = addon.queries.get('section', None)
 text = addon.queries.get('text', None)
 img = addon.queries.get('img', None)
-##.replace('', '')## \s*? ##
+
 ################################################################################# Titles #################################################################################
 def GetTitles(url, text, img):
     try:
@@ -53,10 +51,10 @@ def GetTitles1(url, text, img):
         listitem = GetMediaInfo(html)
         content = html
         match = re.compile('''class="description132"><a class=".+?" title="(.+?)" href="(.+?)">.+?</a>''').findall(content)
-        match1 = re.compile('''class="description132"><a class=".+?" title="(.+?)" href=".+?">.+?</a>''').findall(content)
         for name, url in match:
                 addon.add_directory({'mode': 'GetLinks', 'url': 'http://www.voirfilms.org/' + url, 'listitem': listitem, 'text': name.strip().replace('saison', 'Season').replace('VOSTFR', '').replace(',', '').replace('VF', '')}, {'title': name.strip().replace('saison', 'Season').replace('VOSTFR', '').replace(',', '').replace('VF', '')}, img=IconPath + 'icon.png',  fanart= 'http://orig10.deviantart.net/15a3/f/2015/194/c/0/all_13_doctors_by_simmonberesford-d915bw0.jpg')
-        for name in match1:
+        match = re.compile('''class="description132"><a class=".+?" title="(.+?)" href=".+?">.+?</a>''').findall(content)
+        for name in match:
                 name = name.strip().replace('saison ', '/season-').replace('Doctor ', 'doctor-').replace('Who ', 'who-').replace(' Episode ', '-episode-').replace('(1963) ', '1963').replace('VOSTFR', '').replace(',', '').replace('VF', '').replace(' ', '')
                 addon.add_directory({'mode': 'GetLinks3', 'url': 'http://tvonline.tw/' + name + '/', 'listitem': listitem, 'text': name.strip()}, {'title': name.strip().replace('/season-', 'Season ').replace('doctor-', 'Doctor ').replace('who-', 'Who ').replace('-episode-', ' Episode ').replace('1963', '(1963) ') + '   (tvonline)'}, img=IconPath + 'icon.png',  fanart= 'http://orig10.deviantart.net/15a3/f/2015/194/c/0/all_13_doctors_by_simmonberesford-d915bw0.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -95,19 +93,6 @@ def GetLinks(section, url, text):
                         addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
         for url in match4:
                 url = url.replace('iframe/', 'http://uptobox.com/') 
-                host = GetDomain(url)
-                if urlresolver.HostedMediaFile(url= url):
-                        addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
-        xbmcplugin.endOfDirectory(int(sys.argv[1]))
-
-def GetLinks4(section, url, text):
-        html = net.http_GET(url).content
-        listitem = GetMediaInfo(html)
-        content = html
-        match = re.compile('''<li class=""><a href="javascript:" onclick="(.+?)">.+?</a></li>''').findall(content)
-        listitem = GetMediaInfo(content)
-        for url in match:
-                url = url.replace("go_to(6,'", '').replace("go_to(5,'", '').replace("go_to(4,'", '').replace("go_to(3,'", '').replace("go_to(2,'", '').replace(';', '').replace(')', '').replace("'", '')
                 host = GetDomain(url)
                 if urlresolver.HostedMediaFile(url= url):
                         addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
@@ -194,8 +179,6 @@ elif mode == 'GetLinks2':
 	GetLinks2(section, url, text)
 elif mode == 'GetLinks3':
 	GetLinks3(section, url, text)
-elif mode == 'GetLinks4':
-	GetLinks4(section, url, text)
 elif mode == 'PlayVideo':
 	PlayVideo(url, listitem, text)
 elif mode == 'PlayVideo1':

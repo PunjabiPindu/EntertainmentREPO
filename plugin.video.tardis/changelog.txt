@@ -1,5 +1,6 @@
 [B]Version 0.0.7[/B]
 - added tvonline check at bottem on eps
+- code clean up
 
 [B]Version 0.0.6[/B]
 - fixed uptobox links
