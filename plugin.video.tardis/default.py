@@ -35,7 +35,6 @@ text = addon.queries.get('text', None)
 img = addon.queries.get('img', None)
 ##.replace('', '')## \s*? ##
 ################################################################################# Titles #################################################################################
-
 def GetTitles(url, text, img):
     try:
         html = net.http_GET(url).content
@@ -54,25 +53,61 @@ def GetTitles1(url, text, img):
         listitem = GetMediaInfo(html)
         content = html
         match = re.compile('''class="description132"><a class=".+?" title="(.+?)" href="(.+?)">.+?</a>''').findall(content)
+        match1 = re.compile('''class="description132"><a class=".+?" title="(.+?)" href=".+?">.+?</a>''').findall(content)
         for name, url in match:
                 addon.add_directory({'mode': 'GetLinks', 'url': 'http://www.voirfilms.org/' + url, 'listitem': listitem, 'text': name.strip().replace('saison', 'Season').replace('VOSTFR', '').replace(',', '').replace('VF', '')}, {'title': name.strip().replace('saison', 'Season').replace('VOSTFR', '').replace(',', '').replace('VF', '')}, img=IconPath + 'icon.png',  fanart= 'http://orig10.deviantart.net/15a3/f/2015/194/c/0/all_13_doctors_by_simmonberesford-d915bw0.jpg')
+        for name in match1:
+                name = name.strip().replace('saison ', '/season-').replace('Doctor ', 'doctor-').replace('Who ', 'who-').replace(' Episode ', '-episode-').replace('(1963) ', '1963').replace('VOSTFR', '').replace(',', '').replace('VF', '').replace(' ', '')
+                addon.add_directory({'mode': 'GetLinks3', 'url': 'http://tvonline.tw/' + name + '/', 'listitem': listitem, 'text': name.strip()}, {'title': name.strip().replace('/season-', 'Season ').replace('doctor-', 'Doctor ').replace('who-', 'Who ').replace('-episode-', ' Episode ').replace('1963', '(1963) ') + '   (tvonline)'}, img=IconPath + 'icon.png',  fanart= 'http://orig10.deviantart.net/15a3/f/2015/194/c/0/all_13_doctors_by_simmonberesford-d915bw0.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
     except:
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+def GetLinks3(section, url, text):
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        match = re.compile("'(http://.+?)'").findall(content)
+        listitem = GetMediaInfo(content)
+        for url in match:
+                host = GetDomain(url)
+                if urlresolver.HostedMediaFile(url= url):
+                        addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 def GetLinks(section, url, text):
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
+        match5 = re.compile('''<li class=""><a href="javascript:" onclick="go_to(.+?,'(.+?)');">.+?</a></li>''').findall(content)
         match3 = re.compile('<frame scrolling="auto" frameborder="0" id="play_bottom" name="bottom" src="(.+?)"/>').findall(content)
         match2 = re.compile('<a href="(.+?)" target="_blank">.+?</a><br />').findall(content)
         match = re.compile('<a href="(.+?)" target="filmPlayer"').findall(content)
         match1 = re.compile('<a href="https://uptostream.com/iframe/(.+?)" target="filmPlayer"').findall(content)
+        match4 = re.compile('<a href="https://uptostream.com/(.+?)" target="filmPlayer"').findall(content)
         listitem = GetMediaInfo(content)
         for url in match1:
                 addon.add_directory({'mode': 'GetLinks1', 'url': 'http://uptobox.com/' + url, 'listitem': listitem, 'text': text}, {'title':  'Direct link : ' + text}, img= 'http://tvcultura.cmais.com.br/doctorwho/setimoano/img/main/content/monsters/the-daleks.png', fanart=FanartPath + 'fanart.jpg')
-        for url in match + match2 + match3:
+        for url in match + match2 + match3+ match5:
                 url = url.replace('iframe/', '') 
+                host = GetDomain(url)
+                if urlresolver.HostedMediaFile(url= url):
+                        addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
+        for url in match4:
+                url = url.replace('iframe/', 'http://uptobox.com/') 
+                host = GetDomain(url)
+                if urlresolver.HostedMediaFile(url= url):
+                        addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+def GetLinks4(section, url, text):
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        match = re.compile('''<li class=""><a href="javascript:" onclick="(.+?)">.+?</a></li>''').findall(content)
+        listitem = GetMediaInfo(content)
+        for url in match:
+                url = url.replace("go_to(6,'", '').replace("go_to(5,'", '').replace("go_to(4,'", '').replace("go_to(3,'", '').replace("go_to(2,'", '').replace(';', '').replace(')', '').replace("'", '')
                 host = GetDomain(url)
                 if urlresolver.HostedMediaFile(url= url):
                         addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
@@ -134,7 +169,6 @@ def GetMediaInfo(html):
 
 def MainMenu(url, img, text):    #homescreenserie
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/serie/doctor-who-1963.htm'}, {'title':  '[COLOR blue][B]Doctor Who 1963 full seasons[/B] [/COLOR]>>'}, img= 'http://1.bp.blogspot.com/-5WMWaTN3PhI/UCq1fVONUPI/AAAAAAAAAeI/LObWh0iknb0/s1600/Dalek.png', fanart= 'http://i.imgur.com/VaMfWZw.jpg')
-        #addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/serie/doctor-who-2005.htm'}, {'title':  '[COLOR blue][B]Doctor Who 2005[/B] [/COLOR]>>'}, img= 'http://1.bp.blogspot.com/-5WMWaTN3PhI/UCq1fVONUPI/AAAAAAAAAeI/LObWh0iknb0/s1600/Dalek.png', fanart= 'http://i.imgur.com/VaMfWZw.jpg')
 
         addon.add_directory({'mode': 'GetLinks', 'section': 'ALL', 'url': BASE_URL1 + '/35130/dr-who-and-the-daleks-1965-720p-brrip-x264-playnow/','img': 'img','text': 'title'}, {'title':  'Dr Who and the Daleks 1965'}, img= 'http://oneclickwatch.ws/wp-content/uploads/2013/05/Dr.-Who-and-the-Daleks-1965-poster.jpg', fanart= 'http://i.imgur.com/VaMfWZw.jpg')
         addon.add_directory({'mode': 'GetLinks', 'section': 'ALL', 'url': BASE_URL1 + '/35191/daleks-invasion-earth-2150-a-d-1966-720p-brrip-x264-playnow/','img': 'img','text': 'title'}, {'title':  'Daleks Invasion Earth 2150 A.D 1966'}, img= 'http://images2.static-bluray.com/movies/covers/67061_front.jpg', fanart= 'http://i.imgur.com/VaMfWZw.jpg')
@@ -158,6 +192,10 @@ elif mode == 'GetLinks1':
 	GetLinks1(section, url, text)
 elif mode == 'GetLinks2':
 	GetLinks2(section, url, text)
+elif mode == 'GetLinks3':
+	GetLinks3(section, url, text)
+elif mode == 'GetLinks4':
+	GetLinks4(section, url, text)
 elif mode == 'PlayVideo':
 	PlayVideo(url, listitem, text)
 elif mode == 'PlayVideo1':
