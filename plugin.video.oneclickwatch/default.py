@@ -255,6 +255,7 @@ def Search1(text, img, section, query, name):
         content = html
         match1 = re.compile('<h2 class="title">(.+?)</h2>.+?.+?src="(.+?)"', re.DOTALL).findall(html)
         match2 = re.compile('href="(http://uptobox.com/.+?)"').findall(content)
+        match4 = re.compile('"(http://uptobox.com/.+?)"').findall(content)
         match3 = re.compile('<meta name="description" itemprop="description" content="(.+?)" />').findall(content)
         match = re.compile('<a href="(.+?)" rel="nofollow"', re.DOTALL).findall(html)
         listitem = GetMediaInfo(content)
@@ -264,7 +265,7 @@ def Search1(text, img, section, query, name):
                 addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title': '[COLOR blue][B]' + name.replace('http://www.tvguide.com/', '').replace('http://www.tvrage.com/', '').replace('/', ' ').replace(';', ' ').replace('-', ' ').replace('tvshows', ' ').replace('_', ' ') + '[/B][/COLOR]' }, img= img, fanart=FanartPath + 'fanart.jpg')
         for url in match2:
                 addon.add_directory({'mode': 'GetLinks1', 'url':  url, 'listitem': listitem , 'img': img, 'text': text }, {'title':  '[COLOR powderblue][B]UpToStream : direct link to[/B][/COLOR]' + ' - ' + text},img=img,  fanart=FanartPath + 'fanart.jpg')
-        for url in match:
+        for url in match + match4:
                 host = GetDomain(url)
                 if urlresolver.HostedMediaFile(url= url):
                         title = url.rpartition('/')
