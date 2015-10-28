@@ -168,24 +168,6 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.moviesxl" version="1.0.2" name="Movies XL" provider-name="Mr Entertainment">
-    <requires>
-        <import addon="xbmc.python" version="2.1.0"/>
-        <import addon="script.module.TheYid.common" version="0.1.1"/>
-        <import addon="script.module.urlresolver"  version="2.0.9"/>
-        <import addon="script.module.simplejson" version="3.3.0"/>
-    </requires>
-    <extension point="xbmc.python.pluginsource" library="default.py">
-        <provides>video</provides>
-    </extension>
-    <extension point="xbmc.addon.metadata">
-        <summary>Movies site</summary>
-        <description>A wide selection of movies from Movies XL...</description>
-        <platform>all</platform>
-        <disclaimer lang="en"></disclaimer>
-    </extension>
-</addon>
-
 <addon id="plugin.video.myvideolinks" version="5.0.6" name="Prime Links" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
@@ -234,24 +216,6 @@
     <extension point="xbmc.addon.metadata">
         <summary>Movies site</summary>
         <description>A wide selection of movies from Online HD Movies...</description>
-        <platform>all</platform>
-        <disclaimer lang="en"></disclaimer>
-    </extension>
-</addon>
-
-<addon id="plugin.video.onlinemoviesis" version="0.0.1" name="OnlineMovies.is" provider-name="Mr Entertainment">
-    <requires>
-        <import addon="xbmc.python" version="2.1.0"/>
-        <import addon="script.module.TheYid.common" version="0.1.1"/>
-        <import addon="script.module.urlresolver"  version="2.0.9"/>
-        <import addon="script.module.simplejson" version="3.3.0"/>
-    </requires>
-    <extension point="xbmc.python.pluginsource" library="default.py">
-        <provides>video</provides>
-    </extension>
-    <extension point="xbmc.addon.metadata">
-        <summary>Movies site</summary>
-        <description>A wide selection of movies from Online Movies...</description>
         <platform>all</platform>
         <disclaimer lang="en"></disclaimer>
     </extension>
@@ -328,7 +292,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.tvonline" version="0.0.4" name="TvOnline" provider-name="Mr Entertainment">
+<addon id="plugin.video.tvonlineER" version="0.0.5" name="TvOnline" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
