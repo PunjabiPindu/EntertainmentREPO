@@ -179,7 +179,7 @@ def MainMenu(url, text):    #homescreenserie
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/most-popular/'}, {'title':  '[COLOR blue][B]Most Popular[/B] [/COLOR]>>'}, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
         addon.add_directory({'mode': 'GetTitles3', 'section': 'ALL', 'url': BASE_URL + '/tv-listings/a/'}, {'title':  '[COLOR blue][B]A to Z[/B] [/COLOR]>>'}, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
         addon.add_directory({'mode': 'GetTitles4', 'section': 'ALL', 'url': BASE_URL + '/genres/action/'}, {'title':  '[COLOR blue][B]Genres[/B] [/COLOR]>>'}, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
-        addon.add_directory({'mode': 'GetSearchQuery'},  {'title':  '[B][COLOR green]Search[/B][/COLOR] >>'}, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetSearchQuery'},  {'title':  '[B][COLOR green]Search[/B][/COLOR] >>'}, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 #################################################################################################################################################################################
