@@ -39,7 +39,7 @@ def GetTitles3(url, text):
         content = html
         match = re.compile('href="http://tvonline.tw/tv-listings(.+?)">(.+?)<').findall(content)
         for url, name in match:
-                name = name.replace('Listings', '[COLOR blue][B]Listings A to Z[/COLOR][/B]')
+                name = name.replace('TV Listings', '[COLOR blue][B]TV Listings A to Z[/COLOR][/B]')
                 addon.add_directory({'mode': 'GetTitles', 'url': 'http://tvonline.tw/tv-listings' + url, 'listitem': listitem, 'text': name.strip()}, {'title': name.strip()}, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
     except:
@@ -58,7 +58,19 @@ def GetTitles4(url, text):
     except:
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
+def GetTitles5(url, text):
+    try:
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        match = re.compile('<ul><li><a href="http://tvonline.tw/(.+?)" title="Wtach.+?online">(.+?)</a></li></ul>').findall(content)
+        for url, name in match:
+                addon.add_directory({'mode': 'GetLinks', 'url': 'http://tvonline.tw/' + url, 'listitem': listitem, 'text': name.strip()}, {'title': name.strip()}, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
+    except:
+       	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
 
 def GetTitles(url, text):
     try:
@@ -77,7 +89,7 @@ def GetTitles1(url, text):
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
-        match = re.compile("<h3><a href='http://tvonline.tw/(.+?)' title='.+?'>(.+?)</a></h3>").findall(content)
+        match = re.compile("<h3><a href='http://tvonline.tw/(.+?)' title='Wtach.+?online'>(.+?)</a></h3>").findall(content)
         for url, name in match:
                 addon.add_directory({'mode': 'GetTitles2', 'url': 'http://tvonline.tw/' + url, 'listitem': listitem, 'text': name.strip()}, {'title': name.strip()}, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -162,7 +174,7 @@ def Search(query):
 ###################################################################### menus ####################################################################################################
 
 def MainMenu(url, text):    #homescreenserie
-        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/new-episodes/'}, {'title':  '[COLOR blue][B]New Episodes[/B] [/COLOR]>>'}, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
+        addon.add_directory({'mode': 'GetTitles5', 'section': 'ALL', 'url': BASE_URL + '/new-episodes/'}, {'title':  '[COLOR blue][B]New Episodes[/B] [/COLOR]>>'}, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/latest-added/'}, {'title':  '[COLOR blue][B]Latest Added[/B] [/COLOR]>>'}, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/most-popular/'}, {'title':  '[COLOR blue][B]Most Popular[/B] [/COLOR]>>'}, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
         addon.add_directory({'mode': 'GetTitles3', 'section': 'ALL', 'url': BASE_URL + '/tv-listings/a/'}, {'title':  '[COLOR blue][B]A to Z[/B] [/COLOR]>>'}, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
@@ -184,6 +196,8 @@ elif mode == 'GetTitles3':
 	GetTitles3(url, text)
 elif mode == 'GetTitles4': 
 	GetTitles4(url, text)
+elif mode == 'GetTitles5': 
+	GetTitles5(url, text)
 elif mode == 'GetLinks':
 	GetLinks(section, url, text)
 elif mode == 'PlayVideo':
