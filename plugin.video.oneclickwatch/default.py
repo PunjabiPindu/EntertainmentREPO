@@ -275,7 +275,7 @@ def Search1(text, img, section, query, name):
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in OCW [/B][/COLOR],[COLOR blue][B]Checking next site[/B][/COLOR],"")")
     try:
-        url = 'http://movies.myvideolinks.xyz/' + query + '/'
+        url = 'http://new.myvideolinks.xyz/' + query + '/'
         url = url.replace(' ', '-')
         print url
         html = net.http_GET(url).content
@@ -408,7 +408,7 @@ def Search2(img, text, query):
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]No Links in OCW [/B][/COLOR],[COLOR blue][B]Trying Backup sites[/B][/COLOR],7000,"")")
     try:
-        url = 'http://movies.myvideolinks.xyz/' + query + '/'
+        url = 'http://new.myvideolinks.xyz/' + query + '/'
         url = url.replace(' ', '-')
         print url
         html = net.http_GET(url).content

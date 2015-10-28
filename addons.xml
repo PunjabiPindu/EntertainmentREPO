@@ -111,7 +111,7 @@
 		</extension>
 	</addon>
 
-<addon id="plugin.video.allinone" version="8.4.4" name="Entertainment [COLOR firebrick][B]HUB[/B][/COLOR]" provider-name="Mr Entertainment">
+<addon id="plugin.video.allinone" version="8.4.5" name="Entertainment [COLOR firebrick][B]HUB[/B][/COLOR]" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
@@ -186,7 +186,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.myvideolinks" version="5.0.5" name="Prime Links" provider-name="Mr Entertainment">
+<addon id="plugin.video.myvideolinks" version="5.0.6" name="Prime Links" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
@@ -203,7 +203,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.oneclickwatch" version="1.4.4" name="[B]OCW[/B] [COLOR lemonchiffon]Reborn[/COLOR]" provider-name="Mr Entertainment">
+<addon id="plugin.video.oneclickwatch" version="1.4.5" name="[B]OCW[/B] [COLOR lemonchiffon]Reborn[/COLOR]" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
