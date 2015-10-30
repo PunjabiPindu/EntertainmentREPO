@@ -32,7 +32,7 @@ BASE_URL39 = 'http://www.onlinemoviesgold.com'
 BASE_URL40 = 'http://www.uwatchfree.net/'
 BASE_URL40a = 'http://www.uwatchfree.net/genres/'
 BASE_URL41 = 'http://www.episodes-tv.com/'
-BASE_URL42 = 'http://watchwrestling.ch/'
+BASE_URL42 = 'http://watchwrestling.to/'
 BASE_URL43 = 'http://www.princessmovies.tv/'
 BASE_URL44 = 'http://pullvideos.tv/'
 BASE_URL45 = 'http://watchfullepisode.com/'
@@ -42,7 +42,7 @@ BASE_URL48 = 'http://stream.myvideolinks.xyz/'
 BASE_URL49 = 'http://www.moviefone.com/'
 BASE_URL50 = 'http://movie900.com/'
 BASE_URL51 = 'http://futbik.com/'
-BASE_URL10a = 'http://movies.myvideolinks.xyz/'
+BASE_URL10a = 'http://new.myvideolinks.xyz/'
 BASE_URL52 = 'http://moviesmaxim.com/'
 BASE_URL53 = 'http://watchseries-online.li/'
 BASE_URL54 = 'http://free-download.link/'
@@ -154,6 +154,29 @@ def GetTitles67c(url, text):
                 url = text + url
                 addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem, 'text': url}, {'title': name.strip().replace('../', 'Links').replace('.', ' ').replace('_MovieFarsi', '').replace('com', ' ')}, img= 'https://openclipart.org/image/800px/svg_to_png/21303/dodom01-old-television.png', fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+#-----------------------------------------------------------#
+
+def GetTitles67d(url, text, urlurl):
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        match = re.compile('<a href="(.+?)">(.+?)/</a>.+?-').findall(content)
+        for url, name in match:
+                url = urlurl + 'wrestling/' + url
+                addon.add_directory({'mode': 'GetTitles67e', 'url':  url, 'listitem': listitem, 'urlurl': urlurl, 'text': url}, {'title': name.strip()}, img= 'https://openclipart.org/image/800px/svg_to_png/21303/dodom01-old-television.png', fanart=FanartPath + 'fanart.png')
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+def GetTitles67e(url, text, urlurl):
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        match = re.compile('<a href="(.+?)">(.+?)</a>.+?').findall(content)
+        for url, name in match:
+                url = text + url
+                addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem, 'text': url}, {'title': name.strip().replace('../', 'Links').replace('.', ' ').replace('_MovieFarsi', '').replace('com', ' ')}, img= 'https://openclipart.org/image/800px/svg_to_png/21303/dodom01-old-television.png', fanart=FanartPath + 'fanart.png')
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
 
 #------------------------------------------------------------------------------- watchitvideos ------------------------------------------------------------------------------#
 
@@ -2329,36 +2352,23 @@ def KidsMenu():   #kids
 #----------------------------sport------------------------------sport----------------------sport---------------------------sport------------------------------sport--------#
 
 def SportMenu():   #sport
+        addon.add_directory({'mode': 'GetTitles67d', 'section': 'ALL', 'url': BASE_URL67d + '/wrestling/', 'urlurl': BASE_URL67d}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR darkorange][B]Wrestling HD[/B][/COLOR] [COLOR blue](Shows Shows Shows) [/COLOR] >>'}, img= 'https://openclipart.org/image/800px/svg_to_png/21303/dodom01-old-television.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles51', 'section': 'ALL', 'url': BASE_URL51 + '/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR blue][B]Latest Football Highlights[/B][/COLOR]  [COLOR lime](futbik) [/COLOR] >>'}, img=IconPath + 'fb1.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles42', 'section': 'ALL', 'url': BASE_URL42 + '/category/wwe/',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest WWE[/B][/COLOR]  [COLOR gold](watchwrestling.ch) [/COLOR] >>'}, img=IconPath + 'ww.png', fanart=FanartPath + 'fanart.png')
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest WWE[/B][/COLOR]  [COLOR gold](watchwrestling) [/COLOR] >>'}, img=IconPath + 'ww.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles42', 'section': 'ALL', 'url': BASE_URL42 + '/category/wwenetwork/',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest WWE Network[/B][/COLOR]  [COLOR gold](watchwrestling.ch) [/COLOR] >>'}, img=IconPath + 'ww.png', fanart=FanartPath + 'fanart.png')
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest WWE Network[/B][/COLOR]  [COLOR gold](watchwrestling) [/COLOR] >>'}, img=IconPath + 'ww.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles42', 'section': 'ALL', 'url': BASE_URL42 + '/category/tna/',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest TNA[/B][/COLOR]  [COLOR gold](watchwrestling.ch) [/COLOR] >>'}, img=IconPath + 'ww.png', fanart=FanartPath + 'fanart.png')
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest TNA[/B][/COLOR]  [COLOR gold](watchwrestling) [/COLOR] >>'}, img=IconPath + 'ww.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles42', 'section': 'ALL', 'url': BASE_URL42 + '/category/weekly-indys/',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest Weekly Indys[/B][/COLOR]  [COLOR gold](watchwrestling.ch) [/COLOR] >>'}, img=IconPath + 'ww.png', fanart=FanartPath + 'fanart.png')
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest Weekly Indys[/B][/COLOR]  [COLOR gold](watchwrestling) [/COLOR] >>'}, img=IconPath + 'ww.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles42', 'section': 'ALL', 'url': BASE_URL42 + '/category/other-sports/',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest MMA & Boxing[/B][/COLOR]  [COLOR gold](watchwrestling.ch) [/COLOR] >>'}, img=IconPath + 'ww.png', fanart=FanartPath + 'fanart.png')
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest MMA & Boxing[/B][/COLOR]  [COLOR gold](watchwrestling) [/COLOR] >>'}, img=IconPath + 'ww.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles42', 'section': 'ALL', 'url': BASE_URL42 + '/category/njpw/',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest NJPW[/B][/COLOR]  [COLOR gold](watchwrestling.ch) [/COLOR] >>'}, img=IconPath + 'ww.png', fanart=FanartPath + 'fanart.png')
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest NJPW[/B][/COLOR]  [COLOR gold](watchwrestling) [/COLOR] >>'}, img=IconPath + 'ww.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles42', 'section': 'ALL', 'url': BASE_URL42 + '/category/archives/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Archives & More[/B][/COLOR]  [COLOR gold](watchwrestling.ch) [/COLOR] >>'}, img=IconPath + 'ww.png', fanart=FanartPath + 'fanart.png')
-        addon.add_directory({'mode': 'GetTitles63', 'section': 'ALL', 'url': BASE_URL63 + '/?cat=2',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest WWE[/B][/COLOR]  [COLOR darkturquoise](wrestlefeeds) [/COLOR] >>'}, img=IconPath + 'wf.png', fanart=FanartPath + 'fanart.png')
-        addon.add_directory({'mode': 'GetTitles63', 'section': 'ALL', 'url': BASE_URL63 + '/?cat=10',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest WWE Network[/B][/COLOR]  [COLOR darkturquoise](wrestlefeeds) [/COLOR] >>'}, img=IconPath + 'wf.png', fanart=FanartPath + 'fanart.png')
-        addon.add_directory({'mode': 'GetTitles63', 'section': 'ALL', 'url': BASE_URL63 + '/?cat=20',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest TNA[/B][/COLOR]  [COLOR darkturquoise](wrestlefeeds) [/COLOR] >>'}, img=IconPath + 'wf.png', fanart=FanartPath + 'fanart.png')
-        addon.add_directory({'mode': 'GetTitles63', 'section': 'ALL', 'url': BASE_URL63 + '/?cat=15',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest NJPW[/B][/COLOR]  [COLOR darkturquoise](wrestlefeeds) [/COLOR] >>'}, img=IconPath + 'wf.png', fanart=FanartPath + 'fanart.png')
-        addon.add_directory({'mode': 'GetTitles63', 'section': 'ALL', 'url': BASE_URL63 + '/?cat=12',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest Weekly Indy[/B][/COLOR]  [COLOR darkturquoise](wrestlefeeds) [/COLOR] >>'}, img=IconPath + 'wf.png', fanart=FanartPath + 'fanart.png')
-        addon.add_directory({'mode': 'GetTitles63', 'section': 'ALL', 'url': BASE_URL63 + '/?cat=16',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest UFC[/B][/COLOR]  [COLOR darkturquoise](wrestlefeeds) [/COLOR] >>'}, img=IconPath + 'wf.png', fanart=FanartPath + 'fanart.png')
-        addon.add_directory({'mode': 'GetTitles63', 'section': 'ALL', 'url': BASE_URL63 + '/?cat=17',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest Other Sports[/B][/COLOR]  [COLOR darkturquoise](wrestlefeeds) [/COLOR] >>'}, img=IconPath + 'wf.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetSearchQuery'},  {'title':  '[COLOR lemonchiffon][B]Watch Wrestling[/B][/COLOR] : [COLOR green]Search[/COLOR]'}, img=IconPath + 'searches.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetSearchQuery12'},  {'title':  '[COLOR khaki][B]M[/COLOR][COLOR blue]E[/COLOR][COLOR salmon]G[/COLOR][COLOR darkseagreen]A[/COLOR][/B] [COLOR blue][B]E[/B][/COLOR]ntertainment [COLOR blue][B]HUB[/B][/COLOR] : [COLOR green]Search[/COLOR] (Sport)'}, img=IconPath + 'mes.png', fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -3725,6 +3735,10 @@ elif mode == 'GetTitles67b':
 	GetTitles67b(url, text)
 elif mode == 'GetTitles67c': 
 	GetTitles67c(url, text)
+elif mode == 'GetTitles67d': 
+	GetTitles67d(url, text, urlurl)
+elif mode == 'GetTitles67e': 
+	GetTitles67e(url, text, urlurl)
 elif mode == 'GetTitles68': 
 	GetTitles68(section, url)
 elif mode == 'GetTitles68a': 

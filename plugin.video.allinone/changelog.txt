@@ -1,3 +1,18 @@
+[B]Version 8.4.6[/B] 
+- changed watchwrestling.ch to watchwrestling.to
+- removed some stuff
+
+[B]Version 8.4.5[/B] 
+- @PunjabiPindu update thanks mate
+- Changed baseurl to remove // errors from OMG and W4ufree sites
+- Updated uwatchfree category GetTitles slight change in page html
+- Fixed OMG category listings to match new URL (they added /categeory/
+- before each section in URL)
+- Added OMG Punjabi Movies section... was buried under Others...
+-
+- @TheYid009 updates
+- fixed prime links
+
 [B]Version 8.4.4[/B] 
 - added tvonline
 

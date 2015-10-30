@@ -1,5 +1,7 @@
-[B]Version 5.0.5[/B]
+[B]Version 5.0.6[/B]
+- url change
 
+[B]Version 5.0.5[/B]
 - url change
 
 [B]Version 5.0.4[/B]
