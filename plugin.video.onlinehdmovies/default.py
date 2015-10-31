@@ -49,7 +49,7 @@ def GetLinks(section, url):
         listitem = GetMediaInfo(html)
         content = html
         match = re.compile('<div id=".+?"><IFRAME SRC="(.+?)" FRAMEBORDER=.+? MARGINWIDTH=.+? MARGINHEIGHT=.+? SCROLLING=.+? WIDTH=.+? HEIGHT=.+?></IFRAME></div>').findall(content)
-        match1 = re.compile('<center><a href="(.+?)" target="_blank"><strong><span style=".+?">.+?</span></strong></a></center>').findall(content)
+        match1 = re.compile('<center><a style=".+?" href="(.+?)" target="_blank">').findall(content)
         match2 = re.compile('<center><a href="(https://openload.io.+?)" target="_blank"><strong><span style=".+?">.+?</span></strong></a></center>').findall(content)
         match3 = re.compile('<p>(.+?)<A HREF=".+?">.+?</A></p>').findall(content)
         listitem = GetMediaInfo(content)

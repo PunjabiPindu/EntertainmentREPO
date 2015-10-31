@@ -36,7 +36,10 @@ def GetTitles(url, text, img):
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
+        match1 = re.compile("<br/>\s*?Synopsis: (.+?)\s*?</div>").findall(content)
         match = re.compile("<h3><a href='http://tvonline.tw/(.+?)' title='.+?'>(.+?)</a></h3> <ul><li>\s*?<a href='http://tvonline.tw/.+?' title='.+?'>").findall(content)
+        for name in match1:
+                addon.add_directory({'mode': 'GetLinks', 'url': name, 'listitem': listitem, 'text': name.strip(), 'img' : img}, {'title': '[COLOR blue][B]' + name.strip() + '[/COLOR][/B]'}, img= img, fanart=FanartPath + 'fanart.jpg')
         for url, name in match:
                 addon.add_directory({'mode': 'GetTitles1', 'url': 'http://tvonline.tw/' + url, 'listitem': listitem, 'text': name.strip(), 'img' : img}, {'title': name.strip()}, img= img, fanart=FanartPath + 'fanart.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -48,7 +51,10 @@ def GetTitles1(url, text, img):
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
+        match1 = re.compile("<br/>\s*?Synopsis: (.+?)\s*?</div>").findall(content)
         match = re.compile("<li><a href='http://tvonline.tw/(.+?)' title='Wtach.+?online'><strong>(.+?)</strong>(.+?)</a></li>").findall(content)
+        for name in match1:
+                addon.add_directory({'mode': 'GetLinks', 'url': name, 'listitem': listitem, 'text': name.strip(), 'img' : img}, {'title': '[COLOR blue][B]' + name.strip() + '[/COLOR][/B]'}, img= img, fanart=FanartPath + 'fanart.jpg')
         for url, name, name1 in match:
                 addon.add_directory({'mode': 'GetLinks', 'url': 'http://tvonline.tw/' + url, 'listitem': listitem, 'text': name.strip(), 'img' : img}, {'title': name.strip() + ' ' + name1}, img= img, fanart=FanartPath + 'fanart.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -114,6 +120,7 @@ def MainMenu(url, img, text):    #homescreenserie
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/he-man-and-the-masters-of-the-universe-1984/', 'img' : 'http://3.bp.blogspot.com/-H5xQKNYJryc/UTdtgk-s4OI/AAAAAAAAFuE/f3pHLmpverU/s1600/He-Man.jpg'}, {'title':  '[COLOR gold][B]He man and the masters of the universe (1984)[/B] [/COLOR]>>'}, img= 'http://3.bp.blogspot.com/-H5xQKNYJryc/UTdtgk-s4OI/AAAAAAAAFuE/f3pHLmpverU/s1600/He-Man.jpg', fanart= 'http://www.posters57.com/images/He_Man.jpg=600.jpeg')
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/dungeons-dragons-1983/', 'img' : 'http://ia.media-imdb.com/images/M/MV5BMTYxMzY4OTY0OV5BMl5BanBnXkFtZTcwMTgxODkzMQ@@._V1_SY317_CR10,0,214,317_AL_.jpg'}, {'title':  '[COLOR gold][B]Dungeons and Dragons (1983)[/B] [/COLOR]>>'}, img= 'http://ia.media-imdb.com/images/M/MV5BMTYxMzY4OTY0OV5BMl5BanBnXkFtZTcwMTgxODkzMQ@@._V1_SY317_CR10,0,214,317_AL_.jpg', fanart= 'http://www.lifedaily.com/wp-content/uploads/2013/05/Dungeons-Dragons-1983.jpg')
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/transformers-1984/', 'img' : 'http://ia.media-imdb.com/images/M/MV5BMTg0NTc4NzA2MF5BMl5BanBnXkFtZTcwMDc0NTQyMQ@@._V1._CR19,2,308,430_SY317_CR6,0,214,317_AL_.jpg'}, {'title':  '[COLOR gold][B]Transformers (1984)[/B] [/COLOR]>>'}, img= 'http://ia.media-imdb.com/images/M/MV5BMTg0NTc4NzA2MF5BMl5BanBnXkFtZTcwMDc0NTQyMQ@@._V1._CR19,2,308,430_SY317_CR6,0,214,317_AL_.jpg', fanart= 'http://www.geekworldordersite.com/blog/wp-content/uploads/2013/07/G1_Logo-1024x689.jpg')
+        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/mister-t-1983/', 'img' : 'http://ecx.images-amazon.com/images/I/51ilh4OzLAL.jpg'}, {'title':  '[COLOR gold][B]Mr. T (1983)[/B] [/COLOR]>>'}, img= 'http://ecx.images-amazon.com/images/I/51ilh4OzLAL.jpg', fanart= 'http://sp4.fotolog.com/photo/4/33/41/losochentas_com/1173293358_f.jpg')
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/top-cat-1961/', 'img' : 'http://www.newkadia.com/Covers/L/T/Top%20Cat%201961%20series/topcat1961series21.jpg'}, {'title':  '[COLOR gold][B]Top Cat (1961)[/B] [/COLOR]>>'}, img= 'http://www.newkadia.com/Covers/L/T/Top%20Cat%201961%20series/topcat1961series21.jpg', fanart= 'http://atbishopsgate.com/wp-content/uploads/2014/07/Top-Cat-17.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
