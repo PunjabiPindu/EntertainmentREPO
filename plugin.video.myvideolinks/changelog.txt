@@ -1,3 +1,6 @@
+[B]Version 5.0.7[/B]
+- small fix
+
 [B]Version 5.0.6[/B]
 - url change
 
