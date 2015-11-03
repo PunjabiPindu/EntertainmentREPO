@@ -111,7 +111,7 @@
 		</extension>
 	</addon>
 
-<addon id="plugin.video.allinone" version="8.4.7" name="Entertainment [COLOR firebrick][B]HUB[/B][/COLOR]" provider-name="Mr Entertainment">
+<addon id="plugin.video.allinone" version="8.4.8" name="Entertainment [COLOR firebrick][B]HUB[/B][/COLOR]" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
@@ -133,7 +133,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.amsER" version="0.0.1" name="All Movies Stream" provider-name="Mr Entertainment">
+<addon id="plugin.video.amsER" version="0.0.2" name="All Movies Stream" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
@@ -168,7 +168,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.coolmoviezoneER" version="0.0.1" name="Cool Movie Zone" provider-name="Mr Entertainment">
+<addon id="plugin.video.coolmoviezoneER" version="0.0.2" name="Cool Movie Zone" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
@@ -219,7 +219,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.oneclickwatch" version="1.4.5" name="[B]OCW[/B] [COLOR lemonchiffon]Reborn[/COLOR]" provider-name="Mr Entertainment">
+<addon id="plugin.video.oneclickwatch" version="1.4.6" name="[B]OCW[/B] [COLOR lemonchiffon]Reborn[/COLOR]" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>

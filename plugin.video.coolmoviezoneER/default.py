@@ -62,10 +62,10 @@ def GetTitles3(url, text, img):
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
-        match = re.compile('<div style=".+?" class="wp-caption alignnone"><img class="" src="(.+?)" alt="(.+?)" width=".+?" height=".+?" /><p class="wp-caption-text">.+?</p></div>\s*?<p> <a href="(.+?)#.+?"').findall(content)
+        match = re.compile('<div style=".+?" class="wp-caption alignnone"><img class="" src="(.+?)" alt="(.+?)" width=".+?" height=".+?" /><p class="wp-caption-text">(.+?)</p></div').findall(content)
         match1 = re.compile('''rel="next" href="(.+?)">.+?</a>''').findall(content)
         for img, name, url in match:
-                addon.add_directory({'mode': 'GetLinks', 'url': 'http://coolmoviezone.org/' + url, 'listitem': listitem, 'text': name.strip(), 'img': img}, {'title': name.strip()}, img= img, fanart=FanartPath + 'fanart.jpg')
+                addon.add_directory({'mode': 'GetLinks', 'url': 'http://coolmoviezone.org/' + url.replace('(', '-').replace(')', '-') + '/', 'listitem': listitem, 'text': name.strip(), 'img': img}, {'title': name.strip()}, img= img, fanart=FanartPath + 'fanart.jpg')
         for url in match1:
                 addon.add_directory({'mode': 'GetTitles3', 'url': url, 'listitem': listitem, 'text': url}, {'title': 'Next Page...'}, img= 'http://raumatiroadsurgery.co.nz/img/arrow.png', fanart=FanartPath + 'fanart.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -90,10 +90,10 @@ def GetTitles1(url, text, img):
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
-        match = re.compile('<a href="http://coolmoviezone.org/(.+?)" class="thumbnail-wrapper"><img src="(.+?)".+?<a href="http://coolmoviezone.org/.+?" rel="bookmark">(.+?)\s*?<').findall(content)
+        match = re.compile('<a href="http://coolmoviezone.org/(.+?)" class="thumbnail-wrapper"><img src="(.+?)"').findall(content)
         match1 = re.compile('''rel="next" href="(.+?)">.+?</a>''').findall(content)
-        for url, img, name in match:
-                addon.add_directory({'mode': 'GetLinks', 'url': 'http://coolmoviezone.org/' + url, 'listitem': listitem, 'text': name.strip(), 'img': img}, {'title': name.strip()}, img= img, fanart=FanartPath + 'fanart.jpg')
+        for url, img in match:
+                addon.add_directory({'mode': 'GetLinks', 'url': 'http://coolmoviezone.org/' + url, 'listitem': listitem, 'text': url, 'img': img}, {'title': url.replace('-', ' ').replace('/', '')}, img= img, fanart=FanartPath + 'fanart.jpg')
         for url in match1:
                 addon.add_directory({'mode': 'GetTitles1', 'url': url, 'listitem': listitem, 'text': url}, {'title': 'Next Page...'}, img= 'http://raumatiroadsurgery.co.nz/img/arrow.png', fanart=FanartPath + 'fanart.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))

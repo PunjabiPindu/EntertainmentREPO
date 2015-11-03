@@ -49,10 +49,10 @@ def GetTitles1(url, text, img):
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
-        match = re.compile('''<li class="imgborder">\s*?<h2 class="widget-title" onclick="window.location = '(.+?)'">(.+?)</h2>\s*?<a href=".+?" title=".+?">\s*?<img src="(.+?)" alt=".+?" title=".+?" class="scale-with-grid"/>''').findall(content)
+        match = re.compile('''<a href="/film/(.+?)" title="(.+?)stream - movie stream">\s*?<img src="(.+?)"''').findall(content)
         match1 = re.compile('''<li class="cursorpointer" onclick="window.location = '.+?'"><a href="(.+?)">&raquo;</a></li>''').findall(content)
         for url, name, img in match:
-                addon.add_directory({'mode': 'GetLinks', 'url': 'http://www.all-movies-stream.com' + url, 'listitem': listitem, 'text': name.strip(), 'img': img}, {'title': name.strip()}, img= img, fanart=FanartPath + 'fanart.jpg')
+                addon.add_directory({'mode': 'GetLinks', 'url': 'http://www.all-movies-stream.com/film/' + url, 'listitem': listitem, 'text': name.strip(), 'img': img}, {'title': name.strip()}, img= img, fanart=FanartPath + 'fanart.jpg')
         for url in match1:
                 addon.add_directory({'mode': 'GetTitles1', 'url': 'http://www.all-movies-stream.com' + url, 'listitem': listitem, 'text': url}, {'title': 'Next Page...'}, img= 'http://raumatiroadsurgery.co.nz/img/arrow.png', fanart=FanartPath + 'fanart.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
