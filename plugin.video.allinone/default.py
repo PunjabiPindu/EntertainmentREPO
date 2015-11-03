@@ -173,7 +173,7 @@ def GetTitles67e(url, text, urlurl):
         content = html
         match = re.compile('<a href="(.+?)">(.+?)</a>.+?').findall(content)
         for url, name in match:
-                url = text + url
+                url = urlurl + 'wrestling/' + url
                 addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem, 'text': url}, {'title': name.strip().replace('../', 'Links').replace('.', ' ').replace('_MovieFarsi', '').replace('com', ' ')}, img= 'https://openclipart.org/image/800px/svg_to_png/21303/dodom01-old-television.png', fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
@@ -312,12 +312,15 @@ def GetTitles3(section, url, startPage= '1', numOfPages= '1'):
                         cm  = []
                         runstring = 'XBMC.Container.Update(plugin://plugin.video.allinone/?mode=Search11&query=%s)' %(name.strip())
         		cm.append(('[COLOR blue][B]E[/B][/COLOR]ntertainment [COLOR green]Search[/COLOR]', runstring))
-                        addon.add_directory({'mode': 'GetLinks', 'section': section, 'url': movieUrl}, {'title':  name.strip()}, contextmenu_items= cm, img= img, fanart=FanartPath + 'fanart.png')    
+                        addon.add_directory({'mode': 'GetLinks129', 'section': section, 'url': movieUrl}, {'title':  name.strip()}, contextmenu_items= cm, img= img, fanart=FanartPath + 'fanart.png')    
                 addon.add_directory({'mode': 'GetTitles3', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage1.png', fanart=FanartPath + 'fanart.png')
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site is down [/B][/COLOR],[COLOR blue][B]Please try a different site[/B][/COLOR],7000,"")")
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+		
 
+
+		
 #----------------------------------------------------------------------- links --------------------------------------------------------------------------------------#
 
 def GetTitles10(section, url, startPage= '1', numOfPages= '1'): 
@@ -1987,6 +1990,25 @@ def GetLinks23(section, url):
                 addon.add_directory({'mode': 'PlayVideo1', 'url':  url, 'listitem': listitem}, {'title':  'direct link : ' + name}, img= 'http://watchcartoononline.eu/themes/default/img/icon/logo.png', fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
+#------------------------------------------------------------------------------ moviz4u ---------------------------------------------------------------------------------#
+
+def GetLinks129(section, url):
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        match = re.compile('<form action="https?:\/\/www\.ezfilehost\.[a-z\.]{2,6}\/.+?" method="post".+?name="filename" type="hidden" value="(.+?)".*\s*?.*\s*?<input name="id" type="hidden" value="(.+?)"').findall(content)
+        for movieLink, addr  in match:
+                url = 'http://' + addr + '/HDMoviesPoint.com/' + movieLink
+                print 'Found HDMP' + str(url)
+                addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title':  'HDMP: direct link'}, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.png')
+        match1 = re.compile('<p><a href="(http:\/\/.+?)">.+?b>([A-Z].+?) Link</b>.+?</p>').findall(content)
+        listitem = GetMediaInfo(content)
+        for url, locker in match1:
+                host = GetDomain(url)
+                if urlresolver.HostedMediaFile(url= url):
+                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  locker }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.png')
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
 #------------------------------------------------------------------------------ OMG ---------------------------------------------------------------------------------#
 
 def GetLinks130(section, url):
@@ -2352,9 +2374,19 @@ def KidsMenu():   #kids
 #----------------------------sport------------------------------sport----------------------sport---------------------------sport------------------------------sport--------#
 
 def SportMenu():   #sport
-        addon.add_directory({'mode': 'GetTitles67d', 'section': 'ALL', 'url': BASE_URL67d + '/wrestling/', 'urlurl': BASE_URL67d}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR darkorange][B]Wrestling HD[/B][/COLOR] [COLOR blue](Shows Shows Shows) [/COLOR] >>'}, img= 'https://openclipart.org/image/800px/svg_to_png/21303/dodom01-old-television.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles51', 'section': 'ALL', 'url': BASE_URL51 + '/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR blue][B]Latest Football Highlights[/B][/COLOR]  [COLOR lime](futbik) [/COLOR] >>'}, img=IconPath + 'fb1.png', fanart=FanartPath + 'fanart.png')
+
+        addon.add_directory({'mode': 'GetTitles67e', 'section': 'ALL', 'url': BASE_URL67d + '/wrestling/Main%20Event/1/', 'urlurl': BASE_URL67d}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR darkorange][B]Main Event[/B][/COLOR] [COLOR blue](wrestling) [/COLOR] >>'}, img=IconPath + 'sww.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles67e', 'section': 'ALL', 'url': BASE_URL67d + '/wrestling/NXT/', 'urlurl': BASE_URL67d}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR darkorange][B]NXT[/B][/COLOR] [COLOR blue](wrestling) [/COLOR] >>'}, img=IconPath + 'sww.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles67e', 'section': 'ALL', 'url': BASE_URL67d + '/wrestling/Other/', 'urlurl': BASE_URL67d}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR darkorange][B]Other[/B][/COLOR] [COLOR blue](wrestling) [/COLOR] >>'}, img=IconPath + 'sww.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles67e', 'section': 'ALL', 'url': BASE_URL67d + '/wrestling/PPV/', 'urlurl': BASE_URL67d}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR darkorange][B]PPV[/B][/COLOR] [COLOR blue](wrestling) [/COLOR] >>'}, img=IconPath + 'sww.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles67e', 'section': 'ALL', 'url': BASE_URL67d + '/wrestling/Raw/2015/', 'urlurl': BASE_URL67d}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR darkorange][B]RAW[/B][/COLOR] [COLOR blue](wrestling) [/COLOR] >>'}, img=IconPath + 'sww.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles67e', 'section': 'ALL', 'url': BASE_URL67d + '/wrestling/Smackdown/2015/', 'urlurl': BASE_URL67d}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR darkorange][B]Smackdown[/B][/COLOR] [COLOR blue](wrestling) [/COLOR] >>'}, img=IconPath + 'sww.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles67e', 'section': 'ALL', 'url': BASE_URL67d + '/wrestling/TNA%20iMPACT/1/', 'urlurl': BASE_URL67d}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR darkorange][B]TNA iMPACT[/B][/COLOR] [COLOR blue](wrestling) [/COLOR] >>'}, img=IconPath + 'sww.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles67e', 'section': 'ALL', 'url': BASE_URL67d + '/wrestling/WWE%20Network/', 'urlurl': BASE_URL67d}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR darkorange][B]WWE Network[/B][/COLOR] [COLOR blue](wrestling) [/COLOR] >>'}, img=IconPath + 'sww.png', fanart=FanartPath + 'fanart.png')
+
+
         addon.add_directory({'mode': 'GetTitles42', 'section': 'ALL', 'url': BASE_URL42 + '/category/wwe/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lemonchiffon][B]Latest WWE[/B][/COLOR]  [COLOR gold](watchwrestling) [/COLOR] >>'}, img=IconPath + 'ww.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles42', 'section': 'ALL', 'url': BASE_URL42 + '/category/wwenetwork/',
@@ -3821,6 +3853,8 @@ elif mode == 'GetLinks55':
 	GetLinks55(section, url)
 elif mode == 'GetLinks55a':
 	GetLinks55a(section, url)
+elif mode == 'GetLinks129':
+        GetLinks129(section, url)
 elif mode == 'GetLinks130':
         GetLinks130(section, url)
 elif mode == 'GetLinks130a':
