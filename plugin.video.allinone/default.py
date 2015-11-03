@@ -312,12 +312,15 @@ def GetTitles3(section, url, startPage= '1', numOfPages= '1'):
                         cm  = []
                         runstring = 'XBMC.Container.Update(plugin://plugin.video.allinone/?mode=Search11&query=%s)' %(name.strip())
         		cm.append(('[COLOR blue][B]E[/B][/COLOR]ntertainment [COLOR green]Search[/COLOR]', runstring))
-                        addon.add_directory({'mode': 'GetLinks', 'section': section, 'url': movieUrl}, {'title':  name.strip()}, contextmenu_items= cm, img= img, fanart=FanartPath + 'fanart.png')    
+                        addon.add_directory({'mode': 'GetLinks129', 'section': section, 'url': movieUrl}, {'title':  name.strip()}, contextmenu_items= cm, img= img, fanart=FanartPath + 'fanart.png')    
                 addon.add_directory({'mode': 'GetTitles3', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage1.png', fanart=FanartPath + 'fanart.png')
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site is down [/B][/COLOR],[COLOR blue][B]Please try a different site[/B][/COLOR],7000,"")")
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+		
 
+
+		
 #----------------------------------------------------------------------- links --------------------------------------------------------------------------------------#
 
 def GetTitles10(section, url, startPage= '1', numOfPages= '1'): 
@@ -1985,6 +1988,25 @@ def GetLinks23(section, url):
         listitem = GetMediaInfo(content)
         for url, name in match:
                 addon.add_directory({'mode': 'PlayVideo1', 'url':  url, 'listitem': listitem}, {'title':  'direct link : ' + name}, img= 'http://watchcartoononline.eu/themes/default/img/icon/logo.png', fanart=FanartPath + 'fanart.png')
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+#------------------------------------------------------------------------------ moviz4u ---------------------------------------------------------------------------------#
+
+def GetLinks129(section, url):
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        match = re.compile('<form action="https?:\/\/www\.ezfilehost\.[a-z\.]{2,6}\/.+?" method="post".+?name="filename" type="hidden" value="(.+?)".*\s*?.*\s*?<input name="id" type="hidden" value="(.+?)"').findall(content)
+        for movieLink, addr  in match:
+                url = 'http://' + addr + '/HDMoviesPoint.com/' + movieLink
+                print 'Found HDMP' + str(url)
+                addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title':  'HDMP: direct link'}, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.png')
+        match1 = re.compile('<p><a href="(http:\/\/.+?)">.+?b>([A-Z].+?) Link</b>.+?</p>').findall(content)
+        listitem = GetMediaInfo(content)
+        for url, locker in match1:
+                host = GetDomain(url)
+                if urlresolver.HostedMediaFile(url= url):
+                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  locker }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 #------------------------------------------------------------------------------ OMG ---------------------------------------------------------------------------------#
@@ -3831,6 +3853,8 @@ elif mode == 'GetLinks55':
 	GetLinks55(section, url)
 elif mode == 'GetLinks55a':
 	GetLinks55a(section, url)
+elif mode == 'GetLinks129':
+        GetLinks129(section, url)
 elif mode == 'GetLinks130':
         GetLinks130(section, url)
 elif mode == 'GetLinks130a':
