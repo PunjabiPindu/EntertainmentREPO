@@ -1,3 +1,8 @@
+[B]Version 8.4.8[/B] 
+- @PunjabiPindu update thanks mate
+- moviz4u - Fixed regex for new link formatting
+- moviz4u - Added support for direct links (masking locker/host to keep it alive longer; but its in the code)
+
 [B]Version 8.4.7[/B] 
 - fixed wrestling
 
