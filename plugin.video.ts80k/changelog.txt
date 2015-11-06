@@ -1,3 +1,6 @@
+[B]Version 0.0.6[/B]
+- added mr t
+
 [B]Version 0.0.5[/B]
 - added The hitch hikers guide to the galaxy
 

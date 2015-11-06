@@ -1,4 +1,10 @@
-[B]Version 1.2.0[/B]
+[B]Version 2.2.2[/B]
+- fix
+
+[B]Version 2.2.1[/B]
+- removed tv rls
+
+[B]Version 2.2.0[/B]
 - fixes
 
 [B]Version 1.9.9[/B]

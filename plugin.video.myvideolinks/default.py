@@ -70,12 +70,12 @@ def GetLinks(section, url):
         content = html
         match2 = re.compile('<p><a href=".+?" rel=".+?">.+?</a></p>\s*?<p>.+?</p>\s*?<p>(.+?)</p>').findall(content)
         match = re.compile('<li><a href="(.+?)">.+?</a></li>').findall(content)
-        match1 = re.compile('<li><a href="http://uploadrocket.net/(.+?)">.+?</a></li>').findall(content)
+        #match1 = re.compile('<li><a href="http://uploadrocket.net/(.+?)">.+?</a></li>').findall(content)
         listitem = GetMediaInfo(content)
         for name in match2:
                 addon.add_directory({'mode': 'GetLinks1', 'url': url, 'listitem': listitem}, {'title':  '[B][COLOR lawngreen]' + name + '[/B][/COLOR]'}, img= 'http://www.64ouncegames.com/blog/wp-content/uploads/2013/09/PlotTwist.png', fanart=FanartPath + 'fanart.png')
-        for url in match1:
-                addon.add_directory({'mode': 'GetLinks1', 'url': 'http://uploadrocket.net/' + url, 'listitem': listitem}, {'title': url}, img=IconPath + 'vids.png', fanart=FanartPath + 'fanart.png')
+        #for url in match1:
+                #addon.add_directory({'mode': 'GetLinks1', 'url': 'http://uploadrocket.net/' + url, 'listitem': listitem}, {'title': url}, img=IconPath + 'vids.png', fanart=FanartPath + 'fanart.png')
         for url in match:
                 host = GetDomain(url)
                 if 'Unknown' in host:

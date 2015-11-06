@@ -111,7 +111,7 @@
 		</extension>
 	</addon>
 
-<addon id="plugin.video.allinone" version="8.4.6" name="Entertainment [COLOR firebrick][B]HUB[/B][/COLOR]" provider-name="Mr Entertainment">
+<addon id="plugin.video.allinone" version="8.4.7" name="Entertainment [COLOR firebrick][B]HUB[/B][/COLOR]" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
@@ -133,6 +133,23 @@
     </extension>
 </addon>
 
+<addon id="plugin.video.amsER" version="0.0.1" name="All Movies Stream" provider-name="Mr Entertainment">
+    <requires>
+        <import addon="xbmc.python" version="2.1.0"/>
+        <import addon="script.module.TheYid.common" version="0.1.1"/>
+        <import addon="script.module.urlresolver"  version="2.0.9"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary>movies</summary>
+        <description>stream movies</description>
+        <platform>all</platform>
+        <disclaimer lang="en">All the movies on this website are hosted on the third party sites and uploaded by other people. We are not responsible for any content that hosted on on the third-party sites. If you have any legal issues please contact appropriate video owners hosters.</disclaimer>
+    </extension>
+</addon>
+
 <addon id="plugin.video.aob" version="2.2.8" name="Adult's Only [COLOR deeppink][B]HUB[/B][/COLOR]" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
@@ -148,6 +165,23 @@
         <description>OVER 18's 21s ONLY!!!!!........ [CR]Stream all of TheYids Adult Addons in one!!! [CR][COLOR red]XXX[/COLOR] movies[COLOR red]XXX[/COLOR].......... OVER 18's 21's ONLY [COLOR red]XXX[/COLOR]...... [CR][COLOR red][B][I]Real-Debrid or Alldebird PREMIUM ONLY[/B][/I][/COLOR] [CR][COLOR blue][B][I]!!!!! DO NOT INSTALL THIS ADDON IF YOU ARE UNDER 18 or 21. DO NOT INSTALL THIS ADDON IF YOU DO NOT HAVE A PREMIUM DEBIRD ACCOUNT !!!!![/B][/I][/COLOR]  and now with some FREE links</description>
         <platform>all</platform>
         <disclaimer lang="en">[COLOR red][B][I]!!!!! DO NOT INSTALL THIS ADDON IF YOU ARE UNDER 18 or 21. DO NOT INSTALL THIS ADDON IF YOU DO NOT HAVE A PREMIUM DEBIRD ACCOUNT !!!!![/B][/I][/COLOR]  [COLOR red][B][I]Real-Debrid or Alldebird PREMIUM ONLY[/B][/I][/COLOR]  [COLOR red][B][I]!!!!! DO NOT INSTALL THIS ADDON IF YOU ARE UNDER 18 or 21. DO NOT INSTALL THIS ADDON IF YOU DO NOT HAVE A PREMIUM DEBIRD ACCOUNT !!!!![/B][/I][/COLOR]</disclaimer>
+    </extension>
+</addon>
+
+<addon id="plugin.video.coolmoviezoneER" version="0.0.1" name="Cool Movie Zone" provider-name="Mr Entertainment">
+    <requires>
+        <import addon="xbmc.python" version="2.1.0"/>
+        <import addon="script.module.TheYid.common" version="0.1.1"/>
+        <import addon="script.module.urlresolver"  version="2.0.9"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary>movies</summary>
+        <description>stream movies</description>
+        <platform>all</platform>
+        <disclaimer lang="en">All the movies on this website are hosted on the third party sites and uploaded by other people. We are not responsible for any content that hosted on on the third-party sites. If you have any legal issues please contact appropriate video owners hosters.</disclaimer>
     </extension>
 </addon>
 
@@ -168,7 +202,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.myvideolinks" version="5.0.6" name="Prime Links" provider-name="Mr Entertainment">
+<addon id="plugin.video.myvideolinks" version="5.0.7" name="Prime Links" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
@@ -203,7 +237,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.onlinehdmovies" version="1.0.5" name="Online HD Movies" provider-name="Mr Entertainment">
+<addon id="plugin.video.onlinehdmovies" version="1.0.6" name="Online HD Movies" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
@@ -256,7 +290,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.theyidrh" version="1.2.0" name="Release [COLOR firebrick][B]HUB[/B][/COLOR]" provider-name="Mr Entertainment">
+<addon id="plugin.video.theyidrh" version="2.2.2" name="Release [COLOR firebrick][B]HUB[/B][/COLOR]" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
@@ -275,7 +309,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.ts80k" version="0.0.5" name="80's kids" provider-name="Mr Entertainment">
+<addon id="plugin.video.ts80k" version="0.0.6" name="80's kids" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
