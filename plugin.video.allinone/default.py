@@ -2015,7 +2015,7 @@ def GetLinks130(section, url):
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
-        match = re.compile('<h2><strong><span style=".+?"><a href="(.+?)" target="_blank" rel="nofollow">.+?<u>(.+?)</u>.+?</a></span></strong></h2>').findall(content)
+        match = re.compile('href="(.+?)" target="_blank" rel="nofollow".+?(Play Movie|PLAY MOVIE)<.+?').findall(content)
         listitem = GetMediaInfo(content)
         for url, name in match:
                 addon.add_directory({'mode': 'GetLinks130a', 'url': url, 'listitem': listitem}, {'title':  name}, img= 'http://www.onlinemoviesgold.com/wp-content/uploads/logo.png', fanart=FanartPath + 'fanart.png')
