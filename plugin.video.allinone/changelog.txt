@@ -1,3 +1,11 @@
+[B]Version 8.4.9[/B] 
+- @PunjabiPindu update thanks mate
+- fixed OMG movie names
+- @TheYid009 fixes
+- fixed world4ufree first move in list now plays
+- added latestdude movies loads of 1080p
+
+
 [B]Version 8.4.8[/B] 
 - @PunjabiPindu update thanks mate
 - moviz4u - Fixed regex for new link formatting
