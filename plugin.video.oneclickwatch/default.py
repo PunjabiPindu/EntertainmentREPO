@@ -462,13 +462,13 @@ def Search2(img, text, query):
 
 def Search3(img, text, query):
     try:
-        url = 'http://areaddl.com/?s=' + query
+        url = 'http://tvdl.xyz/?s=' + query
         url = url.replace(' ', '+')
         print url
         html = net.http_GET(url).content
-        match = re.compile('<h2 class="title"><a href="(.+?)" title=".+?">(.+?)</a></h2>', re.DOTALL).findall(html)
-        match1 = re.compile('<h2 class="title title_page">(.+?)</h2>', re.DOTALL).findall(html)
-        match2 = re.compile('<div id="pagination"><a href="(.+?)" >.+?</a></div></div>', re.DOTALL).findall(html)
+        match = re.compile('<h2 class="post-box-title">\s*?<a href="(.+?)">(.+?)</a>', re.DOTALL).findall(html)
+        match1 = re.compile('<div id="post-0" class="(post not-found post-listing)">', re.DOTALL).findall(html)
+        match2 = re.compile('<span id="tie-next-page">\s*?<a href="(.+?)" >&raquo;</a>', re.DOTALL).findall(html)
         for url, title in match:
                 addon.add_directory({'mode': 'GetLinks', 'url': url, 'img': img, 'text': title }, {'title':  title }, img= 'https://briantudor.files.wordpress.com/2010/12/tv-icon1.png', fanart=FanartPath + 'fanart.jpg')
         for url in match2:
@@ -494,9 +494,12 @@ def GetTitles7(img, text, section, url):
     try:
         pageUrl = url
         html = net.http_GET(pageUrl).content
-        match = re.compile('<h2 class="title"><a href="(.+?)" title=".+?">(.+?)</a></h2>', re.DOTALL).findall(html)
+        match = re.compile('<h2 class="post-box-title">\s*?<a href="(.+?)">(.+?)</a>', re.DOTALL).findall(html)
+        match1 = re.compile('<span id="tie-next-page">\s*?<a href="(.+?)" >&raquo;</a>', re.DOTALL).findall(html)
         for movieUrl, name in match:
                 addon.add_directory({'mode': 'GetLinks', 'section': section, 'url': movieUrl, 'img': img , 'text': text }, {'title': name}, img= 'https://briantudor.files.wordpress.com/2010/12/tv-icon1.png', fanart=FanartPath + 'fanart.jpg')
+        for url in match1:
+                addon.add_directory({'mode': 'GetTitles7', 'url': url}, {'title':  '[COLOR blue][B][I]Next page...(OCW)[/B][/I][/COLOR]'}, img=IconPath + 'nextpage.png', fanart=FanartPath + 'fanart.jpg')
         setView('tvshows', 'calendar-view')
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site mite be down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
