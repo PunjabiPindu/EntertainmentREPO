@@ -92,8 +92,8 @@ def MainMenu():
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/brrip/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[B]720p Movies[/B]'}, img=IconPath + 'lm.png', fanart= 'http://www.htbackdrops.org/v2/albums/userpics/10097/orig_oefg_kino_im_kesselhaus.jpg')
         addon.add_directory({'mode': 'GenreMenu'}, {'title':  '[B]Movies Genre[/B]'}, img=IconPath + 'mg.png', fanart= 'http://www.htbackdrops.org/v2/albums/userpics/10097/orig_oefg_kino_im_kesselhaus.jpg')
-        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/tv-show/',
-                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[B]Latest Shows[/B]'}, img=IconPath + 'lt.png', fanart= 'http://www.htbackdrops.org/v2/albums/userpics/10097/orig_oefg_kino_im_kesselhaus.jpg')
+        #addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/tv-show/',
+                             #'startPage': '1', 'numOfPages': '1'}, {'title':  '[B]Latest Shows[/B]'}, img=IconPath + 'lt.png', fanart= 'http://www.htbackdrops.org/v2/albums/userpics/10097/orig_oefg_kino_im_kesselhaus.jpg')
         addon.add_directory({'mode': 'GetSearchQuery'},  {'title':  '[COLOR green]Search[/COLOR]'}, img=IconPath + 'se.png', fanart= 'http://www.htbackdrops.org/v2/albums/userpics/10097/orig_oefg_kino_im_kesselhaus.jpg')
         addon.add_directory({'mode': 'ResolverSettings'}, {'title':  '[COLOR red]Resolver Settings[/COLOR]'}, img=IconPath + 'url.png', fanart= 'http://www.htbackdrops.org/v2/albums/userpics/10097/orig_oefg_kino_im_kesselhaus.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))

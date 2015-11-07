@@ -1,2 +1,5 @@
+[B]Version 0.1.1[/B]
+- removed tv shows not needed use ocw 
+
 [B]Version 0.1.0[/B]
 - Initial version 
