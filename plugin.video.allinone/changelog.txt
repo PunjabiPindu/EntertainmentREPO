@@ -1,3 +1,6 @@
+[B]Version 8.5.1[/B] 
+- started fixing searches
+
 [B]Version 8.5.0[/B] 
 - added/testing filmxy and movies 
 

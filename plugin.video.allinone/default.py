@@ -1624,6 +1624,24 @@ def GetLinks99a(section, url):
                 addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title': name }, img= 'https://uptostream.com/images/logo.png', fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
+def GetLinks99b(section, url):
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        match = re.compile('<p style="text-align: center;"><a href=".+?http:/(.+?)">.+?</a></p>').findall(content)
+        match1 = re.compile('http:/uptobox.com/(.+?)">Uptobox</a></p>').findall(content)
+        match2 = re.compile('<p style="text-align: center;"><a href="http:/(.+?)">.+?</a></p>').findall(content)
+        listitem = GetMediaInfo(content)
+        for url in match1:
+                url = 'http://uptobox.com/' + url
+                addon.add_directory({'mode': 'GetLinks99', 'url':  url, 'listitem': listitem}, {'title':  'UpToStream : direct link'}, img= 'https://uptostream.com/images/logo.png', fanart=FanartPath + 'fanart.png')
+        for url in match + match2:
+                url = 'http://' + url
+                host = GetDomain(url)
+                if urlresolver.HostedMediaFile(url= url):
+                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.png')
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
 #------------------------------------------------------------------------------ primeflicks - hqtv ---------------------------------------------------------------------------------#
 
 def GetLinks1(section, url):
@@ -3323,13 +3341,13 @@ def GetSearchQuery11():
                 return
 def Search11(query):
     try:
-        url = 'http://areaddl.com/?s=' + query
+        url = 'http://www.lotsmovies.com/?s=' + query
         url = url.replace(' ', '+')
         print url
         html = net.http_GET(url).content
-        match = re.compile('<h2 class="title"><a href="(.+?)" title=".+?">(.+?)</a></h2>', re.DOTALL).findall(html)
-        for url, title in match:
-                addon.add_directory({'mode': 'GetLinks', 'url': url}, {'title':  title + ' [COLOR aqua]...(areaddl)[/COLOR]'}, img= 'http://komtv.org/wp-content/uploads/2015/08/lenta.jpg', fanart=FanartPath + 'fanart.png')
+        match = re.compile('<div class="featured-image">\s*?<a href="(.+?)" title="(.+?)"><img width=".+?" height=".+?" src="(.+?)" class="attachment-colormag-featured-image wp-post-image" alt=".+?" /></a>', re.DOTALL).findall(html)
+        for url, title, img in match:
+                addon.add_directory({'mode': 'GetLinks99b', 'url': url}, {'title':  title + ' [COLOR aqua]...(lotsmovies)[/COLOR]'}, img= img, fanart=FanartPath + 'fanart.png')
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry areaddl search is down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
     try:
@@ -3352,16 +3370,16 @@ def Search11(query):
                 addon.add_directory({'mode': 'GetLinks', 'url': url}, {'title':  title + ' [COLOR darkorange]...(solarmovie)[/COLOR]'}, img=img, fanart=FanartPath + 'fanart.png')
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry solarmovie search is down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
-    try:
-        url = 'http://300mbmovies4u.com/?s=' + query
-        url = url.replace(' ', '+')
-        print url
-        html = net.http_GET(url).content
-        match = re.compile('<li>\s*?<h2><a href="(.+?)" title=".+?">(.+?)</a></h2>\s*?<div class=".+?"><a href=".+?" title=".+?"><img src="(.+?)"', re.DOTALL).findall(html)
-        for url, title, img in match:
-                addon.add_directory({'mode': 'GetLinks', 'url': url}, {'title':  title + ' [COLOR crimson]...(300mb movies4u)[/COLOR]'}, img= img, fanart=FanartPath + 'fanart.png')
-    except:
-        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry 300mbmovies4u search is down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
+    #try:
+    #    url = 'http://300mbmovies4u.com/?s=' + query
+    #    url = url.replace(' ', '+')
+    #    print url
+    #    html = net.http_GET(url).content
+    #    match = re.compile('<li>\s*?<h2><a href="(.+?)" title=".+?">(.+?)</a></h2>\s*?<div class=".+?"><a href=".+?" title=".+?"><img src="(.+?)"', re.DOTALL).findall(html)
+    #    for url, title, img in match:
+    #            addon.add_directory({'mode': 'GetLinks', 'url': url}, {'title':  title + ' [COLOR crimson]...(300mb movies4u)[/COLOR]'}, img= img, fanart=FanartPath + 'fanart.png')
+    #except:
+    #    xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry 300mbmovies4u search is down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
     try:
         url = 'http://watchmovies-online.ch/?s=' + query
         url = url.replace(' ', '+')
@@ -3373,15 +3391,15 @@ def Search11(query):
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry watchmovies-online search is down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
     try:
-        url = 'http://onlinehdmovies.org/?s=' + query
+        url = 'http://www.movies-300mb.com/?s=' + query
         url = url.replace(' ', '+')
         print url
         html = net.http_GET(url).content
-        match = re.compile('<div class="imagen">\s*?<a href="(.+?)"><img src="(.+?)" alt="(.+?)" /></a>', re.DOTALL).findall(html)
-        for url, img, title in match:
-                addon.add_directory({'mode': 'GetLinks21', 'url': url}, {'title':  title + ' [COLOR lightcyan]...(onlineHDmovies)[/COLOR]'}, img=img, fanart=FanartPath + 'fanart.png')
+        match = re.compile('<div class="item-sizer">\s*?<div class="entry-thumb">\s*?<a href="(.+?)" title="(.+?)"><img width=".+?" height=".+?" src="(.+?)"', re.DOTALL).findall(html)
+        for url, title, img in match:
+                addon.add_directory({'mode': 'GetLinks', 'url': url}, {'title':  title + ' [COLOR lightcyan]...(movies-300mb)[/COLOR]'}, img=img, fanart=FanartPath + 'fanart.png')
     except:
-        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry onlinehdmovies search is down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry movies-300mb site is down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
     try:
         url = 'http://latestdude.com/?s=' + query
         url = url.replace(' ', '+')
@@ -3872,6 +3890,8 @@ elif mode == 'GetLinks130a':
         GetLinks130a(section, url)
 elif mode == 'GetLinks131':
         GetLinks131(section, url)
+elif mode == 'GetLinks99b':
+	GetLinks99b(section, url)
 elif mode == 'GetSearchQuery1':
 	GetSearchQuery1()
 elif mode == 'Search1':
