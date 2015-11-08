@@ -58,6 +58,8 @@ BASE_URL64 = 'http://m.liveonlinetv247.info/'
 BASE_URL65 = 'http://rlseries.com/'
 BASE_URL66 = 'http://watchitvideos.com/'
 BASE_URL68 = 'http://tvonline.tw/'
+BASE_URL69 = 'http://moviesland4u.com/'
+BASE_URL70 = 'http://www.movies-300mb.com/'
 
 BASE_URL67 = 'http://dl3.moviefarsi.com/'
 BASE_URL67a = 'http://dl1.moviefarsi.com/'
@@ -85,6 +87,53 @@ text = addon.queries.get('text', None)
 urlurl = addon.queries.get('urlurl', None)
 
 ##################################### GetTitles ################################ GetTitles ############################################### GetTitles ######################################
+#------------------------------------------------------------------------------- movies-300mb ------------------------------------------------------------------------------#
+
+def GetTitles70(section, url, startPage= '1', numOfPages= '1'):
+    try:
+        pageUrl = url
+        if int(startPage)> 1:
+                pageUrl = url + '/page/' + startPage + '/'
+        print pageUrl
+        html = net.http_GET(pageUrl).content
+        start = int(startPage)
+        end = start + int(numOfPages)
+        for page in range( start, end):
+                if ( page != start):
+                        pageUrl = url + '/page/' + str(page) + '/'
+                        html = net.http_GET(pageUrl).content                       
+                match = re.compile('<div class="entry-thumb">\s*?<a href="(.+?)" title="(.+?)"><img width="240" height="344" src="(.+?)"', re.DOTALL).findall(html)
+                for movieUrl, name, img in match:
+                        addon.add_directory({'mode': 'GetLinks', 'section': section, 'url': movieUrl}, {'title':  name.strip()}, img= img, fanart=FanartPath + 'fanart.png')    
+                addon.add_directory({'mode': 'GetTitles70', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage1.png', fanart=FanartPath + 'fanart.png')
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site is down [/B][/COLOR],[COLOR blue][B]Please try a different site[/B][/COLOR],7000,"")")
+       	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+
+#------------------------------------------------------------------------------- filmxy ------------------------------------------------------------------------------#
+
+def GetTitles69(section, url, startPage= '1', numOfPages= '1'):
+    try:
+        pageUrl = url
+        if int(startPage)> 1:
+                pageUrl = url + '/page/' + startPage + '/'
+        print pageUrl
+        html = net.http_GET(pageUrl).content
+        start = int(startPage)
+        end = start + int(numOfPages)
+        for page in range( start, end):
+                if ( page != start):
+                        pageUrl = url + '/page/' + str(page) + '/'
+                        html = net.http_GET(pageUrl).content                       
+                match = re.compile('<a class="clip-link" data-id=".+?" title="(.+?)" href="(.+?)">\s*?<span class="clip">\s*?<img src="(.+?)"', re.DOTALL).findall(html)
+                for name, movieUrl, img in match:
+                        addon.add_directory({'mode': 'GetLinks', 'section': section, 'url': movieUrl}, {'title':  name.strip().replace('Watch HD ', '').replace('Watch Online HD ', '').replace('Watch Hd ', '')}, img= img, fanart=FanartPath + 'fanart.png')    
+                addon.add_directory({'mode': 'GetTitles69', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage1.png', fanart=FanartPath + 'fanart.png')
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site is down [/B][/COLOR],[COLOR blue][B]Please try a different site[/B][/COLOR],7000,"")")
+       	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
 #------------------------------------------------------------------------------- tvonline ------------------------------------------------------------------------------#
 
 def GetTitles68(section, url):
@@ -2384,6 +2433,10 @@ def MovieMenu():   #movies
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR cornflowerblue][B]Latest Movie[/B][/COLOR] [COLOR brown](watchitvideos) [/COLOR]>>'}, img=IconPath + 'wm.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles57', 'section': 'ALL', 'url': BASE_URL57 + '/category/english/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR cornflowerblue][B]Latest Movies[/B][/COLOR] [COLOR yellow](latestdude) [/COLOR]>>'}, img=IconPath + 'ld.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles70', 'section': 'ALL', 'url': BASE_URL70 + '/category/hollywood/',
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR cornflowerblue][B]Latest Movies[/B][/COLOR] [COLOR darkorange](filmxy) [/COLOR]>>'}, img=IconPath + 'fil.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles69', 'section': 'ALL', 'url': BASE_URL69 + '/category/english-movies/',
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR cornflowerblue][B]Latest Movies[/B][/COLOR] [COLOR orange](moviesland4u) [/COLOR]>>'}, img=IconPath + 'jland.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL2 + '/category/movies/',
                              'startPage': '1', 'numOfPages': '2'}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR cornflowerblue][B]Latest Movies[/B][/COLOR] [COLOR maroon](mkvitunes) [/COLOR]>>'}, img=IconPath + 'mit.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles40', 'section': 'ALL', 'url': BASE_URL40 + '/category/hollywood/',
@@ -3729,6 +3782,10 @@ elif mode == 'GetTitles68':
 	GetTitles68(section, url)
 elif mode == 'GetTitles68a': 
 	GetTitles68a(section, url)
+elif mode == 'GetTitles69': 
+	GetTitles69(section, url, startPage, numOfPages)
+elif mode == 'GetTitles70': 
+	GetTitles70(section, url, startPage, numOfPages)
 elif mode == 'Categorieswco':
         Categorieswco(url)
 elif mode == 'Categorieswoc':
