@@ -60,6 +60,7 @@ BASE_URL66 = 'http://watchitvideos.com/'
 BASE_URL68 = 'http://tvonline.tw/'
 BASE_URL69 = 'http://moviesland4u.com/'
 BASE_URL70 = 'http://www.movies-300mb.com/'
+BASE_URL71 = 'http://tvdl.xyz/'
 
 BASE_URL67 = 'http://dl3.moviefarsi.com/'
 BASE_URL67a = 'http://dl1.moviefarsi.com/'
@@ -87,6 +88,25 @@ text = addon.queries.get('text', None)
 urlurl = addon.queries.get('urlurl', None)
 
 ##################################### GetTitles ################################ GetTitles ############################################### GetTitles ######################################
+#------------------------------------------------------------------------------- tvlog ------------------------------------------------------------------------------#
+
+def GetTitles71(section, url, startPage= '1', numOfPages= '1'):
+    try:
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        match = re.compile('<h2 class="post-box-title">\s*?<a href="(.+?)">(.+?)</a>.+? src="(.+?)"', re.DOTALL).findall(html)
+        match1 = re.compile('<link rel="next" href="(.+?)" />', re.DOTALL).findall(html)
+        for movieUrl, name, img in match:
+                addon.add_directory({'mode': 'GetLinks', 'section': section, 'url': movieUrl}, {'title':  name.strip()}, img= img, fanart=FanartPath + 'fanart.png') 
+        for movieUrl in match1:
+                addon.add_directory({'mode': 'GetTitles71', 'section': section, 'url': movieUrl}, {'title':  '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage1.png', fanart=FanartPath + 'fanart.png')   
+
+    except:
+
+       	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+
 #------------------------------------------------------------------------------- movies-300mb ------------------------------------------------------------------------------#
 
 def GetTitles70(section, url, startPage= '1', numOfPages= '1'):
@@ -2645,6 +2665,8 @@ def TvMenu():       #tv
         addon.add_directory({'mode': 'GetTitles62', 'url': BASE_URL62 + '/tvshows/'}, {'title':  '[COLOR darkorange][B]Top Shows[/B] [/COLOR]: [COLOR green]Index Search[/COLOR]'}, img=IconPath + 'rt.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/tv-shows/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR darkorange][B]Latest Episodes[/B][/COLOR] [COLOR blue](OCW) [/COLOR]>>'}, img=IconPath + 'ocw.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles71', 'section': 'ALL', 'url': BASE_URL71 + 'tv-shows',
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR darkorange][B]Latest Episodes[/B][/COLOR] [COLOR green](TVDL) [/COLOR]>>'}, img=IconPath + 'tvdl.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles65', 'section': 'ALL', 'url': BASE_URL65 + '/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR darkorange][B]Latest Episodes & Full Seasons[/B][/COLOR] [COLOR aqua](rlseries) [/COLOR]>>'}, img=IconPath + 'rls66.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles10', 'section': 'ALL', 'url': BASE_URL10a + '/category/tv-shows/',
@@ -3491,11 +3513,11 @@ def Search12(query):
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry mymovielinks is search down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
     try:
-        url = 'http://areaddl.com/?s=' + query
+        url = 'http://tvdl.xyz/?s=' + query
         url = url.replace(' ', '+')
         print url
         html = net.http_GET(url).content
-        match = re.compile('<h2 class="title"><a href="(.+?)" title=".+?">(.+?)</a></h2>', re.DOTALL).findall(html)
+        match = re.compile('<h2 class="post-box-title">\s*?<a href="(.+?)">(.+?)</a>', re.DOTALL).findall(html)
         for url, title in match:
                 addon.add_directory({'mode': 'GetLinks', 'url': url}, {'title':  title + ' [COLOR aqua]...(areaddl)[/COLOR]'}, img= 'http://androidability.com/wp-content/uploads/2015/01/How-to-watch-movies-and-TV-shows-for-free-on-Android-androidability.jpg', fanart=FanartPath + 'fanart.png')
     except:
@@ -3804,6 +3826,8 @@ elif mode == 'GetTitles69':
 	GetTitles69(section, url, startPage, numOfPages)
 elif mode == 'GetTitles70': 
 	GetTitles70(section, url, startPage, numOfPages)
+elif mode == 'GetTitles71': 
+	GetTitles71(section, url, startPage, numOfPages)
 elif mode == 'Categorieswco':
         Categorieswco(url)
 elif mode == 'Categorieswoc':
