@@ -1,3 +1,7 @@
+[B]Version 0.1.2[/B]
+- added direct link
+- added youtube trailers
+
 [B]Version 0.1.1[/B]
 - removed tv shows not needed use ocw 
 

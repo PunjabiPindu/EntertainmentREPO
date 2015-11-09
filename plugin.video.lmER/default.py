@@ -24,7 +24,7 @@ listitem = addon.queries.get('listitem', None)
 urlList = addon.queries.get('urlList', None)
 section = addon.queries.get('section', None)
 img = addon.queries.get('img', None)
-
+text = addon.queries.get('text', None)
 
 def GetTitles(section, url, startPage= '1', numOfPages= '1'): 
         pageUrl = url
@@ -40,25 +40,42 @@ def GetTitles(section, url, startPage= '1', numOfPages= '1'):
                         html = net.http_GET(pageUrl).content                      
                 match = re.compile('<div class="item">\s*?<a href="(.+?)">\s*?<div class="image">\s*?<img src="(.+?)" alt="(.+?)" />\s*?<span class="player"></span>\s*?<span class="imdb"><b><b class="icon-star"></b></b>(.+?)</span></div>', re.DOTALL).findall(html)
                 for movieUrl, img, name, imdb in match:
-                        addon.add_directory({'mode': 'GetLinks', 'section': section, 'url': movieUrl, 'img': img}, {'title':  name.strip() + ' - IMDB : ' + imdb}, img= img, fanart= 'http://images.forwallpaper.com/files/thumbs/preview/64/646017__cinema_p.jpg')      
+                        addon.add_directory({'mode': 'GetLinks', 'section': section, 'url': movieUrl, 'img': img }, {'title':  name.strip() + ' - IMDB : ' + imdb}, img= img, fanart= 'http://images.forwallpaper.com/files/thumbs/preview/64/646017__cinema_p.jpg')      
                 addon.add_directory({'mode': 'GetTitles', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage1.png', fanart= 'http://images.forwallpaper.com/files/thumbs/preview/64/646017__cinema_p.jpg')      
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
-def GetLinks(section, url, img):
+def GetLinks(section, url, img, text):
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
         match = re.compile('<a href="(.+?)" target="_blank">').findall(content)
         match1 = re.compile('<meta itemprop="headline" content=".+?" />\s*?<meta itemprop="description" content="(.+?)" />').findall(content)
+        match2 = re.compile('(https://archive.org/.+?.mp4)"').findall(content)
+        match3 = re.compile('<iframe width=".+?" height=".+?" src="(.+?)" frameborder=".+?" allowfullscreen></iframe></div>').findall(content)
         listitem = GetMediaInfo(content)
         for name in match1:
                 addon.add_directory({'mode': 'GetLinks', 'section': section, 'img': img}, {'title':  '[COLOR darkturquoise][B]' + name.strip() + '[/B] [/COLOR]'}, img= img, fanart= 'http://imgprix.com/web/wallpapers/private-cinema-room/2560x1600.jpg') 
+        for url in match3:
+                host = GetDomain(url)
+                if urlresolver.HostedMediaFile(url= url):
+                        host = host.replace('embed.','')
+                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host + ' : [COLOR red][B]Trailer[/B][/COLOR]'}, img= img, fanart= 'http://imgprix.com/web/wallpapers/private-cinema-room/2560x1600.jpg')
+        for url in match2:
+                addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem , 'img': img, 'text': text }, {'title':  'direct link'}, img= img, fanart= 'http://imgprix.com/web/wallpapers/private-cinema-room/2560x1600.jpg')
         for url in match:
                 host = GetDomain(url)
                 if urlresolver.HostedMediaFile(url= url):
                         host = host.replace('embed.','')
                         addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host }, img= img, fanart= 'http://imgprix.com/web/wallpapers/private-cinema-room/2560x1600.jpg')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+def PlayVideo1(text, img, url, listitem):
+        addon_handle = int(sys.argv[1])
+        xbmcplugin.setContent(addon_handle, 'video')
+        li = xbmcgui.ListItem('Play', iconImage=img, thumbnailImage=img)
+        li.setProperty('fanart_image', 'http://imgprix.com/web/wallpapers/private-cinema-room/2560x1600.jpg')
+        xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li)
+        xbmcplugin.endOfDirectory(addon_handle)
 
 def PlayVideo(url, listitem):
     try:
@@ -188,13 +205,15 @@ elif mode == 'GenreMenu':
 elif mode == 'GetTitles': 
 	GetTitles(section, url, startPage, numOfPages)
 elif mode == 'GetLinks':
-	GetLinks(section, url, img)
+	GetLinks(section, url, img, text)
 elif mode == 'GetSearchQuery':
 	GetSearchQuery()
 elif mode == 'Search':
 	Search(query)
 elif mode == 'PlayVideo':
 	PlayVideo(url, listitem)	
+elif mode == 'PlayVideo1':
+	PlayVideo1(text, img, url, listitem)
 elif mode == 'ResolverSettings':
         urlresolver.display_settings()
 xbmcplugin.endOfDirectory(int(sys.argv[1]))
