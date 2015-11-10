@@ -219,7 +219,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.lmER" version="0.1.2" name="LatestDude" provider-name="Mr Entertainment">
+<addon id="plugin.video.lmER" version="0.1.4" name="LatestDude" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
@@ -284,6 +284,24 @@
     <extension point="xbmc.addon.metadata">
         <summary>Movies site</summary>
         <description>A wide selection of movies from Online HD Movies...</description>
+        <platform>all</platform>
+        <disclaimer lang="en"></disclaimer>
+    </extension>
+</addon>
+
+<addon id="plugin.video.RapidBit" version="0.0.1" name="RapidBit" provider-name="Mr Entertainment">
+    <requires>
+        <import addon="xbmc.python" version="2.1.0"/>
+        <import addon="script.module.TheYid.common" version="0.1.1"/>
+        <import addon="script.module.urlresolver"  version="2.0.9"/>
+        <import addon="script.module.simplejson" version="3.3.0"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary>RapidBit for all french scene releases lovers free on demand streaming test addon</summary>
+        <description>Play a wide selection of french scene release movies Tv shows sport from RapidBit</description>
         <platform>all</platform>
         <disclaimer lang="en"></disclaimer>
     </extension>
@@ -377,7 +395,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.warezmovies" version="0.0.1" name="Warez Movies" provider-name="Mr Entertainment">
+<addon id="plugin.video.warezmovies" version="0.0.2" name="Warez Movies" provider-name="Mr Entertainment">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
         <import addon="script.module.TheYid.common" version="0.1.1"/>
