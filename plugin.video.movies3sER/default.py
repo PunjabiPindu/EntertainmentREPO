@@ -64,8 +64,9 @@ def GetLinks(section, url, text, img):
         listitem = GetMediaInfo(html)
         content = html
         match = re.compile('<a href="(.+?)" target="_blank"><strong>.+?</strong></a><br />').findall(content)
+        match1 = re.compile('<a href="(.+?)" target="_blank">.+?</a></strong></p>').findall(content)
         listitem = GetMediaInfo(content)
-        for url in match:
+        for url in match + match1:
                 host = GetDomain(url)
                 if urlresolver.HostedMediaFile(url= url):
                         addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host }, img= img, fanart=FanartPath + 'fanart.jpg')
