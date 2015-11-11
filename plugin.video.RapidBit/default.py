@@ -30,6 +30,7 @@ numOfPages = addon.queries.get('numOfPages', None)
 listitem = addon.queries.get('listitem', None)
 urlList = addon.queries.get('urlList', None)
 section = addon.queries.get('section', None)
+img = addon.queries.get('img', None)
 
 ################################################################################# Titles #################################################################################
 
@@ -49,20 +50,27 @@ def GetTitles(section, url, startPage= '1', numOfPages= '1'): # Get Movie & tv s
                         html = net.http_GET(pageUrl).content
                 match = re.compile('itemprop="headline"><a href="(.+?)" title=".+?">(.+?)</a></h2>.+? src="(.+?)"', re.DOTALL).findall(html)
                 for movieUrl, name, img in match:
-                        addon.add_directory({'mode': 'GetLinks', 'section': section, 'url': movieUrl}, {'title':  name.strip()}, img= img, fanart=FanartPath + 'fanart.png') 
-                addon.add_directory({'mode': 'GetTitles', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img= 'https://cdn2.iconfinder.com/data/icons/windows-8-metro-style/128/next.png', fanart=FanartPath + 'fanart.png')
+                        addon.add_directory({'mode': 'GetLinks', 'section': section, 'url': movieUrl, 'img': img}, {'title':  name.strip()}, img= img, fanart=FanartPath + 'fanart.png') 
+                addon.add_directory({'mode': 'GetTitles', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img= 'http://www.megatoner.si/media/mw_promobox/icon/open-left.png', fanart=FanartPath + 'fanart.png')
     except:
         xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site mite be down [/B][/COLOR],[COLOR blue][B]Please try later[/B][/COLOR],7000,"")")
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
-############################################################################### Get links #############################################################################################
+##############################################################################\s*?# Get links #############################################################################################
 
-def GetLinks(section, url):
+def GetLinks(section, url, img):
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
         match = re.compile('<a href="(.+?)"').findall(content)
+        match2 = re.compile('<a href="http://sh.st/st/.+?/(.+?)">.+?</a><br />').findall(content)
+        match1 = re.compile('<meta name="description" content="Download and (.+?)"/>').findall(content)
+        match3 = re.compile('width=".+?" height=".+?" /></p>\s*?<p>(.+?)</p>').findall(content)
         listitem = GetMediaInfo(content)
+        for name in match1:
+                addon.add_directory({'listitem': listitem}, {'title': '[COLOR pink][B](' + name + ')[/B][/COLOR]' }, img= img, fanart=FanartPath + 'fanart.png')
+        for name in match3:
+                addon.add_directory({'listitem': listitem}, {'title': '[COLOR blue][B](' + name + ')[/B][/COLOR]' }, img= img, fanart=FanartPath + 'fanart.png')
         for url in match:
                 host = GetDomain(url)
                 if 'Unknown' in host:
@@ -74,7 +82,20 @@ def GetLinks(section, url):
                         title = url.rpartition('/')
                         title = title[2].replace('.html', '')
                         title = title.replace('.htm', '')
-                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title': host + ' : ' + title }, img=IconPath + 'icon.png', fanart=FanartPath + 'fanart.jpg')
+                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title': host + ' : ' + title }, img= img, fanart=FanartPath + 'fanart.png')
+        for url in match2:
+                url = 'http://' + url
+                host = GetDomain(url)
+                if 'Unknown' in host:
+                                continue
+                r = re.search('\.rar[(?:\.html|\.htm)]*', url, re.IGNORECASE)
+                if r:
+                        continue
+                if urlresolver.HostedMediaFile(url= url):
+                        title = url.rpartition('/')
+                        title = title[2].replace('.html', '')
+                        title = title.replace('.htm', '')
+                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title': host + ' : ' + title }, img= img, fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 ############################################################################# Play Video #####################################################################################
@@ -152,7 +173,7 @@ elif mode == 'HelpMenu':
 elif mode == 'GetTitles': 
 	GetTitles(section, url, startPage, numOfPages)
 elif mode == 'GetLinks':
-	GetLinks(section, url)
+	GetLinks(section, url, img)
 elif mode == 'GetSearchQuery1':
 	GetSearchQuery1()
 elif mode == 'Search1':
