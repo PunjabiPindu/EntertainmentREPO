@@ -96,7 +96,7 @@ def GetLinks1(url, img, text):
 def PlayVideo1(url, listitem, img, text):
         addon_handle = int(sys.argv[1])
         xbmcplugin.setContent(addon_handle, 'video')
-        li = xbmcgui.ListItem('[COLOR dodgerblue][B]PLAY : [/B][/COLOR]' + text, iconImage= img, thumbnailImage= img)
+        li = xbmcgui.ListItem(text, iconImage= img, thumbnailImage= img)
         li.setProperty('fanart_image', 'https://i.ytimg.com/vi/XJtQ0lNDdnY/maxresdefault.jpg')
         xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li)
         xbmcplugin.endOfDirectory(addon_handle)
