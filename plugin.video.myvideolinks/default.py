@@ -10,7 +10,7 @@ plugin = xbmcaddon.Addon(id=addon_id)
 DB = os.path.join(xbmc.translatePath("special://database"), 'myvideolinks.db')
 net = Net()
 addon = Addon('plugin.video.myvideolinks', sys.argv)
-BASE_URL = 'http://download.myvideolinks.xyz/'
+BASE_URL = 'http://go.myvideolinks.xyz/'
 AddonPath = addon.get_path()
 IconPath = AddonPath + "/icons/"
 FanartPath = AddonPath + "/icons/"
@@ -139,14 +139,28 @@ def MainMenu():
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/allmovies/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR blue]Latest Movies added [/COLOR]>>'}, img=IconPath + 'newmovies1.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'releaseMenu'}, {'title':  '[COLOR blue]Movie by year & release group [/COLOR]>>'}, img=IconPath + 'date1.png', fanart=FanartPath + 'fanart.png')
-        addon.add_directory({'mode': 'GenreMenu'}, {'title':  '[COLOR blue]Movies & Tv shows by genre [/COLOR]>>'}, img=IconPath + 'mg1.png', fanart=FanartPath + 'fanart.png')
+        #addon.add_directory({'mode': 'GenreMenu'}, {'title':  '[COLOR blue]Movies & Tv shows by genre [/COLOR]>>'}, img=IconPath + 'mg1.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/tv-shows/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR blue]Latest Tv shows added [/COLOR]>>'}, img=IconPath + 'newtvs1.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetSearchQuery9'},  {'title':  '[COLOR green]Movie Search[/COLOR]'}, img=IconPath + 'searchse1.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'ResolverSettings'}, {'title':  '[COLOR red]Resolver Settings[/COLOR]'}, img=IconPath + 'resolvere1.png', fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
+
 def releaseMenu():  
+        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/allmovies/2015release/',
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lime]2015 movies [/COLOR]>>'}, img=IconPath + 'date1.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/allmovies/3dmovies/',
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lime]3D movies[/COLOR]>>'}, img=IconPath + 'date1.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/allmovies/blurays/',
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lime]Blurays movies[/COLOR]>>'}, img=IconPath + 'date1.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/allmovies/',
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lime]All movies [/COLOR]>>'}, img=IconPath + 'date1.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/allmovies/older/',
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lime]Older Movies [/COLOR]>>'}, img=IconPath + 'date1.png', fanart=FanartPath + 'fanart.png')
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+#def releaseMenu():  
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/allmovies/2015release/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lime]2015 [/COLOR]>>'}, img=IconPath + 'date1.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/allmovies/2014release/',
@@ -212,7 +226,7 @@ def GetSearchQuery9():
 	else:
                 return
 def Search9(query):
-        url = 'http://download.myvideolinks.xyz/?s=' + query
+        url = 'http://go.myvideolinks.xyz/?s=' + query
         url = url.replace(' ', '+')
         print url
         html = net.http_GET(url).content
