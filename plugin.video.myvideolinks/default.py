@@ -10,7 +10,7 @@ plugin = xbmcaddon.Addon(id=addon_id)
 DB = os.path.join(xbmc.translatePath("special://database"), 'myvideolinks.db')
 net = Net()
 addon = Addon('plugin.video.myvideolinks', sys.argv)
-BASE_URL = 'http://new.myvideolinks.xyz/'
+BASE_URL = 'http://go.myvideolinks.xyz/'
 AddonPath = addon.get_path()
 IconPath = AddonPath + "/icons/"
 FanartPath = AddonPath + "/icons/"
@@ -70,12 +70,9 @@ def GetLinks(section, url):
         content = html
         match2 = re.compile('<p><a href=".+?" rel=".+?">.+?</a></p>\s*?<p>.+?</p>\s*?<p>(.+?)</p>').findall(content)
         match = re.compile('<li><a href="(.+?)">.+?</a></li>').findall(content)
-        #match1 = re.compile('<li><a href="http://uploadrocket.net/(.+?)">.+?</a></li>').findall(content)
         listitem = GetMediaInfo(content)
         for name in match2:
                 addon.add_directory({'mode': 'GetLinks1', 'url': url, 'listitem': listitem}, {'title':  '[B][COLOR lawngreen]' + name + '[/B][/COLOR]'}, img= 'http://www.64ouncegames.com/blog/wp-content/uploads/2013/09/PlotTwist.png', fanart=FanartPath + 'fanart.png')
-        #for url in match1:
-                #addon.add_directory({'mode': 'GetLinks1', 'url': 'http://uploadrocket.net/' + url, 'listitem': listitem}, {'title': url}, img=IconPath + 'vids.png', fanart=FanartPath + 'fanart.png')
         for url in match:
                 host = GetDomain(url)
                 if 'Unknown' in host:
@@ -104,28 +101,6 @@ def GetLinks1(url):
         listitem = GetMediaInfo(content)
         for url in match:
                 addon.add_directory({'mode': 'GetLinks2', 'url': url, 'listitem': listitem}, {'title':  url}, img=IconPath + 'watch.png', fanart=FanartPath + 'fanart.png')
-        xbmcplugin.endOfDirectory(int(sys.argv[1]))
-
-def GetLinks2(url):                                            
-        print 'GETLINKS FROM URL: '+url
-        html = net.http_GET(url).content
-        listitem = GetMediaInfo(html)
-        content = html
-        match1 = re.compile('<a href="http://uploadrocket.net/directdownload.html/(.+?)" target="_blank">').findall(content)
-        listitem = GetMediaInfo(content)
-        for url in match1:
-                addon.add_directory({'mode': 'GetLinks2a', 'url': 'http://uploadrocket.net/directdownload.html/' + url, 'listitem': listitem}, {'title':  'load stream - ' + url}, img=IconPath + 'watch.png', fanart=FanartPath + 'fanart.png')
-        xbmcplugin.endOfDirectory(int(sys.argv[1]))
-
-def GetLinks2a(url):                                            
-        print 'GETLINKS FROM URL: '+url
-        html = net.http_GET(url).content
-        listitem = GetMediaInfo(html)
-        content = html
-        match1 = re.compile('<a href="http://(.+?)" onclick=').findall(content)
-        listitem = GetMediaInfo(content)
-        for url in match1:
-                addon.add_directory({'mode': 'PlayVideo1', 'url': 'http://' + url, 'listitem': listitem}, {'title':  'load stream - ' + url}, img=IconPath + 'watch.png', fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 def PlayVideo(url, listitem):
@@ -164,14 +139,28 @@ def MainMenu():
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/allmovies/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR blue]Latest Movies added [/COLOR]>>'}, img=IconPath + 'newmovies1.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'releaseMenu'}, {'title':  '[COLOR blue]Movie by year & release group [/COLOR]>>'}, img=IconPath + 'date1.png', fanart=FanartPath + 'fanart.png')
-        addon.add_directory({'mode': 'GenreMenu'}, {'title':  '[COLOR blue]Movies & Tv shows by genre [/COLOR]>>'}, img=IconPath + 'mg1.png', fanart=FanartPath + 'fanart.png')
+        #addon.add_directory({'mode': 'GenreMenu'}, {'title':  '[COLOR blue]Movies & Tv shows by genre [/COLOR]>>'}, img=IconPath + 'mg1.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/tv-shows/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR blue]Latest Tv shows added [/COLOR]>>'}, img=IconPath + 'newtvs1.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetSearchQuery9'},  {'title':  '[COLOR green]Movie Search[/COLOR]'}, img=IconPath + 'searchse1.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'ResolverSettings'}, {'title':  '[COLOR red]Resolver Settings[/COLOR]'}, img=IconPath + 'resolvere1.png', fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
+
 def releaseMenu():  
+        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/allmovies/2015release/',
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lime]2015 movies [/COLOR]>>'}, img=IconPath + 'date1.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/allmovies/3dmovies/',
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lime]3D movies[/COLOR]>>'}, img=IconPath + 'date1.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/allmovies/blurays/',
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lime]Blurays movies[/COLOR]>>'}, img=IconPath + 'date1.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/allmovies/',
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lime]All movies [/COLOR]>>'}, img=IconPath + 'date1.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/allmovies/older/',
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lime]Older Movies [/COLOR]>>'}, img=IconPath + 'date1.png', fanart=FanartPath + 'fanart.png')
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+#def releaseMenu():  
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/allmovies/2015release/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR lime]2015 [/COLOR]>>'}, img=IconPath + 'date1.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles', 'section': 'ALL', 'url': BASE_URL + '/category/allmovies/2014release/',
@@ -237,7 +226,7 @@ def GetSearchQuery9():
 	else:
                 return
 def Search9(query):
-        url = 'http://movies.myvideolinks.xyz/?s=' + query
+        url = 'http://go.myvideolinks.xyz/?s=' + query
         url = url.replace(' ', '+')
         print url
         html = net.http_GET(url).content
@@ -275,10 +264,6 @@ elif mode == 'GetLinks':
 	GetLinks(section, url)
 elif mode == 'GetLinks1':
 	GetLinks1(url)
-elif mode == 'GetLinks2':
-	GetLinks2(url)
-elif mode == 'GetLinks2a':
-	GetLinks2a(url)
 elif mode == 'GetSearchQuery9':
 	GetSearchQuery9()
 elif mode == 'Search9':
