@@ -10,7 +10,7 @@ plugin = xbmcaddon.Addon(id=addon_id)
 DB = os.path.join(xbmc.translatePath("special://database"), 'myvideolinks.db')
 net = Net()
 addon = Addon('plugin.video.myvideolinks', sys.argv)
-BASE_URL = 'http://go.myvideolinks.xyz/'
+BASE_URL = 'http://site.mvlgroup.xyz/'
 AddonPath = addon.get_path()
 IconPath = AddonPath + "/icons/"
 FanartPath = AddonPath + "/icons/"
@@ -23,6 +23,7 @@ numOfPages = addon.queries.get('numOfPages', None)
 listitem = addon.queries.get('listitem', None)
 urlList = addon.queries.get('urlList', None)
 section = addon.queries.get('section', None)
+img = addon.queries.get('img', None)
 
 
 def GetTitles(section, url, startPage= '1', numOfPages= '1'): 
@@ -37,9 +38,9 @@ def GetTitles(section, url, startPage= '1', numOfPages= '1'):
                 if ( page != start):
                         pageUrl = url + '/page/' + startPage + '/'
                         html = net.http_GET(pageUrl).content                      
-                match = re.compile('<div class="habangbuhay">\s*?<a href="(.+?)" rel=".+?" title=".+?"> <img src="(.+?)"  title="(.+?)" class=".+?" alt=".+?" /></a>', re.DOTALL).findall(html)
+                match = re.compile('<div class="post_content">\s*?<a href="(.+?)" rel="bookmark" title=".+?"> <img src="(.+?)" title="(.+?)"', re.DOTALL).findall(html)
                 for movieUrl, img, name in match:
-                        addon.add_directory({'mode': 'GetLinks', 'section': section, 'url': movieUrl}, {'title':  name.strip()}, img= img, fanart=FanartPath + 'fanart.png')      
+                        addon.add_directory({'mode': 'GetLinks', 'section': section, 'url': movieUrl, 'img': img}, {'title':  name.strip()}, img= img, fanart=FanartPath + 'fanart.png')      
                 addon.add_directory({'mode': 'GetTitles', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage1.png', fanart=FanartPath + 'fanart.png')
         setView('tvshows', 'tvshows-view')        
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -56,23 +57,23 @@ def GetTitles1(section, url, startPage= '1', numOfPages= '1'):
                 if ( page != start):
                         pageUrl = url + '/page/' + startPage + '/'
                         html = net.http_GET(pageUrl).content                      
-                match = re.compile('<div class="habangbuhay">\s*?<a href="(.+?)" rel="bookmark" title=".+?"> <img src="(.+?)" title="(.+?)" class=".+?" alt=".+?" /></a>', re.DOTALL).findall(html)
+                match = re.compile('<div class="post_content">\s*?<a href="(.+?)" rel="bookmark" title=".+?"> <img src="(.+?)" title="(.+?)"', re.DOTALL).findall(html)
                 for movieUrl, img, name in match:
-                        addon.add_directory({'mode': 'GetLinks', 'section': section, 'url': movieUrl}, {'title':  name.strip()}, img= img, fanart=FanartPath + 'fanart.png')      
+                        addon.add_directory({'mode': 'GetLinks', 'section': section, 'url': movieUrl, 'img': img}, {'title':  name.strip()}, img= img, fanart=FanartPath + 'fanart.png')      
                 addon.add_directory({'mode': 'GetTitles1', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage1.png', fanart=FanartPath + 'fanart.png')
         setView('tvshows', 'tvshows-view')        
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
-def GetLinks(section, url): 
+def GetLinks(section, url, img): 
         print 'GETLINKS FROM URL: '+url
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
-        match2 = re.compile('<p><a href=".+?" rel=".+?">.+?</a></p>\s*?<p>.+?</p>\s*?<p>(.+?)</p>').findall(content)
+        match2 = re.compile('<p>(.+?)</p>\s*?<p><a href="http://youtu.be/.+?">TRAILER</a></p>\s*?<h4>.+?</h4>').findall(content)
         match = re.compile('<li><a href="(.+?)">.+?</a></li>').findall(content)
         listitem = GetMediaInfo(content)
         for name in match2:
-                addon.add_directory({'mode': 'GetLinks1', 'url': url, 'listitem': listitem}, {'title':  '[B][COLOR lawngreen]' + name + '[/B][/COLOR]'}, img= 'http://www.64ouncegames.com/blog/wp-content/uploads/2013/09/PlotTwist.png', fanart=FanartPath + 'fanart.png')
+                addon.add_directory({'mode': 'GetLinks1', 'url': url, 'listitem': listitem}, {'title':  '[B][COLOR lawngreen]' + name + '[/B][/COLOR]'}, img= img, fanart=FanartPath + 'fanart.png')
         for url in match:
                 host = GetDomain(url)
                 if 'Unknown' in host:
@@ -87,7 +88,7 @@ def GetLinks(section, url):
                         host = host.replace('youtu.be','[COLOR lime]Movie Trailer[/COLOR]')
                         host = host.replace('.net','')
                         host = host.replace('.com','')
-                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.png')
+                        addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host }, img= img, fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 
@@ -226,11 +227,11 @@ def GetSearchQuery9():
 	else:
                 return
 def Search9(query):
-        url = 'http://go.myvideolinks.xyz/?s=' + query
+        url = 'http://site.mvlgroup.xyz/?s=' + query
         url = url.replace(' ', '+')
         print url
         html = net.http_GET(url).content
-        match = re.compile('<div class="habangbuhay">\s*?<a href="(.+?)" rel="bookmark" title=".+?"> <img src="(.+?)" title="(.+?)" class=".+?" alt=".+?" /></a>', re.DOTALL).findall(html)
+        match = re.compile('<div class="post_content">\s*?<a href="(.+?)" rel="bookmark" title=".+?"> <img src="(.+?)" title="(.+?)"', re.DOTALL).findall(html)
         for url, img, title in match:
                 addon.add_directory({'mode': 'GetLinks', 'url': url}, {'title':  title}, img = img , fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -261,7 +262,7 @@ elif mode == 'GetTitles':
 elif mode == 'GetTitles1': 
 	GetTitles1(section, url, startPage, numOfPages)
 elif mode == 'GetLinks':
-	GetLinks(section, url)
+	GetLinks(section, url, img)
 elif mode == 'GetLinks1':
 	GetLinks1(url)
 elif mode == 'GetSearchQuery9':
