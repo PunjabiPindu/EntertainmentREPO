@@ -1,3 +1,9 @@
+[B]Version 8.5.8[/B] 
+- @PunjabiPindu update thanks mate
+- fixed OMG
+- @TheYid009 fixes
+- prime links
+
 [B]Version 8.5.7[/B] 
 - loads of fixes
 
