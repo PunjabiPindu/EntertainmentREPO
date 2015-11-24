@@ -68,6 +68,7 @@ BASE_URL74 = 'http://watchseries-onlines.ch/'
 BASE_URL75 = 'http://31movie-hd.blogspot.co.uk'
 BASE_URL76 = 'http://tvlog.link/'
 BASE_URL81 = 'http://livematch.org.uk/'
+BASE_URL82 = 'http://onlinemoviewatchs.com/'
 
 BASE_URL67 = 'http://dl3.moviefarsi.com/'
 BASE_URL67a = 'http://dl1.moviefarsi.com/'
@@ -2306,7 +2307,81 @@ def GetLinks130a(section, url):
                         host = host.replace('embed.','')
                         addon.add_directory({'mode': 'PlayVideo', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
+#------------------------------------------------------------------------------- onlinemoviewatch OMW ------------------------------------------------------------------------------#
 
+def GetTitles82(section, url, startPage= '1', numOfPages= '1'):
+    try:
+        pageUrl = url
+        if int(startPage)> 1:
+                pageUrl = url + 'page/' + startPage + '/'
+        print pageUrl
+        html = net.http_GET(pageUrl).content
+        start = int(startPage)
+        end = start + int(numOfPages)
+        for page in range( start, end):
+                if ( page != start):
+                        pageUrl = url + 'page/' + str(page) + '/'
+                        html = net.http_GET(pageUrl).content                       
+                match = re.compile('<div class="boxentry">\s.+?<a href="(.+?)" title="(.+?)">\s.+?<div class=".+?">\s.+?<img width="\d+" height="\d+" src=".+?" data-lazy-type="image" data-lazy-src="(.+?)" class="', re.DOTALL).findall(html)
+                for movieURL, name, img in match:
+                        cm  = []
+                        print '\n\nOMW Dir Link: '+movieURL+'\n'
+                        runstring = 'XBMC.Container.Update(plugin://plugin.video.allone/?mode=Search11&query=%s)' %(name.strip())
+        		cm.append(('[COLOR blue][B]E[/B][/COLOR]ntertainment [COLOR green]Search[/COLOR]', runstring))
+                        addon.add_directory({'mode': 'GetLinks82', 'section': section, 'url': movieURL}, {'title':  name.strip()}, contextmenu_items= cm, img= img, fanart=FanartPath + 'fanart.png')    
+                addon.add_directory({'mode': 'GetTitles82', 'url': url, 'startPage': str(end), 'numOfPages': numOfPages}, {'title': '[COLOR blue][B][I]Next page...[/B][/I][/COLOR]'}, img=IconPath + 'nextpage1.png', fanart=FanartPath + 'fanart.png') 
+    except:
+        xbmc.executebuiltin("XBMC.Notification([COLOR red][B]Sorry site is down [/B][/COLOR],[COLOR blue][B]Please try a different site[/B][/COLOR],7000,"")")
+       	xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+def GetLinks82(section, url):
+        print '\n\nOMW Getting Links: '+url+'\n'
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        #print '\n\n\nCONTENT: \n'+content+'\n\n'
+        match = re.compile('<div data-counter="\d" class="tabs-catch-all"><iframe SRC="(.+?)" FRAMEBORDER=\d+? .+?<\/iframe>').findall(content)
+        match1 = re.compile('<td class="entr.+?" width=".+?"><a href="(.+?)" target="_blank"><span style="font-size: \d+?pt;">(.+?)</span></a></td>\s?<td class="entr.+?" valign="middle"><a href="(.+?)" target="_blank">').findall(content)
+        match2 = re.compile('<noscript><iframe (src|SRC)="(http.+?html)"').findall(content)
+        listitem = GetMediaInfo(content)
+        for url in match:
+                print '\n\nOMW Match Got Link: '+str(url)+'\n'
+                host = GetDomain(url)
+                addon.add_directory({'mode': 'GetLinks82a', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.png')
+        for url, source, link in match1:
+                print '\n\nOMW Match 1 Got Link: '+str(url)+'\n'
+                host = GetDomain(url)
+                addon.add_directory({'mode': 'GetLinks82b', 'url': url, 'listitem': listitem}, {'title':  source }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.png')
+        for src, url in match2:
+                print '\n\nOMW Match 2 Got Link: '+str(url)+'\n'
+                host = GetDomain(url)
+                addon.add_directory({'mode': 'GetLinks82a', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.png')
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+def GetLinks82a(section, url):                                            
+        print 'GETLINKS72a FROM URL: '+url
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        match1 = re.compile('{file:"(http://.+?[mp4|m3u8])"').findall(content)
+        listitem = GetMediaInfo(content)
+        for url in match1:
+                print '\n\nOMW GetLinks72a Got Link: '+str(url)+'\n'
+                addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title':  'Load Stream'}, img=IconPath + 'watch.png', fanart=FanartPath + 'fanart.png')
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+def GetLinks82b(section, url):                                            
+        print 'GETLINKS72b FROM URL: '+url
+        html = net.http_GET(url).content
+        listitem = GetMediaInfo(html)
+        content = html
+        match1 = re.compile('<iframe SRC="(.+?)" FRAMEBORDER=\d+? .+?<\/iframe>').findall(content)
+        listitem = GetMediaInfo(content)
+        for url in match1:
+                print '\n\nOMW GetLinks72B Got Link: '+str(url)+'\n List Item is: '+str(listitem)+'\n'
+                addon.add_directory({'mode': 'GetLinks82a', 'url': url, 'listitem': listitem}, {'title':  'Get Direct Link'}, img=IconPath + 'watch.png', fanart=FanartPath + 'fanart.png')
+        xbmcplugin.endOfDirectory(int(sys.argv[1]))
+		
 #------------------------------------------------------------------------------- desimovies ------------------------------------------------------------------------------#
 
 def GetTitles81(section, url, startPage= '1', numOfPages= '1'):
@@ -2972,6 +3047,10 @@ def WtMenu():   #world4ufree #m2k
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR cornflowerblue][B]Dubbed Movies[/B][/COLOR] [COLOR cadetblue](OMG) [/COLOR]>>'}, img=IconPath + 'omg.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles39', 'section': 'ALL', 'url': BASE_URL39 + '/category/others/',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR cornflowerblue][B]Others Movies[/B][/COLOR] [COLOR cadetblue](OMG) [/COLOR]>>'}, img=IconPath + 'omg.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles82', 'section': 'ALL', 'url': BASE_URL82 + '/category/bollywood-movie-2015/',
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR cornflowerblue][B]Latest Bollywood Movies[/B][/COLOR] [COLOR cadetblue](OMW) [/COLOR]>>'}, img=IconPath + 'OMW.png', fanart=FanartPath + 'fanart.png')
+        addon.add_directory({'mode': 'GetTitles82', 'section': 'ALL', 'url': BASE_URL82 + '/category/punjabi-movies/',
+                             'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR goldenrod](HD) [/COLOR][COLOR cornflowerblue][B]Punjabi Movies[/B][/COLOR] [COLOR cadetblue](OMW) [/COLOR]>>'}, img=IconPath + 'OMW.png', fanart=FanartPath + 'fanart.png')
         addon.add_directory({'mode': 'GetTitles81', 'section': 'ALL', 'url': BASE_URL81 + 'newapp/part/MAIN.php',
                              'startPage': '1', 'numOfPages': '1'}, {'title':  '[COLOR cornflowerblue][B]New Releases[/B][/COLOR] [COLOR cadetblue](DesiMovies) [/COLOR]>>'}, img=IconPath + 'links1.png', fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
@@ -4160,6 +4239,8 @@ elif mode == 'GetTitles76':
 	GetTitles76(section, url, startPage, numOfPages)
 elif mode == 'GetTitles81': 
 	GetTitles81(section, url, startPage, numOfPages)
+elif mode == 'GetTitles82': 
+	GetTitles82(section, url, startPage, numOfPages)
 elif mode == 'GetTitles143': 
 	GetTitles143(section, url)
 elif mode == 'GetTitles143a': 
@@ -4252,6 +4333,12 @@ elif mode == 'GetLinks55a':
 	GetLinks55a(section, url)
 elif mode == 'GetLinks81':
 	GetLinks81(section, url)
+elif mode == 'GetLinks82':
+	GetLinks82(section, url)
+elif mode == 'GetLinks82a':
+	GetLinks82a(section, url)
+elif mode == 'GetLinks82b':
+	GetLinks82b(section, url)
 elif mode == 'GetLinks129':
         GetLinks129(section, url)
 elif mode == 'GetLinks130':
