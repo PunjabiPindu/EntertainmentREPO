@@ -2325,7 +2325,6 @@ def GetTitles82(section, url, startPage= '1', numOfPages= '1'):
                 match = re.compile('<div class="boxentry">\s.+?<a href="(.+?)" title="(.+?)">\s.+?<div class=".+?">\s.+?<img width="\d+" height="\d+" src=".+?" data-lazy-type="image" data-lazy-src="(.+?)" class="', re.DOTALL).findall(html)
                 for movieURL, name, img in match:
                         cm  = []
-                        print '\n\nOMW Dir Link: '+movieURL+'\n'
                         runstring = 'XBMC.Container.Update(plugin://plugin.video.allone/?mode=Search11&query=%s)' %(name.strip())
         		cm.append(('[COLOR blue][B]E[/B][/COLOR]ntertainment [COLOR green]Search[/COLOR]', runstring))
                         addon.add_directory({'mode': 'GetLinks82', 'section': section, 'url': movieURL}, {'title':  name.strip()}, contextmenu_items= cm, img= img, fanart=FanartPath + 'fanart.png')    
@@ -2335,50 +2334,41 @@ def GetTitles82(section, url, startPage= '1', numOfPages= '1'):
        	xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 def GetLinks82(section, url):
-        print '\n\nOMW Getting Links: '+url+'\n'
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
-        #print '\n\n\nCONTENT: \n'+content+'\n\n'
         match = re.compile('<div data-counter="\d" class="tabs-catch-all"><iframe SRC="(.+?)" FRAMEBORDER=\d+? .+?<\/iframe>').findall(content)
         match1 = re.compile('<td class="entr.+?" width=".+?"><a href="(.+?)" target="_blank"><span style="font-size: \d+?pt;">(.+?)</span></a></td>\s?<td class="entr.+?" valign="middle"><a href="(.+?)" target="_blank">').findall(content)
         match2 = re.compile('<noscript><iframe (src|SRC)="(http.+?html)"').findall(content)
         listitem = GetMediaInfo(content)
         for url in match:
-                print '\n\nOMW Match Got Link: '+str(url)+'\n'
                 host = GetDomain(url)
                 addon.add_directory({'mode': 'GetLinks82a', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.png')
         for url, source, link in match1:
-                print '\n\nOMW Match 1 Got Link: '+str(url)+'\n'
                 host = GetDomain(url)
                 addon.add_directory({'mode': 'GetLinks82b', 'url': url, 'listitem': listitem}, {'title':  source }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.png')
         for src, url in match2:
-                print '\n\nOMW Match 2 Got Link: '+str(url)+'\n'
                 host = GetDomain(url)
                 addon.add_directory({'mode': 'GetLinks82a', 'url': url, 'listitem': listitem}, {'title':  host }, img=IconPath + 'play.png', fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 def GetLinks82a(section, url):                                            
-        print 'GETLINKS72a FROM URL: '+url
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
         match1 = re.compile('{file:"(http://.+?[mp4|m3u8])"').findall(content)
         listitem = GetMediaInfo(content)
         for url in match1:
-                print '\n\nOMW GetLinks72a Got Link: '+str(url)+'\n'
                 addon.add_directory({'mode': 'PlayVideo1', 'url': url, 'listitem': listitem}, {'title':  'Load Stream'}, img=IconPath + 'watch.png', fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 
 def GetLinks82b(section, url):                                            
-        print 'GETLINKS72b FROM URL: '+url
         html = net.http_GET(url).content
         listitem = GetMediaInfo(html)
         content = html
         match1 = re.compile('<iframe SRC="(.+?)" FRAMEBORDER=\d+? .+?<\/iframe>').findall(content)
         listitem = GetMediaInfo(content)
         for url in match1:
-                print '\n\nOMW GetLinks72B Got Link: '+str(url)+'\n List Item is: '+str(listitem)+'\n'
                 addon.add_directory({'mode': 'GetLinks82a', 'url': url, 'listitem': listitem}, {'title':  'Get Direct Link'}, img=IconPath + 'watch.png', fanart=FanartPath + 'fanart.png')
         xbmcplugin.endOfDirectory(int(sys.argv[1]))
 		
