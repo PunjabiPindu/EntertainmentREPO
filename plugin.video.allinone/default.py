@@ -29,7 +29,7 @@ BASE_URL30 = 'http://www.allcinemamovies.com/'#12#
 BASE_URL32 = 'http://www.tvhq.info/'
 BASE_URL35 = 'https://raw.githubusercontent.com/TheYid/yidpics/master'
 BASE_URL38 = 'http://www.kidsmovies.tv/'
-BASE_URL39 = 'http://www.onlinemoviesgold.co'
+BASE_URL39 = 'http://www.onlinemoviesgold.com'
 BASE_URL40 = 'http://www.uwatchfree.net/'
 BASE_URL40a = 'http://www.uwatchfree.net/genres/'
 BASE_URL41 = 'http://www.episodes-tv.com/'
@@ -1312,7 +1312,7 @@ def GetTitles39(section, url, startPage= '1', numOfPages= '1'):
     try:
         pageUrl = url
         if int(startPage)> 1:
-                pageUrl = url + 'page/' + startPage + '/'
+                pageUrl = url + '/page/' + startPage + '/'
         print pageUrl
         html = net.http_GET(pageUrl).content
         start = int(startPage)
@@ -1321,7 +1321,7 @@ def GetTitles39(section, url, startPage= '1', numOfPages= '1'):
                 if ( page != start):
                         pageUrl = url + 'page/' + str(page) + '/'
                         html = net.http_GET(pageUrl).content                      
-                match = re.compile('<li class="border-radius-5 box-shadow">\s+<img width=".+?" height=".+?" src="(.+?)" class=".+?" alt=".+?" title="(.+? \(?\d+\)?) .+?" />\s*?<a href="(.+?)"', re.DOTALL).findall(html)
+                match = re.compile('<li class="border-radius-5 box-shadow">\s+<img width=".+?" height=".+?" src="(.+?)" class=".+?" alt=".+?" title="(.+? \(\d+\)).+?" ?/>\s*?<a href="(.+?)"', re.DOTALL).findall(html)
                 for img, name, movieUrl in match:
                         cm  = []
                         runstring = 'XBMC.Container.Update(plugin://plugin.video.allinone/?mode=Search11&query=%s)' %(name.strip())
